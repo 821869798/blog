@@ -1,1 +1,1 @@
-# blog
+# Nine Ghost's Blog
