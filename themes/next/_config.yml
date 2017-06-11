@@ -31,7 +31,7 @@ menu:
   home: /
   archives: /archives
   categories: /categories
-  # tags: /tags
+  tags: /tags
   #guestbook: /guestbook
   #commonweal: /404
 
