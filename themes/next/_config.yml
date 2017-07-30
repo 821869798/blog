@@ -32,6 +32,7 @@ menu:
   archives: /archives
   categories: /categories
   tags: /tags
+  book: /book
   #guestbook: /guestbook
   #commonweal: /404
 
@@ -49,6 +50,7 @@ menu_icons:
   categories: th
   tags: tags
   guestbook: commenting
+  book: book
   archives: archive
   #commonweal: heartbeat
 
