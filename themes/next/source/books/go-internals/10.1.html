@@ -1,0 +1,1071 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>内存模型 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="01.0.html">
+            
+                <a href="01.0.html">
+            
+                    
+                    如何研究Go内部实现
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="01.1.html">
+            
+                <a href="01.1.html">
+            
+                    
+                    从源代码安装Go
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="01.2.html">
+            
+                <a href="01.2.html">
+            
+                    
+                    本书的组织结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="01.3.html">
+            
+                <a href="01.3.html">
+            
+                    
+                    基本技巧
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="02.0.html">
+            
+                <a href="02.0.html">
+            
+                    
+                    基本数据结构
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="02.1.html">
+            
+                <a href="02.1.html">
+            
+                    
+                    基本类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="02.2.html">
+            
+                <a href="02.2.html">
+            
+                    
+                    slice
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="02.3.html">
+            
+                <a href="02.3.html">
+            
+                    
+                    map的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="02.4.html">
+            
+                <a href="02.4.html">
+            
+                    
+                    nil
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="03.0.html">
+            
+                <a href="03.0.html">
+            
+                    
+                    函数调用协议
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="03.1.html">
+            
+                <a href="03.1.html">
+            
+                    
+                    Go调用汇编和C
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="03.2.html">
+            
+                <a href="03.2.html">
+            
+                    
+                    多值返回
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="03.3.html">
+            
+                <a href="03.3.html">
+            
+                    
+                    go关键字
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="03.4.html">
+            
+                <a href="03.4.html">
+            
+                    
+                    defer关键字
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="03.5.html">
+            
+                <a href="03.5.html">
+            
+                    
+                    连续栈
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="03.6.html">
+            
+                <a href="03.6.html">
+            
+                    
+                    闭包的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="04.0.html">
+            
+                <a href="04.0.html">
+            
+                    
+                    Go语言程序初始化过程
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="04.1.html">
+            
+                <a href="04.1.html">
+            
+                    
+                    系统初始化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="04.2.html">
+            
+                <a href="04.2.html">
+            
+                    
+                    main.main之前的准备
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="05.0.html">
+            
+                <a href="05.0.html">
+            
+                    
+                    goroutine调度
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="05.1.html">
+            
+                <a href="05.1.html">
+            
+                    
+                    调度器相关数据结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="05.2.html">
+            
+                <a href="05.2.html">
+            
+                    
+                    goroutine的生老病死
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="05.3.html">
+            
+                <a href="05.3.html">
+            
+                    
+                    设计与演化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" >
+            
+                <span>
+            
+                    
+                    [死锁检测和竞态检测]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="05.5.html">
+            
+                <a href="05.5.html">
+            
+                    
+                    抢占式调度
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="06.0.html">
+            
+                <a href="06.0.html">
+            
+                    
+                    内存管理
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="06.1.html">
+            
+                <a href="06.1.html">
+            
+                    
+                    内存池
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="06.2.html">
+            
+                <a href="06.2.html">
+            
+                    
+                    垃圾回收上篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="06.3.html">
+            
+                <a href="06.3.html">
+            
+                    
+                    垃圾回收下篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="07.0.html">
+            
+                <a href="07.0.html">
+            
+                    
+                    高级数据结构的实现
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="07.1.html">
+            
+                <a href="07.1.html">
+            
+                    
+                    channel
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="07.2.html">
+            
+                <a href="07.2.html">
+            
+                    
+                    interface
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="07.3.html">
+            
+                <a href="07.3.html">
+            
+                    
+                    方法调用
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="08.0.html">
+            
+                <a href="08.0.html">
+            
+                    
+                    网络
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="08.1.html">
+            
+                <a href="08.1.html">
+            
+                    
+                    非阻塞io
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" >
+            
+                <span>
+            
+                    
+                    [net包]
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="09.0.html">
+            
+                <a href="09.0.html">
+            
+                    
+                    cgo
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="09.1.html">
+            
+                <a href="09.1.html">
+            
+                    
+                    预备知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="09.2.html">
+            
+                <a href="09.2.html">
+            
+                    
+                    cgo关键技术
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="09.3.html">
+            
+                <a href="09.3.html">
+            
+                    
+                    Go调用C
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="09.4.html">
+            
+                <a href="09.4.html">
+            
+                    
+                    C调用Go
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    [杂项]
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.11.1" data-path="10.1.html">
+            
+                <a href="10.1.html">
+            
+                    
+                    内存模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" >
+            
+                <span>
+            
+                    
+                    [pprof]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" >
+            
+                <span>
+            
+                    
+                    [底层同步机制]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.4" >
+            
+                <span>
+            
+                    
+                    [系统调用]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.5" >
+            
+                <span>
+            
+                    
+                    [timer]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.6" >
+            
+                <span>
+            
+                    
+                    [运行时符号信息]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.7" >
+            
+                <span>
+            
+                    
+                    [signal处理]
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >内存模型</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="101-&#x5185;&#x5B58;&#x6A21;&#x578B;">10.1 &#x5185;&#x5B58;&#x6A21;&#x578B;</h1>
+<p>&#x5185;&#x5B58;&#x6A21;&#x578B;&#x662F;&#x975E;&#x5E38;&#x91CD;&#x8981;&#x7684;&#xFF0C;&#x7406;&#x89E3;Go&#x7684;&#x5185;&#x5B58;&#x6A21;&#x578B;&#x4F1A;&#x5C31;&#x53EF;&#x4EE5;&#x660E;&#x767D;&#x5F88;&#x591A;&#x5947;&#x602A;&#x7684;&#x7ADE;&#x6001;&#x6761;&#x4EF6;&#x95EE;&#x9898;&#xFF0C;&quot;The Go Memory Model&quot;&#x7684;&#x539F;&#x6587;&#x5728;<a href="http://golang.org/ref/mem" target="_blank">&#x8FD9;&#x91CC;</a>&#xFF0C;&#x8BFB;&#x4E2A;&#x56DB;&#x4E94;&#x904D;&#x4E5F;&#x4E0D;&#x7B97;&#x591A;&#x3002;</p>
+<p>&#x8FD9;&#x91CC;&#x5E76;&#x4E0D;&#x662F;&#x8981;&#x7FFB;&#x8BD1;&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;&#xFF0C;&#x82F1;&#x6587;&#x539F;&#x6587;&#x662F;&#x7CBE;&#x786E;&#x7684;&#xFF0C;&#x4F46;&#x8BFB;&#x8D77;&#x6765;&#x5374;&#x5F88;&#x6666;&#x6DA9;&#xFF0C;&#x5C24;&#x5176;&#x662F;happens-before&#x7684;&#x6982;&#x5FF5;&#x672C;&#x8EAB;&#x5C31;&#x662F;&#x4E0D;&#x597D;&#x7406;&#x89E3;&#x7684;&#xFF0C;&#x5F88;&#x5BB9;&#x6613;&#x8DDF;&#x65F6;&#x5E8F;&#x95EE;&#x9898;&#x6DF7;&#x6DC6;&#x3002;&#x5927;&#x591A;&#x6570;&#x8BFB;&#x8005;&#x7B2C;&#x4E00;&#x904D;&#x8BFB;Go&#x7684;&#x5185;&#x5B58;&#x6A21;&#x578B;&#x65F6;&#x57FA;&#x672C;&#x4E0A;&#x770B;&#x4E0D;&#x61C2;&#x5B83;&#x5728;&#x8BF4;&#x4EC0;&#x4E48;&#x3002;&#x6240;&#x4EE5;&#x6211;&#x8981;&#x505A;&#x7684;&#x4E8B;&#x60C5;&#x7528;&#x4E0D;&#x600E;&#x4E48;&#x7CBE;&#x786E;&#x4F46;&#x76F8;&#x5BF9;&#x901A;&#x4FD7;&#x7684;&#x8BED;&#x8A00;&#x89E3;&#x91CA;&#x4E00;&#x4E0B;&#x3002;</p>
+<p>&#x5148;&#x7528;&#x4E00;&#x53E5;&#x8BDD;&#x603B;&#x7ED3;&#xFF0C;Go&#x7684;&#x5185;&#x5B58;&#x6A21;&#x578B;&#x63CF;&#x8FF0;&#x7684;&#x662F;&quot;&#x5728;&#x4E00;&#x4E2A;groutine&#x4E2D;&#x5BF9;&#x53D8;&#x91CF;&#x8FDB;&#x884C;&#x8BFB;&#x64CD;&#x4F5C;&#x80FD;&#x591F;&#x4FA6;&#x6D4B;&#x5230;&#x5728;&#x5176;&#x4ED6;goroutine&#x4E2D;&#x5BF9;&#x8BE5;&#x53D8;&#x91CF;&#x7684;&#x5199;&#x64CD;&#x4F5C;&quot;&#x7684;&#x6761;&#x4EF6;&#x3002;</p>
+<h2 id="&#x5185;&#x5B58;&#x6A21;&#x578B;&#x76F8;&#x5173;bug&#x4E00;&#x4F8B;">&#x5185;&#x5B58;&#x6A21;&#x578B;&#x76F8;&#x5173;bug&#x4E00;&#x4F8B;</h2>
+<p>&#x4E3A;&#x4E86;&#x8BC1;&#x660E;&#x8FD9;&#x4E2A;&#x91CD;&#x8981;&#x6027;&#xFF0C;&#x5148;&#x770B;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#x3002;&#x4E0B;&#x9762;&#x4E00;&#x5C0F;&#x6BB5;&#x4EE3;&#x7801;&#xFF1A;</p>
+<pre><code class="lang-Go"><span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+  <span class="hljs-string">&quot;sync&quot;</span>
+  <span class="hljs-string">&quot;time&quot;</span>
+)
+
+<span class="hljs-keyword">func</span> main() {
+  <span class="hljs-keyword">var</span> wg sync.WaitGroup
+  <span class="hljs-keyword">var</span> count <span class="hljs-keyword">int</span>
+  <span class="hljs-keyword">var</span> ch = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">bool</span>, <span class="hljs-number">1</span>)
+  <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ {
+    wg.Add(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">go</span> <span class="hljs-keyword">func</span>() {
+      ch &lt;- <span class="hljs-literal">true</span>
+      count++
+      time.Sleep(time.Millisecond)
+      count--
+      &lt;-ch
+      wg.Done()
+    }()
+  }
+  wg.Wait()
+}
+</code></pre>
+<p>&#x4EE5;&#x4E0A;&#x4EE3;&#x7801;&#x6709;&#x6CA1;&#x6709;&#x4EC0;&#x4E48;&#x95EE;&#x9898;&#xFF1F;&#x8FD9;&#x91CC;&#x628A;buffered channel&#x4F5C;&#x4E3A;semaphore&#x6765;&#x4F7F;&#x7528;&#xFF0C;&#x8868;&#x9762;&#x4E0A;&#x770B;&#x6700;&#x591A;&#x5141;&#x8BB8;&#x4E00;&#x4E2A;goroutine&#x5BF9;count&#x8FDB;&#x884C;++&#x548C;--&#xFF0C;&#x4F46;&#x5176;&#x5B9E;&#x8FD9;&#x91CC;&#x662F;&#x6709;bug&#x7684;&#x3002;&#x6839;&#x636E;Go&#x8BED;&#x8A00;&#x7684;&#x5185;&#x5B58;&#x6A21;&#x578B;&#xFF0C;&#x5BF9;count&#x53D8;&#x91CF;&#x7684;&#x8BBF;&#x95EE;&#x5E76;&#x6CA1;&#x6709;&#x5F62;&#x6210;&#x4E34;&#x754C;&#x533A;&#x3002;&#x7F16;&#x8BD1;&#x65F6;&#x5F00;&#x542F;&#x7ADE;&#x6001;&#x68C0;&#x6D4B;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x6709;&#x95EE;&#x9898;&#xFF1A;</p>
+<pre><code class="lang-bash">go run -race test.go
+</code></pre>
+<p>&#x7F16;&#x8BD1;&#x5668;&#x53EF;&#x4EE5;&#x68C0;&#x6D4B;&#x5230;16&#x548C;18&#x884C;&#x662F;&#x5B58;&#x5728;&#x7ADE;&#x6001;&#x6761;&#x4EF6;&#x7684;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;count&#x5E76;&#x6CA1;&#x50CF;&#x6211;&#x4EEC;&#x60F3;&#x8981;&#x7684;&#x90A3;&#x6837;&#x5728;&#x4E34;&#x754C;&#x533A;&#x6267;&#x884C;&#x3002;&#x7EE7;&#x7EED;&#x5F80;&#x4E0B;&#x770B;&#xFF0C;&#x8BFB;&#x5B8C;&#x8FD9;&#x4E00;&#x8282;&#xFF0C;&#x56DE;&#x5934;&#x518D;&#x6765;&#x770B;&#x5C31;&#x53EF;&#x4EE5;&#x660E;&#x767D;&#x4E3A;&#x4EC0;&#x4E48;&#x8FD9;&#x91CC;&#x6709;bug&#x4E86;&#x3002;</p>
+<h2 id="happens-before">happens-before</h2>
+<p>happens-before&#x662F;&#x4E00;&#x4E2A;&#x672F;&#x8BED;&#xFF0C;&#x5E76;&#x4E0D;&#x4EC5;&#x4EC5;&#x662F;Go&#x8BED;&#x8A00;&#x624D;&#x6709;&#x7684;&#x3002;&#x7B80;&#x5355;&#x7684;&#x8BF4;&#xFF0C;&#x901A;&#x5E38;&#x7684;&#x5B9A;&#x4E49;&#x5982;&#x4E0B;&#xFF1A;</p>
+<p>&#x5047;&#x8BBE;A&#x548C;B&#x8868;&#x793A;&#x4E00;&#x4E2A;&#x591A;&#x7EBF;&#x7A0B;&#x7684;&#x7A0B;&#x5E8F;&#x6267;&#x884C;&#x7684;&#x4E24;&#x4E2A;&#x64CD;&#x4F5C;&#x3002;&#x5982;&#x679C;A happens-before B&#xFF0C;&#x90A3;&#x4E48;A&#x64CD;&#x4F5C;&#x5BF9;&#x5185;&#x5B58;&#x7684;&#x5F71;&#x54CD; &#x5C06;&#x5BF9;&#x6267;&#x884C;B&#x7684;&#x7EBF;&#x7A0B;(&#x4E14;&#x6267;&#x884C;B&#x4E4B;&#x524D;)&#x53EF;&#x89C1;&#x3002;</p>
+<p>&#x65E0;&#x8BBA;&#x4F7F;&#x7528;&#x54EA;&#x79CD;&#x7F16;&#x7A0B;&#x8BED;&#x8A00;&#xFF0C;&#x6709;&#x4E00;&#x70B9;&#x662F;&#x76F8;&#x540C;&#x7684;&#xFF1A;&#x5982;&#x679C;&#x64CD;&#x4F5C;A&#x548C;B&#x5728;&#x76F8;&#x540C;&#x7684;&#x7EBF;&#x7A0B;&#x4E2D;&#x6267;&#x884C;&#xFF0C;&#x5E76;&#x4E14;A&#x64CD;&#x4F5C;&#x7684;&#x58F0;&#x660E;&#x5728;B&#x4E4B;&#x524D;&#xFF0C;&#x90A3;&#x4E48;A happens-before B&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">int</span> A, B;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">foo</span><span class="hljs-params">()</span>
+</span>{
+  <span class="hljs-comment">// This store to A ...</span>
+  A = <span class="hljs-number">5</span>;
+  <span class="hljs-comment">// ... effectively becomes visible before the following loads. Duh!</span>
+  B = A * A;
+}
+</code></pre>
+<p>&#x8FD8;&#x6709;&#x4E00;&#x70B9;&#x662F;&#xFF0C;&#x5728;&#x6BCF;&#x95E8;&#x8BED;&#x8A00;&#x4E2D;&#xFF0C;&#x65E0;&#x8BBA;&#x4F60;&#x4F7F;&#x7528;&#x90A3;&#x79CD;&#x65B9;&#x5F0F;&#x83B7;&#x5F97;&#xFF0C;happens-before&#x5173;&#x7CFB;&#x90FD;&#x662F;&#x53EF;&#x4F20;&#x9012;&#x7684;&#xFF1A;&#x5982;&#x679C;A happens-before B&#xFF0C;&#x540C;&#x65F6;B happens-before C&#xFF0C;&#x90A3;&#x4E48;A happens-before C&#x3002;&#x5F53;&#x8FD9;&#x4E9B;&#x5173;&#x7CFB;&#x53D1;&#x751F;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x7EBF;&#x7A0B;&#x4E2D;&#xFF0C;&#x4F20;&#x9012;&#x6027;&#x5C06;&#x53D8;&#x5F97;&#x975E;&#x5E38;&#x6709;&#x7528;&#x3002;</p>
+<p>&#x521A;&#x63A5;&#x89E6;&#x8FD9;&#x4E2A;&#x672F;&#x8BED;&#x7684;&#x4EBA;&#x603B;&#x662F;&#x5BB9;&#x6613;&#x8BEF;&#x89E3;&#xFF0C;&#x8FD9;&#x91CC;&#x5FC5;&#x987B;&#x6F84;&#x6E05;&#x7684;&#x662F;&#xFF0C;happens-before&#x5E76;&#x4E0D;&#x662F;&#x6307;&#x65F6;&#x5E8F;&#x5173;&#x7CFB;&#xFF0C;&#x5E76;&#x4E0D;&#x662F;&#x8BF4;A happens-before B&#x5C31;&#x8868;&#x793A;&#x64CD;&#x4F5C;A&#x5728;&#x64CD;&#x4F5C;B&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x3002;&#x5B83;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x672F;&#x8BED;&#xFF0C;&#x5C31;&#x50CF;&#x5149;&#x5E74;&#x4E0D;&#x662F;&#x65F6;&#x95F4;&#x5355;&#x4F4D;&#x4E00;&#x6837;&#x3002;&#x5177;&#x4F53;&#x5730;&#x8BF4;&#xFF1A;</p>
+<ol>
+<li>A happens-before B&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;A&#x5728;B&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x3002;</li>
+<li>A&#x5728;B&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;A happens-before B&#x3002;</li>
+</ol>
+<p>&#x8FD9;&#x4E24;&#x4E2A;&#x9648;&#x8FF0;&#x770B;&#x4F3C;&#x77DB;&#x76FE;&#xFF0C;&#x5176;&#x5B9E;&#x5E76;&#x4E0D;&#x662F;&#x3002;&#x5982;&#x679C;&#x4F60;&#x89C9;&#x5F97;&#x5F88;&#x56F0;&#x60D1;&#xFF0C;&#x53EF;&#x4EE5;&#x591A;&#x8BFB;&#x51E0;&#x7BC7;&#x5B83;&#x7684;&#x5B9A;&#x4E49;&#x3002;&#x540E;&#x9762;&#x6211;&#x4F1A;&#x8BD5;&#x7740;&#x89E3;&#x91CA;&#x8FD9;&#x70B9;&#x3002;&#x8BB0;&#x4F4F;&#xFF0C;happens-before &#x662F;&#x4E00;&#x7CFB;&#x5217;&#x8BED;&#x8A00;&#x89C4;&#x8303;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x64CD;&#x4F5C;&#x95F4;&#x7684;&#x5173;&#x7CFB;&#x3002;&#x5B83;&#x548C;&#x65F6;&#x95F4;&#x7684;&#x6982;&#x5FF5;&#x72EC;&#x7ACB;&#x3002;&#x8FD9;&#x548C;&#x6211;&#x4EEC;&#x901A;&#x5E38;&#x8BF4;&#x201D;A&#x5728;B&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x201D;&#x65F6;&#x8868;&#x8FBE;&#x7684;&#x771F;&#x5B9E;&#x4E16;&#x754C;&#x4E2D;&#x4E8B;&#x4EF6;&#x7684;&#x65F6;&#x95F4;&#x987A;&#x5E8F;&#x4E0D;&#x540C;&#x3002;</p>
+<h3 id="a-happens-before-b&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;a&#x5728;b&#x4E4B;&#x524D;&#x53D1;&#x751F;">A happens-before B&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;A&#x5728;B&#x4E4B;&#x524D;&#x53D1;&#x751F;</h3>
+<p>&#x8FD9;&#x91CC;&#x6709;&#x4E2A;&#x4F8B;&#x5B50;&#xFF0C;&#x5176;&#x4E2D;&#x7684;&#x64CD;&#x4F5C;&#x5177;&#x6709;happens-before&#x5173;&#x7CFB;&#xFF0C;&#x4F46;&#x662F;&#x5B9E;&#x9645;&#x4E0A;&#x5E76;&#x4E0D;&#x4E00;&#x5B9A;&#x662F;&#x6309;&#x7167;&#x90A3;&#x4E2A;&#x987A;&#x5E8F;&#x53D1;&#x751F;&#x7684;&#x3002;&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x6267;&#x884C;&#x4E86;(1)&#x5BF9;A&#x7684;&#x8D4B;&#x503C;&#xFF0C;&#x7D27;&#x63A5;&#x7740;&#x662F;(2)&#x5BF9;B&#x7684;&#x8D4B;&#x503C;&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">int</span> A = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> B = <span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    A = B + <span class="hljs-number">1</span>; <span class="hljs-comment">// (1)</span>
+    B = <span class="hljs-number">1</span>; <span class="hljs-comment">// (2)</span>
+}
+</code></pre>
+<p>&#x6839;&#x636E;&#x524D;&#x9762;&#x8BF4;&#x660E;&#x7684;&#x89C4;&#x5219;&#xFF0C;(1) happens-before (2)&#x3002;&#x4F46;&#x662F;&#xFF0C;&#x5982;&#x679C;&#x6211;&#x4EEC;&#x4F7F;&#x7528;gcc -O2&#x7F16;&#x8BD1;&#x8FD9;&#x4E2A;&#x4EE3;&#x7801;&#xFF0C;&#x7F16;&#x8BD1;&#x5668;&#x5C06;&#x4EA7;&#x751F;&#x4E00;&#x4E9B;&#x6307;&#x4EE4;&#x91CD;&#x6392;&#x5E8F;&#x3002;&#x6709;&#x53EF;&#x80FD;&#x6267;&#x884C;&#x987A;&#x5E8F;&#x662F;&#x8FD9;&#x6837;&#x5B50;&#x7684;&#xFF1A;</p>
+<pre><code>&#x5C06;B&#x7684;&#x503C;&#x53D6;&#x5230;&#x5BC4;&#x5B58;&#x5668;
+&#x5C06;B&#x8D4B;&#x503C;&#x4E3A;1
+&#x5C06;&#x5BC4;&#x5B58;&#x5668;&#x503C;&#x52A0;1&#x540E;&#x8D4B;&#x503C;&#x7ED9;A
+</code></pre><p>&#x4E5F;&#x5C31;&#x662F;&#x5230;&#x7B2C;&#x4E8C;&#x6761;&#x673A;&#x5668;&#x6307;&#x4EE4;(&#x5BF9;B&#x7684;&#x8D4B;&#x503C;)&#x5B8C;&#x6210;&#x65F6;&#xFF0C;&#x5BF9;A&#x7684;&#x8D4B;&#x503C;&#x8FD8;&#x6CA1;&#x6709;&#x5B8C;&#x6210;&#x3002;&#x6362;&#x53E5;&#x8BDD;&#x8BF4;&#xFF0C;(1)&#x5E76;&#x6CA1;&#x6709;&#x5728;(2)&#x4E4B;&#x524D;&#x53D1;&#x751F;!</p>
+<p>&#x90A3;&#x4E48;&#xFF0C;&#x8FD9;&#x91CC;&#x8FDD;&#x53CD;&#x4E86;happens-before&#x5173;&#x7CFB;&#x4E86;&#x5417;&#xFF1F;&#x8BA9;&#x6211;&#x4EEC;&#x6765;&#x5206;&#x6790;&#x4E0B;&#xFF0C;&#x6839;&#x636E;&#x5B9A;&#x4E49;&#xFF0C;&#x64CD;&#x4F5C;(1)&#x5BF9;&#x5185;&#x5B58;&#x7684;&#x5F71;&#x54CD;&#x5FC5;&#x987B;&#x5728;&#x64CD;&#x4F5C;(2)&#x6267;&#x884C;&#x4E4B;&#x524D;&#x5BF9;&#x5176;&#x53EF;&#x89C1;&#x3002;&#x6362;&#x53E5;&#x8BDD;&#x8BF4;&#xFF0C;&#x5BF9;A&#x7684;&#x8D4B;&#x503C;&#x5FC5;&#x987B;&#x6709;&#x673A;&#x4F1A;&#x5BF9;B&#x7684;&#x8D4B;&#x503C;&#x6709;&#x5F71;&#x54CD;.</p>
+<p>&#x4F46;&#x662F;&#x5728;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x5BF9;A&#x7684;&#x8D4B;&#x503C;&#x5176;&#x5B9E;&#x5E76;&#x6CA1;&#x6709;&#x5BF9;B&#x7684;&#x8D4B;&#x503C;&#x6709;&#x5F71;&#x54CD;&#x3002;&#x5373;&#x4FBF;(1)&#x7684;&#x5F71;&#x54CD;&#x771F;&#x7684;&#x53EF;&#x89C1;&#xFF0C;(2)&#x7684;&#x884C;&#x4E3A;&#x8FD8;&#x662F;&#x4E00;&#x6837;&#x3002;&#x6240;&#x4EE5;&#xFF0C;&#x8FD9;&#x5E76;&#x4E0D;&#x80FD;&#x7B97;&#x662F;&#x8FDD;&#x80CC;happens-before&#x89C4;&#x5219;&#x3002;</p>
+<h3 id="a&#x5728;b&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;a-happens-before-b">A&#x5728;B&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;A happens-before B</h3>
+<p>&#x4E0B;&#x9762;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6240;&#x6709;&#x7684;&#x64CD;&#x4F5C;&#x6309;&#x7167;&#x6307;&#x5B9A;&#x7684;&#x987A;&#x5E8F;&#x53D1;&#x751F;&#xFF0C;&#x4F46;&#x662F;&#x5E76;&#x80FD;&#x4E0D;&#x6784;&#x6210;happens-before &#x5173;&#x7CFB;&#x3002;&#x5047;&#x8BBE;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x8C03;&#x7528;pulishMessage&#xFF0C;&#x540C;&#x65F6;&#xFF0C;&#x53E6;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x8C03;&#x7528;consumeMessage&#x3002; &#x7531;&#x4E8E;&#x6211;&#x4EEC;&#x5E76;&#x884C;&#x7684;&#x64CD;&#x4F5C;&#x5171;&#x4EAB;&#x53D8;&#x91CF;&#xFF0C;&#x4E3A;&#x4E86;&#x7B80;&#x5355;&#xFF0C;&#x6211;&#x4EEC;&#x5047;&#x8BBE;&#x6240;&#x6709;&#x5BF9;int&#x7C7B;&#x578B;&#x7684;&#x53D8;&#x91CF;&#x7684;&#x64CD;&#x4F5C;&#x90FD;&#x662F;&#x539F;&#x5B50;&#x7684;&#x3002;</p>
+<pre><code class="lang-c"><span class="hljs-keyword">int</span> isReady = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">int</span> answer = <span class="hljs-number">0</span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">publishMessage</span><span class="hljs-params">()</span>
+</span>{
+  answer = <span class="hljs-number">42</span>; <span class="hljs-comment">// (1)</span>
+  isReady = <span class="hljs-number">1</span>; <span class="hljs-comment">// (2)</span>
+}
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">consumeMessage</span><span class="hljs-params">()</span>
+</span>{
+  <span class="hljs-keyword">if</span> (isReady) <span class="hljs-comment">// (3) &lt;-- Let&apos;s suppose this line reads 1</span>
+  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d\n&quot;</span>, answer); <span class="hljs-comment">// (4)</span>
+}
+</code></pre>
+<p>&#x6839;&#x636E;&#x7A0B;&#x5E8F;&#x7684;&#x987A;&#x5E8F;&#xFF0C;&#x5728;(1)&#x548C;(2)&#x4E4B;&#x95F4;&#x5B58;&#x5728;happens-before &#x5173;&#x7CFB;&#xFF0C;&#x540C;&#x65F6;&#x5728;(3)&#x548C;(4)&#x4E4B;&#x95F4;&#x4E5F;&#x5B58;&#x5728;happens-before&#x5173;&#x7CFB;&#x3002;</p>
+<p>&#x9664;&#x6B64;&#x4E4B;&#x5916;&#xFF0C;&#x6211;&#x4EEC;&#x5047;&#x8BBE;&#x5728;&#x8FD0;&#x884C;&#x65F6;&#xFF0C;isReady&#x8BFB;&#x5230;1(&#x662F;&#x7531;&#x53E6;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#x5728;(2)&#x4E2D;&#x8D4B;&#x7684;&#x503C;)&#x3002;&#x5728;&#x8FD9;&#x4E2D;&#x60C5;&#x5F62;&#x4E0B;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x77E5;(2)&#x4E00;&#x5B9A;&#x5728;(3)&#x4E4B;&#x524D;&#x53D1;&#x751F;&#x3002;&#x4F46;&#x662F;&#x8FD9;&#x5E76;&#x4E0D;&#x610F;&#x5473;&#x7740;&#x5728;(2)&#x548C;(3)&#x4E4B;&#x95F4;&#x5B58;&#x5728;happens-before &#x5173;&#x7CFB;!</p>
+<p>happens-before &#x5173;&#x7CFB;&#x53EA;&#x5728;&#x8BED;&#x8A00;&#x6807;&#x51C6;&#x4E2D;&#x5B9A;&#x4E49;&#x7684;&#x5730;&#x65B9;&#x5B58;&#x5728;&#xFF0C;&#x8FD9;&#x91CC;&#x5E76;&#x6CA1;&#x6709;&#x76F8;&#x5173;&#x7684;&#x89C4;&#x5219;&#x8BF4;&#x660E;(2)&#x548C;(3)&#x4E4B;&#x95F4;&#x5B58;&#x5728;happens-before&#x5173;&#x7CFB;&#xFF0C;&#x5373;&#x4FBF;(3)&#x8BFB;&#x5230;&#x4E86;(2)&#x8D4B;&#x7684;&#x503C;&#x3002;</p>
+<p>&#x8FD8;&#x6709;&#xFF0C;&#x7531;&#x4E8E;(2)&#x548C;(3)&#x4E4B;&#x95F4;&#xFF0C;(1)&#x548C;(4)&#x4E4B;&#x95F4;&#x90FD;&#x4E0D;&#x5B58;&#x5728;happens-before&#x5173;&#x7CFB;&#xFF0C;&#x90A3;&#x4E48;(1)&#x548C;(4)&#x7684;&#x5185;&#x5B58;&#x4EA4;&#x4E92;&#x4E5F;&#x53EF;&#x80FD;&#x88AB;&#x91CD;&#x6392;&#x5E8F; (&#x8981;&#x4E0D;&#x7136;&#x6765;&#x81EA;&#x7F16;&#x8BD1;&#x5668;&#x7684;&#x6307;&#x4EE4;&#x91CD;&#x6392;&#x5E8F;&#xFF0C;&#x8981;&#x4E0D;&#x7136;&#x6765;&#x81EA;&#x5904;&#x7406;&#x5668;&#x81EA;&#x8EAB;&#x7684;&#x5185;&#x5B58;&#x91CD;&#x6392;&#x5E8F;)&#x3002;&#x90A3;&#x6837;&#x7684;&#x8BDD;&#xFF0C;&#x5373;&#x4F7F;(3)&#x8BFB;&#x5230;1&#xFF0C;(4)&#x4E5F;&#x4F1A;&#x6253;&#x5370;&#x51FA;&#x201C;0&#x201C;&#x3002;</p>
+<h2 id="go&#x5173;&#x4E8E;&#x540C;&#x6B65;&#x7684;&#x89C4;&#x5219;">Go&#x5173;&#x4E8E;&#x540C;&#x6B65;&#x7684;&#x89C4;&#x5219;</h2>
+<p>&#x6211;&#x4EEC;&#x56DE;&#x8FC7;&#x5934;&#x6765;&#x518D;&#x770B;&#x770B;&quot;The Go Memory Model&quot;&#x4E2D;&#x5173;&#x4E8E;happens-before&#x7684;&#x90E8;&#x5206;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x6EE1;&#x8DB3;&#x4E0B;&#x9762;&#x6761;&#x4EF6;&#xFF0C;&#x5BF9;&#x53D8;&#x91CF;v&#x7684;&#x8BFB;&#x64CD;&#x4F5C;r&#x53EF;&#x4EE5;&#x4FA6;&#x6D4B;&#x5230;&#x5BF9;&#x53D8;&#x91CF;v&#x7684;&#x5199;&#x64CD;&#x4F5C;w&#xFF1A;</p>
+<ol>
+<li>r does not happen before w.</li>
+<li>There is no other write w to v that happens after w but before r.</li>
+</ol>
+<p>&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x5BF9;&#x53D8;&#x91CF;v&#x7684;&#x8BFB;&#x64CD;&#x4F5C;r&#x53EF;&#x4EE5;&#x4FA6;&#x6D4B;&#x5230;&#x67D0;&#x4E2A;&#x5BF9;v&#x7684;&#x5199;&#x64CD;&#x4F5C;w&#xFF0C;&#x5FC5;&#x987B;&#x786E;&#x4FDD;w&#x662F;r&#x53EF;&#x4EE5;&#x4FA6;&#x6D4B;&#x5230;&#x7684;&#x552F;&#x4E00;&#x7684;&#x5199;&#x64CD;&#x4F5C;&#x3002;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#x5F53;&#x6EE1;&#x8DB3;&#x4E0B;&#x9762;&#x6761;&#x4EF6;&#x65F6;&#x53EF;&#x4EE5;&#x4FDD;&#x8BC1;&#x8BFB;&#x64CD;&#x4F5C;r&#x80FD;&#x4FA6;&#x6D4B;&#x5230;&#x5199;&#x64CD;&#x4F5C;w&#xFF1A;</p>
+<ol>
+<li>w happens-before r.</li>
+<li>Any other write to the shared variable v either happens-before w or after r.</li>
+</ol>
+<p>&#x5173;&#x4E8E;channel&#x7684;happens-before&#x5728;Go&#x7684;&#x5185;&#x5B58;&#x6A21;&#x578B;&#x4E2D;&#x63D0;&#x5230;&#x4E86;&#x4E09;&#x79CD;&#x60C5;&#x51B5;&#xFF1A;</p>
+<ol>
+<li>&#x5BF9;&#x4E00;&#x4E2A;channel&#x7684;&#x53D1;&#x9001;&#x64CD;&#x4F5C; happens-before &#x76F8;&#x5E94;channel&#x7684;&#x63A5;&#x6536;&#x64CD;&#x4F5C;&#x5B8C;&#x6210;</li>
+<li>&#x5173;&#x95ED;&#x4E00;&#x4E2A;channel happens-before &#x4ECE;&#x8BE5;Channel&#x63A5;&#x6536;&#x5230;&#x6700;&#x540E;&#x7684;&#x8FD4;&#x56DE;&#x503C;0</li>
+<li>&#x4E0D;&#x5E26;&#x7F13;&#x51B2;&#x7684;channel&#x7684;&#x63A5;&#x6536;&#x64CD;&#x4F5C; happens-before &#x76F8;&#x5E94;channel&#x7684;&#x53D1;&#x9001;&#x64CD;&#x4F5C;&#x5B8C;&#x6210;</li>
+</ol>
+<p>&#x5148;&#x770B;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x4F8B;&#x5B50;&#xFF1A;</p>
+<pre><code class="lang-go"><span class="hljs-keyword">var</span> c = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>, <span class="hljs-number">10</span>)
+<span class="hljs-keyword">var</span> a <span class="hljs-keyword">string</span>
+<span class="hljs-keyword">func</span> f() {
+    a = <span class="hljs-string">&quot;hello, world&quot;</span>  <span class="hljs-comment">// (1)</span>
+    c &lt;- <span class="hljs-number">0</span>  <span class="hljs-comment">// (2)</span>
+}
+<span class="hljs-keyword">func</span> main() {
+    <span class="hljs-keyword">go</span> f()
+    &lt;-c   <span class="hljs-comment">// (3)</span>
+    <span class="hljs-built_in">print</span>(a)  <span class="hljs-comment">// (4)</span>
+}
+</code></pre>
+<p>&#x4E0A;&#x8FF0;&#x4EE3;&#x7801;&#x53EF;&#x4EE5;&#x786E;&#x4FDD;&#x8F93;&#x51FA;&quot;hello, world&quot;&#xFF0C;&#x56E0;&#x4E3A;(1) happens-before (2)&#xFF0C;(4) happens-after (3)&#xFF0C;&#x518D;&#x6839;&#x636E;&#x4E0A;&#x9762;&#x7684;&#x7B2C;&#x4E00;&#x6761;&#x89C4;&#x5219;(2)&#x662F; happens-before (3)&#x7684;&#xFF0C;&#x6700;&#x540E;&#x6839;&#x636E;happens-before&#x7684;&#x53EF;&#x4F20;&#x9012;&#x6027;&#xFF0C;&#x4E8E;&#x662F;&#x6709;(1) happens-before (4)&#xFF0C;&#x4E5F;&#x5C31;&#x662F;a = &quot;hello, world&quot; happens-before print(a)&#x3002;</p>
+<p>&#x518D;&#x770B;&#x53E6;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;</p>
+<pre><code class="lang-go"><span class="hljs-keyword">var</span> c = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>)
+<span class="hljs-keyword">var</span> a <span class="hljs-keyword">string</span>
+<span class="hljs-keyword">func</span> f() {
+    a = <span class="hljs-string">&quot;hello, world&quot;</span>  <span class="hljs-comment">// (1)</span>
+    &lt;-c   <span class="hljs-comment">// (2)</span>
+}
+<span class="hljs-keyword">func</span> main() {
+    <span class="hljs-keyword">go</span> f()
+    c &lt;- <span class="hljs-number">0</span>  <span class="hljs-comment">// (3)</span>
+    <span class="hljs-built_in">print</span>(a)  <span class="hljs-comment">// (4)</span>
+}
+</code></pre>
+<p>&#x6839;&#x636E;&#x4E0A;&#x9762;&#x7684;&#x7B2C;&#x4E09;&#x6761;&#x89C4;&#x5219;(2) happens-before (3)&#xFF0C;&#x6700;&#x7EC8;&#x53EF;&#x4EE5;&#x4FDD;&#x8BC1;(1) happens-before (4)&#x3002;</p>
+<p>&#x5982;&#x679C;&#x6211;&#x628A;&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x7A0D;&#x5FAE;&#x6539;&#x4E00;&#x70B9;&#x70B9;&#xFF0C;&#x5C06;c&#x53D8;&#x4E3A;&#x4E00;&#x4E2A;&#x5E26;&#x7F13;&#x5B58;&#x7684;channel&#xFF0C;&#x5219;print(a)&#x6253;&#x5370;&#x7684;&#x7ED3;&#x679C;&#x4E0D;&#x80FD;&#x591F;&#x4FDD;&#x8BC1;&#x662F;&quot;hello world&quot;&#x3002;</p>
+<pre><code class="lang-go"><span class="hljs-keyword">var</span> c = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-keyword">int</span>, <span class="hljs-number">1</span>)
+<span class="hljs-keyword">var</span> a <span class="hljs-keyword">string</span>
+<span class="hljs-keyword">func</span> f() {
+    a = <span class="hljs-string">&quot;hello, world&quot;</span>  <span class="hljs-comment">// (1)</span>
+    &lt;-c   <span class="hljs-comment">// (2)</span>
+}
+<span class="hljs-keyword">func</span> main() {
+    <span class="hljs-keyword">go</span> f()
+    c &lt;- <span class="hljs-number">0</span>  <span class="hljs-comment">// (3)</span>
+    <span class="hljs-built_in">print</span>(a)  <span class="hljs-comment">// (4)</span>
+}
+</code></pre>
+<p>&#x56E0;&#x4E3A;&#x8FD9;&#x91CC;&#x4E0D;&#x518D;&#x6709;&#x4EFB;&#x4F55;&#x540C;&#x6B65;&#x4FDD;&#x8BC1;&#xFF0C;&#x4F7F;&#x5F97;(2) happens-before (3)&#x3002;&#x53EF;&#x4EE5;&#x56DE;&#x5934;&#x5206;&#x6790;&#x4E00;&#x4E0B;&#x672C;&#x8282;&#x6700;&#x524D;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#xFF0C;&#x4E5F;&#x662F;&#x6CA1;&#x6709;&#x4FDD;&#x8BC1;happens-before&#x6761;&#x4EF6;&#x3002;</p>
+<h2 id="links">links</h2>
+<ul>
+<li><a href="preface.md">&#x76EE;&#x5F55;</a></li>
+<li>&#x4E0A;&#x4E00;&#x8282;: [&#x6742;&#x9879;]</li>
+<li>&#x4E0B;&#x4E00;&#x8282;: [pprof]</li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"内存模型","level":"1.11.1","depth":2,"next":{"title":"[pprof]","level":"1.11.2","depth":2,"ref":"","articles":[]},"previous":{"title":"[杂项]","level":"1.11","depth":1,"ref":"","articles":[{"title":"内存模型","level":"1.11.1","depth":2,"path":"10.1.md","ref":"10.1.md","articles":[]},{"title":"[pprof]","level":"1.11.2","depth":2,"ref":"","articles":[]},{"title":"[底层同步机制]","level":"1.11.3","depth":2,"ref":"","articles":[]},{"title":"[系统调用]","level":"1.11.4","depth":2,"ref":"","articles":[]},{"title":"[timer]","level":"1.11.5","depth":2,"ref":"","articles":[]},{"title":"[运行时符号信息]","level":"1.11.6","depth":2,"ref":"","articles":[]},{"title":"[signal处理]","level":"1.11.7","depth":2,"ref":"","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"10.1.md","mtime":"2017-07-30T11:40:41.568Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-07-30T11:41:16.869Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
