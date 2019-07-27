@@ -1,39 +1,62 @@
-<!doctype html>
+<!DOCTYPE html>
+
+{# NexT version #}
+{% set version = next_env('version') %}
+
+{# Language & Config #}
+{% set title = __('title') !== 'title' && __('title') || config.title %}
+{% set subtitle = __('subtitle') !== 'subtitle' && __('subtitle') || config.subtitle %}
+{% set author = __('author') !== 'author' && __('author') || config.author %}
+{% set description = __('description') !== 'description' && __('description') || config.description %}
 
 {% set html_class = 'theme-next ' + theme.scheme %}
-{% if theme.use_motion %}
+{% if theme.motion.enable %}
   {% set html_class = html_class + ' use-motion' %}
 {% endif %}
 
-<html class="{{ html_class | lower }}">
+<html class="{{ html_class | lower }}" lang="{{ config.language }}">
 <head>
-  {% include '_partials/head.swig' %}
+  {{ partial('_partials/head/head.swig', {}, {cache: theme.cache.enable}) }}
+  {% include '_partials/head/head-unique.swig' %}
+  {% for inject_item in theme.injects.head %}
+    {{ partial(inject_item.layout, inject_item.locals, inject_item.options) }}
+  {% endfor %}
   <title>{% block title %}{% endblock %}</title>
+  {% include '_third-party/analytics/index.swig' %}
+  {{ partial('_scripts/noscript.swig', {}, {cache: theme.cache.enable}) }}
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="{{ config.language }}">
+<body itemscope itemtype="http://schema.org/WebPage" lang="{{ page.lang || page.language || config.language }}">
 
-  {% include '_scripts/third-party/analytics.swig' %}
-
-  {% set container_class = "container one-collumn " %}
+  {% if theme.fireworks %}
+  <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+  <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+  <script type="text/javascript" src="/js/src/fireworks.js"></script>
+  {% endif %}
+  
+  {% set container_class = 'container' %}
   {% if theme.sidebar.position %}
-    {% set container_class = container_class + 'sidebar-position-' + theme.sidebar.position %}
+    {% set container_class = container_class + ' sidebar-position-' + theme.sidebar.position %}
   {% endif %}
 
-  <div class="{{ container_class }} {% block page_class %}{% endblock %} ">
+  <div class="{{ container_class }} {% block page_class %}{% endblock %}">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"> {%- include '_partials/header.swig' %} </div>
+      <div class="header-inner">{% include '_partials/header/index.swig' %}</div>
     </header>
+
+    {{ partial('_partials/github-banner.swig', {}, {cache: theme.cache.enable}) }}
 
     <main id="main" class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          {% if theme.scheme === 'Pisces' || theme.scheme === 'Gemini' %}
+            {% include '_partials/header/sub-menu.swig' %}
+          {% endif %}
           <div id="content" class="content">
             {% block content %}{% endblock %}
           </div>
-          {% include '_partials/duoshuo-hot-articles.swig' %}
           {% include '_partials/comments.swig' %}
         </div>
         {% if theme.sidebar.display !== 'remove' %}
@@ -44,15 +67,31 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        {% include '_scripts/third-party/analytics/busuanzi-counter.swig' %}
-        {% include '_partials/footer.swig' %}
+        {{ partial('_partials/footer.swig', {}, {cache: theme.cache.enable}) }}
+        {% include '_third-party/analytics/analytics-with-widget.swig' %}
         {% block footer %}{% endblock %}
       </div>
     </footer>
 
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
+    {% if theme.back2top.enable and not theme.back2top.sidebar %}
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        {% if theme.back2top.scrollpercent %}
+          <span id="scrollpercent"><span>0</span>%</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if theme.needmoreshare2.enable and theme.needmoreshare2.float.enable %}
+      <div id="needsharebutton-float">
+        <span class="btn">
+          <i class="fa fa-share-alt" aria-hidden="true"></i>
+        </span>
+      </div>
+    {% endif %}
+
+    {% include '_partials/share/needsharebutton.swig' %}
+    {% include '_partials/share/add-this.swig' %}
   </div>
 
   {% include '_scripts/vendors.swig' %}
@@ -63,54 +102,16 @@
 
   {% block script_extra %}{% endblock %}
 
-  {% include '_scripts/boostrap.swig' %}
+  {% include '_scripts/next-boot.swig' %}
+  {% include '_scripts/scroll-cookie.swig' %}
+  {% include '_scripts/exturl.swig' %}
+  {% include '_scripts/three.swig' %}
 
-  {% include '_scripts/third-party/comments.swig' %}
-  {% include '_scripts/third-party/tinysou.swig' %}
-  {% include '_scripts/third-party/localsearch.swig' %}
-  {% include '_scripts/third-party/mathjax.swig' %}
-  {% include '_scripts/third-party/lean-analytics.swig' %}
-  {% include '_scripts/baidu-push.swig' %}
+  {% include '_third-party/index.swig' %}
 
-  <!-- 按需加载背景 -->
-  <!-- 识别手机或电脑的js开始 -->  
-  <script type="text/javascript">   
-  (function(){  
-    var res = GetRequest();  
-    var par = res['index'];  
-    if(par!='gfan'){  
-      var ua=navigator.userAgent.toLowerCase();  
-      var contains=function (a, b){  
-          if(a.indexOf(b)!=-1){return true;}  
-      };   
-      if((contains(ua,"android") && contains(ua,"mobile"))||(contains(ua,"android") && contains(ua,"mozilla"))||(contains(ua,"android") && contains(ua,"opera"))||contains(ua,"ucweb7")||contains(ua,"iphone")){
-        return false;
-      } else {
-        $.getScript("/js/src/particle.js");
-      }
-    }  
-  })();  
-  function GetRequest() {  
-    var url = location.search;
-    var theRequest = new Object();  
-    if (url.indexOf("?") != -1) {  
-      var str = url.substr(1);  
-      strs = str.split("&");  
-      for(var i = 0; i < strs.length; i ++) {  
-        theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);  
-      }  
-    }  
-    return theRequest;  
-  }  
-  </script>  
-  <!-- 识别手机或电脑的js结束 -->  
-
-  <!-- 背景动画 -->
-  <!-- <script type="text/javascript" src="/js/src/particle.js"></script> -->
-  <!-- 页面点击小红心 -->
-  <!-- <script type="text/javascript" src="/js/src/love.js"></script> -->
-
-  <script type="text/javascript">var OriginTitile=document.title,st;document.addEventListener("visibilitychange",function(){document.hidden?(document.title="GG Game,Best Game",clearTimeout(st)):(document.title="(ฅ>ω<*ฅ) Thank Vue~ "+OriginTitile,st=setTimeout(function(){document.title=OriginTitile},4e3))})</script>
+  {% for inject_item in theme.injects.bodyEnd %}
+    {{ partial(inject_item.layout, inject_item.locals, inject_item.options) }}
+  {% endfor %}
 
 </body>
 </html>

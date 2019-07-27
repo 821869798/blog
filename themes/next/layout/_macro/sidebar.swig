@@ -10,126 +10,68 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
-      {% set display_toc = is_post and theme.toc.enable %}
+      {% set display_toc = is_post and theme.toc.enable or is_page and theme.toc.enable %}
 
-      {% if display_toc %}
+      {% if display_toc and toc(page.content).length > 1 %}
         <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
             {{ __('sidebar.toc') }}
           </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
             {{ __('sidebar.overview') }}
           </li>
         </ul>
       {% endif %}
 
-      <section class="site-overview sidebar-panel {% if not display_toc %} sidebar-panel-active {% endif %}">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="{{ url_for( theme.avatar | default(theme.images + '/avatar.gif') ) }}"
-               alt="{{ theme.author }}" />
-          <p class="site-author-name" itemprop="name">{{ theme.author }}</p>
-          <p class="site-description motion-element" itemprop="description">{{ theme.description }}</p>
+      <div class="site-overview-wrap sidebar-panel{% if not display_toc or toc(page.content).length <= 1 %} sidebar-panel-active{% endif %}">
+        <div class="site-overview">
+
+          {{ partial('_partials/sidebar/site-overview.swig', {}, {cache: theme.cache.enable}) }}
+          
+          {% for inject_item in theme.injects.sidebar %}
+            {{ partial(inject_item.layout, inject_item.locals, inject_item.options) }}
+          {% endfor %}
         </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="{{ url_for(theme.menu.archives) }}">
-              <span class="site-state-item-count">{{ site.posts.length }}</span>
-              <span class="site-state-item-name">{{ __('state.posts') }}</span>
-            </a>
-          </div>
+      </div>
 
-          {% if site.categories.length > 0 %}
-            <div class="site-state-item site-state-categories">
-              {% if theme.menu.categories %}<a href="{{ url_for(theme.menu.categories) }}">{% endif %}
-                <span class="site-state-item-count">{{ site.categories.length }}</span>
-                <span class="site-state-item-name">{{ __('state.categories') }}</span>
-              {% if theme.menu.categories %}</a>{% endif %}
-            </div>
-          {% endif %}
-
-          {% if site.tags.length > 0 %}
-            <div class="site-state-item site-state-tags">
-              <a href="{{ url_for(theme.menu.tags) }}">
-                <span class="site-state-item-count">{{ site.tags.length }}</span>
-                <span class="site-state-item-name">{{ __('state.tags') }}</span>
-              </a>
-            </div>
-          {% endif %}
-
-        </nav>
-
-        {% if theme.rss %}
-          <div class="feed-link motion-element">
-            <a href="{{ url_for(theme.rss) }}" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        {% endif %}
-
-        <div class="links-of-author motion-element">
-          {% if theme.social %}
-            {% for name, link in theme.social %}
-              <span class="links-of-author-item">
-                <a href="{{ link }}" target="_blank" title="{{ name }}">
-                  {% if theme.social_icons.enable %}
-                    <i class="fa fa-fw fa-{{ theme.social_icons[name] | default('globe') | lower }}"></i>
-                  {% endif %}
-                  {{ name }}
-                </a>
-              </span>
-            {% endfor %}
-          {% endif %}
-        </div>
-
-        {% set cc = {'by': 1, 'by-nc': 1, 'by-nc-nd': 1, 'by-nc-sa': 1, 'by-nd': 1, 'by-sa': 1, 'zero': 1} %}
-        {% if theme.creative_commons in cc %}
-          <div class="cc-license motion-element" itemprop="license">
-            <a href="https://creativecommons.org/{% if theme.creative_commons === 'zero' %}publicdomain/zero/1.0{% else %}licenses/{{ theme.creative_commons }}/4.0{% endif %}/" class="cc-opacity" target="_blank">
-              <img src="{{ url_for(theme.images) }}/cc-{{ theme.creative_commons }}.svg" alt="Creative Commons" />
-            </a>
-          </div>
-        {% endif %}
-
-        {# Blogroll #}
-        {% if theme.links %}
-          <div class="links-of-blogroll motion-element {{ "links-of-blogroll-" + theme.links_layout | default('inline') }}">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-{{ theme.links_icon | default('globe') | lower }}"></i>
-              {{ theme.links_title }}
-            </div>
-            <ul class="links-of-blogroll-list">
-              {% for name, link in theme.links %}
-                <li class="links-of-blogroll-item">
-                  <a href="{{ link }}" title="{{ name }}" target="_blank">{{ name }}</a>
-                </li>
-              {% endfor %}
-            </ul>
-          </div>
-        {% endif %}
-      </section>
-
-      {% if display_toc %}
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+      {% if display_toc and toc(page.content).length > 1 %}
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
           <div class="post-toc">
-            {% if page.toc_number === undefine %}
-              {% set toc = toc(page.content, { "class": "nav", list_number: theme.toc.number }) %}
-            {% else %}
-              {% set toc = toc(page.content, {"class": "nav", list_number: page.toc_number}) %}
+
+            {% set next_toc_number = theme.toc.number %}
+            {% if page.toc_number !== undefined %}
+              {% set next_toc_number = page.toc_number %}
             {% endif %}
+            {% set next_toc_max_depth = page.toc_max_depth|default(theme.toc.max_depth)|default(6) %}
+            {% set toc = toc(page.content, { "class": "nav", list_number: next_toc_number, max_depth: next_toc_max_depth }) %}
+
             {% if toc.length <= 1 %}
               <p class="post-toc-empty">{{ __('post.toc_empty') }}</p>
             {% else %}
               <div class="post-toc-content">{{ toc }}</div>
             {% endif %}
+
           </div>
-        </section>
+        </div>
+      <!--/noindex-->
       {% endif %}
-      <!-- hack一个虚线出来 -->
+
+      {% if theme.back2top.enable and theme.back2top.sidebar %}
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          {% if theme.back2top.scrollpercent %}
+            <span id="scrollpercent"><span>0</span>%</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+    <!-- hack一个虚线出来 -->
       <section style="border-top:1px dotted #ccc;height:10px;"></section>
       <!-- weibo show -->
 	<iframe width="100%" height="120" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=120&fansRow=2&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=1&uid=2807224900&verifier=094bed16&dpc=1"></iframe>
+
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 {% endmacro %}

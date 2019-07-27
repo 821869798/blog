@@ -1,51 +1,92 @@
 /* global hexo */
 
-/**
- * Merge configs in _data/next.yml into hexo.theme.config.
- * Note: configs in _data/next.yml will override configs in hexo.theme.config.
- */
-hexo.on('generateBefore', function () {
+'use strict';
+
+const merge = require('lodash/merge');
+
+hexo.on('generateBefore', function() {
   if (hexo.locals.get) {
     var data = hexo.locals.get('data');
-    data && data.next && assign(hexo.theme.config, data.next);
-  }
-});
 
+    /**
+     * Merge configs from _data/next.yml into hexo.theme.config.
+     * If `override`, configs in next.yml will rewrite configs in hexo.theme.config.
+     * If next.yml not exists, merge all `theme_config.*` into hexo.theme.config.
+     */
+    if (data && data.next) {
+      if (data.next.override) {
+        hexo.theme.config = data.next;
+      } else {
+        merge(hexo.config, data.next);
+        merge(hexo.theme.config, data.next);
+      }
+    } else {
+      merge(hexo.theme.config, hexo.config.theme_config);
+    }
 
-// https://github.com/sindresorhus/object-assign
-function assign(target, source) {
-  var from;
-  var keys;
-  var to = toObject(target);
+    // Custom languages support. Introduced in NexT v6.3.0.
+    if (data && data.languages) {
+      var lang = this.config.language;
+      var i18n = this.theme.i18n;
 
-  for (var s = 1; s < arguments.length; s++) {
-    from = arguments[s];
-    keys = ownEnumerableKeys(Object(from));
+      var mergeLang = function(lang) {
+        i18n.set(lang, merge(i18n.get([lang]), data.languages[lang]));
+      };
 
-    for (var i = 0; i < keys.length; i++) {
-      to[keys[i]] = from[keys[i]];
+      if (Array.isArray(lang)) {
+        for (var i = 0; i < lang.length; i++) {
+          mergeLang(lang[i]);
+        }
+      } else {
+        mergeLang(lang);
+      }
     }
   }
 
-  return to;
-}
+  // Add filter type `theme_inject`
+  require('./injects')(hexo);
 
-function toObject(val) {
-  if (val == null) {
-    throw new TypeError('Object.assign cannot be called with null or undefined');
-  }
+});
 
-  return Object(val);
-}
-
-function ownEnumerableKeys(obj) {
-  var keys = Object.getOwnPropertyNames(obj);
-
-  if (Object.getOwnPropertySymbols) {
-    keys = keys.concat(Object.getOwnPropertySymbols(obj));
-  }
-
-  return keys.filter(function (key) {
-    return Object.prototype.propertyIsEnumerable.call(obj, key);
+hexo.on('generateAfter', function() {
+  if (!hexo.theme.config.reminder) return;
+  const https = require('https');
+  const path = require('path');
+  const env = require(path.normalize('../package.json'));
+  https.get({
+    hostname: 'api.github.com',
+    port: 443,
+    path: '/repos/theme-next/hexo-theme-next/releases/latest',
+    method: 'GET',
+    headers: {
+      'User-Agent': 'Theme NexT Client'
+    }
+  }, res => {
+    var result = '';
+    res.on('data', data => {
+      result += data;
+    });
+    res.on('end', () => {
+      try {
+        var latest = JSON.parse(result).tag_name.replace('v', '').split('.');
+        var current = env.version.split('.');
+        var isOutdated = false;
+        for (var i = 0; i < Math.max(latest.length, current.length); i++) {
+          if (!current[i] || latest[i] > current[i]) {
+            isOutdated = true;
+            break;
+          }
+        }
+        if (isOutdated) {
+          hexo.log.warn(`Your theme NexT is outdated. Current version: v${current.join('.')}, latest version: v${latest.join('.')}`);
+          hexo.log.warn('Visit https://github.com/theme-next/hexo-theme-next/releases for more information.');
+        } else {
+          hexo.log.info('Congratulations! Your are using the latest version of theme NexT.');
+        }
+      } catch (e) {
+        hexo.log.error('Failed to detect version info. Error message:');
+        hexo.log.error(e);
+      }
+    });
   });
-}
+});
