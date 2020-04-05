@@ -1,0 +1,27 @@
+<h1 id="16-1-误用短声明导致变量覆盖"><a href="#16-1-误用短声明导致变量覆盖" class="headerlink" title="16.1 误用短声明导致变量覆盖"></a>16.1 误用短声明导致变量覆盖</h1><pre><code class="go"><span class="keyword">var</span> remember <span class="keyword">bool</span> = <span class="literal">false</span>
+<span class="keyword">if</span> something {
+    remember := <span class="literal">true</span> <span class="comment">//错误</span>
+}
+<span class="comment">// 使用remember</span></code></pre>
+<p>在此代码段中，<code>remember</code>变量永远不会在<code>if</code>语句外面变成<code>true</code>，如果<code>something</code>为<code>true</code>，由于使用了短声明<code>:=</code>，<code>if</code>语句内部的新变量<code>remember</code>将覆盖外面的<code>remember</code>变量，并且该变量的值为<code>true</code>，但是在<code>if</code>语句外面，变量<code>remember</code>的值变成了<code>false</code>，所以正确的写法应该是：</p>
+<pre><code class="go"><span class="keyword">if</span> something {
+    remember = <span class="literal">true</span>
+}</code></pre>
+<p>此类错误也容易在<code>for</code>循环中出现，尤其当函数返回一个具名变量时难于察觉<br>，例如以下的代码段：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">shadow</span><span class="params">()</span> <span class="params">(err error)</span></span> {
+    x, err := check1() <span class="comment">// x是新创建变量，err是被赋值</span>
+<span class="keyword">if</span> err != <span class="literal">nil</span> {
+    <span class="keyword">return</span> <span class="comment">// 正确返回err</span>
+}
+<span class="keyword">if</span> y, err := check2(x); err != <span class="literal">nil</span> { <span class="comment">// y和if语句中err被创建</span>
+    <span class="keyword">return</span> <span class="comment">// if语句中的err覆盖外面的err，所以错误的返回nil！</span>
+} <span class="keyword">else</span> {
+    fmt.Println(y)
+}
+    <span class="keyword">return</span>
+}</code></pre>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="16.0.md">常见的陷阱与错误</a></li>
+<li>下一节：<a href="16.2.md">误用字符串</a></li>
+</ul>

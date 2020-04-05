@@ -1,0 +1,648 @@
+<p>module simple;</p>
+<p>// Importing stuff.<br>{<br>    function loadMod(name, ns)<br>    {<br>        assert(name == “mod”);</p>
+<pre><code>    ns.x = &quot;I&apos;m x&quot;;
+
+    ns.foo = function foo()
+    {
+        writefln(&quot;foo&quot;);
+    };
+
+    ns.bar = function bar(x)
+    {
+        return x[0];
+    };
+
+    ns.baz = function baz()
+    {
+        writefln(x);
+    };
+
+    foreach(k, v; ns)
+        if(isFunction(v))
+            v.environment(ns);
+}
+
+setModuleLoader(&quot;mod&quot;, loadMod);
+
+import mod : foo, bar;
+foo();
+writefln(bar([5]));
+mod.baz();
+
+writefln();</code></pre><p>}</p>
+<p>// Super calls.<br>{<br>    class Base<br>    {<br>        function fork()<br>        {<br>            writefln(“Base fork.”);<br>        }<br>    }</p>
+<pre><code>class Derived : Base
+{
+    function fork()
+    {
+        writefln(&quot;Derived fork!&quot;);
+        super.fork();
+    }
+}
+
+local d = Derived();
+d.fork();
+
+writefln();</code></pre><p>}</p>
+<p>// Coroutines and coroutine iteration.<br>{<br>    local countDown = coroutine function countDown(x)<br>    {<br>        yield();</p>
+<pre><code>    while(x &gt; 0)
+    {
+        yield(x);
+        x--;
+    }
+};
+
+foreach(v; countDown, 5)
+    writefln(v);
+
+writefln();
+
+local forEach = coroutine function forEach(t)
+{
+    yield();
+
+    foreach(k, v; t)
+        yield(k, v);
+};
+
+foreach(_, k, v; forEach, {hi = 1, bye = 2})
+    writefln(&quot;key: &quot;, k, &quot;, value: &quot;, v);
+
+writefln();</code></pre><p>}</p>
+<p>// Testing tailcalls.<br>{<br>    function recurse(x)<br>    {<br>        writefln(“recurse: “, x);</p>
+<pre><code>    if(x == 0)
+        return toString(x);
+    else
+        return recurse(x - 1);
+}
+
+writefln(recurse(5));
+writefln();
+
+class A
+{
+    function f(x)
+    {
+        writefln(&quot;A.f: &quot;, x);
+
+        if(x == 0)
+            return toString(x);
+        else
+            return this.f(x - 1); // call it as this.f to force a &apos;method&apos; instruction to be generated
+    }
+}
+
+local a = A();
+writefln(a.f(5));
+writefln();</code></pre><p>}</p>
+<p>{<br>    // A function which lets us define properties for a class.<br>    // The varargs should be a bunch of tables, each with a ‘name’ field, and ‘getter’ and/or ‘setter’ fields.<br>    function mixinProperties(classType, vararg)<br>    {<br>        classType.mProps = { };</p>
+<pre><code>    classType.opIndex = function opIndex(key)
+    {
+        local prop = mProps[key];
+
+        if(prop is null)
+            throw format(classType, &quot;.opIndex() - Property &apos;%s&apos; does not exist&quot;, key);
+
+        local getter = prop.getter;
+
+        if(getter is null)
+            throw format(classType, &quot;.opIndex() - Property &apos;%s&apos; has no getter&quot;, key);
+
+        return getter(with this);
+    };
+
+    classType.opIndexAssign = function opIndexAssign(key, value)
+    {
+        local prop = mProps[key];
+
+        if(prop is null)
+            throw format(classType, &quot;.opIndexAssign() - Property &apos;%s&apos; does not exist&quot;, key);
+
+        local setter = prop.setter;
+
+        if(setter is null)
+            throw format(classType, &quot;.opIndexAssign() - Property &apos;%s&apos; has no setter&quot;, key);
+
+        setter(with this, value);
+    };
+
+    foreach(i, prop; [vararg])
+    {
+        if(!isTable(prop))
+            throw format(&quot;mixinProperties() - property &quot;, i, &quot; is not a table&quot;);
+
+        if(prop.name is null)
+            throw format(&quot;mixinProperties() - property &quot;, i, &quot; has no name&quot;);
+
+        if(prop.setter is null &amp;&amp; prop.getter is null)
+            throw format(&quot;mixinProperties() - property &apos;%s&apos; has no getter or setter&quot;, prop.name);
+
+        classType.mProps[prop.name] = prop;
+    }
+}
+
+// Create a class to test out.
+class PropTest
+{
+    mX = 0;
+    mY = 0;
+    mName = &quot;&quot;;
+
+    function constructor(name)
+    {
+        mName = name;
+    }
+
+    function toString()
+    {
+        return format(&quot;name = &apos;&quot;, mName, &quot;&apos; x = &quot;, mX, &quot; y = &quot;, mY);
+    }
+}
+
+// Mix in the properties.
+mixinProperties
+(
+    PropTest,
+
+    {
+        name = &quot;x&quot;,
+
+        function setter(value)
+        {
+            mX = value;
+        }
+
+        function getter()
+        {
+            return mX;
+        }
+    },
+
+    {
+        name = &quot;y&quot;,
+
+        function setter(value)
+        {
+            mY = value;
+        }
+
+        function getter()
+        {
+            return mY;
+        }
+    },
+
+    {
+        name = &quot;name&quot;,
+
+        function getter()
+        {
+            return mName;
+        }
+    }
+);
+
+// Create an instance and try it out.
+local p = PropTest(&quot;hello&quot;);
+
+writefln(p);
+p.x = 46;
+p.y = 123;
+p.x = p.x + p.y;
+writefln(p);
+
+// Try to access a nonexistent property.
+try
+    p.name = &quot;crap&quot;;
+catch(e)
+{
+    writefln(&quot;caught: &quot;, e);
+    writefln(getTraceback());
+}
+
+writefln();</code></pre><p>}</p>
+<p>// Some container classes.<br>{<br>    class PQ<br>    {<br>        mData;<br>        mLength = 0;</p>
+<pre><code>    function constructor()
+    {
+        mData = array.new(15);
+    }
+
+    function insert(data)
+    {
+        resizeArray();
+        mData[mLength] = data;
+
+        local index = mLength;
+        local parentIndex = (index - 1) / 2;
+
+        while(index &gt; 0 &amp;&amp; mData[parentIndex] &gt; mData[index])
+        {
+            local temp = mData[parentIndex];
+            mData[parentIndex] = mData[index];
+            mData[index] = temp;
+
+            index = parentIndex;
+            parentIndex = (index - 1) / 2;
+        }
+
+        mLength += 1;
+    }
+
+    function remove()
+    {
+        if(mLength == 0)
+            throw &quot;PQ.remove() - No items to remove&quot;;
+
+        local data = mData[0];
+        mLength -= 1;
+        mData[0] = mData[mLength];
+
+        local index = 0;
+        local left = 1;
+        local right = 2;
+
+        while(index &lt; mLength)
+        {
+            local smaller;
+
+            if(left &gt;= mLength)
+            {
+                if(right &gt;= mLength)
+                    break;
+                else
+                    smaller = right;
+            }
+            else
+            {
+                if(right &gt;= mLength)
+                    smaller = left;
+                else
+                {
+                    if(mData[left] &lt; mData[right])
+                        smaller = left;
+                    else
+                        smaller = right;
+                }
+            }
+
+            if(mData[index] &gt; mData[smaller])
+            {
+                local temp = mData[index];
+                mData[index] = mData[smaller];
+                mData[smaller] = temp;
+
+                index = smaller;
+                left = (index * 2) + 1;
+                right = left + 1;
+            }
+            else
+                break;
+        }
+
+        return data;
+    }
+
+    function resizeArray()
+    {
+        if(mLength &gt;= #mData)
+            mData.length((#mData + 1) * 2 - 1);
+    }
+
+    function hasData()
+    {
+        return mLength != 0;
+    }
+}
+
+class Stack
+{
+    mHead = null;
+
+    function push(data)
+    {
+        local t = { data = data, next = mHead };
+        mHead = t;
+    }
+
+    function pop()
+    {
+        if(mHead is null)
+            throw &quot;Stack.pop() - No items to pop&quot;;
+
+        local item = mHead;
+        mHead = mHead.next;
+
+        return item.data;
+    }
+
+    function hasData()
+    {
+        return mHead !is null;
+    }
+}
+
+class Queue
+{
+    mHead = null;
+    mTail = null;
+
+    function push(data)
+    {
+        local t = { data = data, next = null };
+
+        if(mTail is null)
+        {
+            mHead = t;
+            mTail = t;
+        }
+        else
+        {
+            mTail.next = t;
+            mTail = t;
+        }
+    }
+
+    function pop()
+    {
+        if(mTail is null)
+            throw &quot;Queue.pop() - No items to pop&quot;;
+
+        local item = mHead;
+        mHead = mHead.next;
+
+        if(mHead is null)
+            mTail = null;
+
+        return item.data;
+    }
+
+    function hasData()
+    {
+        return mHead !is null;
+    }
+}
+
+writefln(&quot;Priority queue (heap)&quot;);
+
+local prioQ = PQ();
+
+for(i : 0 .. 10)
+    prioQ.insert(math.rand(0, 20));
+
+while(prioQ.hasData())
+    writefln(prioQ.remove());
+
+writefln();
+writefln(&quot;Stack&quot;);
+
+local stack = Stack();
+
+for(i : 0 .. 5)
+    stack.push(i + 1);
+
+while(stack.hasData())
+    writefln(stack.pop());
+
+writefln();
+writefln(&quot;Queue&quot;);
+
+local queue = Queue();
+
+for(i : 0 .. 5)
+    queue.push(i + 1);
+
+while(queue.hasData())
+    writefln(queue.pop());
+
+writefln();</code></pre><p>}</p>
+<p>// opApply tests.<br>{<br>    class Test<br>    {<br>        mData = [4, 5, 6];</p>
+<pre><code>    function opApply(extra)
+    {
+        if(isString(extra) &amp;&amp; extra == &quot;reverse&quot;)
+        {
+            local function iterator_reverse(index)
+            {
+                index--;
+
+                if(index &lt; 0)
+                    return;
+
+                return index, mData[index];
+            }
+
+            return iterator_reverse, this, #mData;
+        }
+        else
+        {
+            local function iterator(index)
+            {
+                index++;
+
+                if(index &gt;= #mData)
+                    return;
+
+                return index, mData[index];
+            }
+
+            return iterator, this, -1;
+        }
+    }
+}
+
+local test = Test();
+
+foreach(k, v; test)
+    writefln(&quot;test[&quot;, k, &quot;] = &quot;, v);
+
+writefln();
+
+foreach(k, v; test, &quot;reverse&quot;)
+    writefln(&quot;test[&quot;, k, &quot;] = &quot;, v);
+
+writefln();
+
+test =
+{
+    fork = 5,
+    knife = 10,
+    spoon = &quot;hi&quot;
+};
+
+foreach(k, v; test)
+    writefln(&quot;test[&quot;, k, &quot;] = &quot;, v);
+
+test = [5, 10, &quot;hi&quot;];
+
+writefln();
+
+foreach(k, v; test)
+    writefln(&quot;test[&quot;, k, &quot;] = &quot;, v);
+
+writefln();
+
+foreach(k, v; test, &quot;reverse&quot;)
+    writefln(&quot;test[&quot;, k, &quot;] = &quot;, v);
+
+writefln();
+
+foreach(k, v; &quot;hello&quot;)
+    writefln(&quot;str[&quot;, k, &quot;] = &quot;, v);
+
+writefln();
+
+foreach(k, v; &quot;hello&quot;, &quot;reverse&quot;)
+    writefln(&quot;str[&quot;, k, &quot;] = &quot;, v);
+
+writefln();</code></pre><p>}</p>
+<p>// Testing upvalues in for loops.<br>{<br>    local arr = array.new(10);</p>
+<pre><code>for(i : 0 .. 10)
+    arr[i] = function() { return i; };
+
+writefln(&quot;This should be the values 0 through 9:&quot;);
+
+foreach(func; arr)
+    writefln(func());
+
+writefln();</code></pre><p>}</p>
+<p>// Testing nested functions.<br>{<br>    function outer()<br>    {<br>        local x = 3;</p>
+<pre><code>    function inner()
+    {
+        x++;
+        writefln(&quot;inner x: &quot;, x);
+    }
+
+    writefln(&quot;outer x: &quot;, x);
+    inner();
+    writefln(&quot;outer x: &quot;, x);
+
+    return inner;
+}
+
+local func = outer();
+func();
+
+writefln();</code></pre><p>}</p>
+<p>// Testing Exceptions.<br>{<br>    function thrower(x)<br>    {<br>        if(x &gt;= 3)<br>            throw “Sorry, x is too big for me!”;<br>    }</p>
+<pre><code>function tryCatch(iterations)
+{
+    try
+    {
+        for(i : 0 .. iterations)
+        {
+            writefln(&quot;tryCatch: &quot;, i);
+            thrower(i);
+        }
+    }
+    catch(e)
+    {
+        writefln(&quot;tryCatch caught: &quot;, e);
+        throw e;
+    }
+    finally
+        writefln(&quot;tryCatch finally&quot;);
+}
+
+try
+{
+    tryCatch(2);
+    tryCatch(5);
+}
+catch(e)
+    writefln(&quot;caught: &quot;, e);
+
+writefln();</code></pre><p>}</p>
+<p>// Testing arrays.<br>{<br>    local array = [7, 9, 2, 3, 6];</p>
+<pre><code>array.sort();
+
+foreach(i, v; array)
+    writefln(&quot;arr[&quot;, i, &quot;] = &quot;, v);
+
+array ~= [&quot;foo&quot;, &quot;far&quot;];
+
+writefln();
+
+foreach(i, v; array)
+    writefln(&quot;arr[&quot;, i, &quot;] = &quot;, v);
+
+writefln();</code></pre><p>}</p>
+<p>// Testing vararg functions.<br>{<br>    function vargs(vararg)<br>    {<br>        local args = [vararg];</p>
+<pre><code>    writefln(&quot;num varargs: &quot;, #args);
+
+    foreach(i, v; args)
+        writefln(&quot;args[&quot;, i, &quot;] = &quot;, v);
+}
+
+vargs();
+
+writefln();
+
+vargs(2, 3, 5, &quot;foo&quot;, &quot;bar&quot;);
+
+writefln();</code></pre><p>}</p>
+<p>// Testing switches.<br>{<br>    foreach(v; [“hi”, “bye”, “foo”])<br>    {<br>        switch(v)<br>        {<br>            case “hi”:<br>                writefln(“switched to hi”);<br>                break;</p>
+<pre><code>        case &quot;bye&quot;:
+            writefln(&quot;switched to bye&quot;);
+            break;
+
+        default:
+            writefln(&quot;switched to something else&quot;);
+            break;
+    }
+}
+
+writefln();
+
+foreach(v; [null, false, 1, 2.3, &apos;x&apos;, &quot;hi&quot;])
+{
+    switch(v)
+    {
+        case null: writefln(&quot;null&quot;); break;
+        case false: writefln(&quot;false&quot;); break;
+        case 1: writefln(&quot;1&quot;); break;
+        case 2.3: writefln(&quot;2.3&quot;); break;
+        case &apos;x&apos;: writefln(&quot;x&quot;); break;
+        case &quot;hi&quot;: writefln(&quot;hi&quot;); break;
+    }
+}
+
+writefln();
+
+class A
+{
+    mValue;
+
+    this(value)
+    {
+        mValue = value;
+    }
+
+    function opCmp(other)
+    {
+        assert(other as A);
+        return mValue &lt;=&gt; other.mValue;
+    }
+}
+
+local a1 = A(1);
+local a2 = A(2);
+local a3 = A(3);
+
+for(s : 1 .. 4)
+{
+    local ss = A(s);
+
+    switch(ss)
+    {
+        case a1:
+            writefln(1);
+            break;
+
+        case a2:
+            writefln(2);
+            break;
+
+        case a3:
+            writefln(3);
+            break;
+    }
+}</code></pre><p>}</p>

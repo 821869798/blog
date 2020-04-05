@@ -1,0 +1,41 @@
+<h1 id="Global和Return"><a href="#Global和Return" class="headerlink" title="Global和Return"></a>Global和Return</h1><p>你也许遇到过, python中一些函数在最尾部有一个<code>return</code>关键字。你知道它是干嘛吗？它和其他语言的<code>return</code>类似。我们来检查下这个小函数：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(value1, value2)</span>:</span>
+    <span class="keyword">return</span> value1 + value2
+
+result = add(<span class="number">3</span>, <span class="number">5</span>)
+print(result)
+<span class="comment"># Output: 8</span></code></pre>
+<p>上面这个函数将两个值作为输入，然后输出它们相加之和。我们也可以这样做：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(value1,value2)</span>:</span>
+    <span class="keyword">global</span> result
+    result = value1 + value2
+
+add(<span class="number">3</span>,<span class="number">5</span>)
+print(result)
+<span class="comment"># Output: 8</span></code></pre>
+<p>那首先我们来谈谈第一段也就是包含<code>return</code>关键字的代码。那个函数把值赋给了调用它的变量（也就是例子中的result变量）。<br>大多数境况下，你并不需要使用<code>global</code>关键字。然而我们也来检查下另外一段也就是包含<code>global</code>关键字的代码。<br>那个函数生成了一个<code>global</code>（全局）变量result。</p>
+<p><code>global</code>在这的意思是什么？<code>global</code>变量意味着我们可以在函数以外的区域都能访问这个变量。让我们通过一个例子来证明它：</p>
+<pre><code class="python"><span class="comment"># 首先，是没有使用global变量</span>
+<span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(value1, value2)</span>:</span>
+    result = value1 + value2
+
+add(<span class="number">2</span>, <span class="number">4</span>)
+print(result)
+
+<span class="comment"># Oh 糟了，我们遇到异常了。为什么会这样？</span>
+<span class="comment"># python解释器报错说没有一个叫result的变量。</span>
+<span class="comment"># 这是因为result变量只能在创建它的函数内部才允许访问，除非它是全局的(global)。</span>
+Traceback (most recent call last):
+  File <span class="string">""</span>, line <span class="number">1</span>, <span class="keyword">in</span>
+    result
+NameError: name <span class="string">'result'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined
+
+<span class="comment"># 现在我们运行相同的代码，不过是在将result变量设为global之后</span>
+<span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(value1, value2)</span>:</span>
+    <span class="keyword">global</span> result
+    result = value1 + value2
+
+add(<span class="number">2</span>, <span class="number">4</span>)
+print(result)
+<span class="number">6</span></code></pre>
+<p>如我们所愿，在第二次运行时没有异常了。在实际的编程时，你应该试着避开<code>global</code>关键字，它只会让生活变得艰难，因为它引入了多余的变量到全局作用域了。</p>
