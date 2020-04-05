@@ -1,7 +1,0 @@
-<h1 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h1><p>异常处理是一种艺术，一旦你掌握，会授予你无穷的力量。我将要向你展示我们能处理异常的一些方式。</p>
-<p>最基本的术语里我们知道了<code>try/except</code>从句。可能触发异常产生的代码会放到<code>try</code>语句块里，而处理异常的代码会在<code>except</code>语句块里实现。这是一个简单的例子：</p>
-<pre><code class="python"><span class="keyword">try</span>:
-    file = open(<span class="string">'test.txt'</span>, <span class="string">'rb'</span>)
-<span class="keyword">except</span> IOError <span class="keyword">as</span> e:
-    print(<span class="string">'An IOError occurred. {}'</span>.format(e.args[<span class="number">-1</span>]))</code></pre>
-<p>上面的例子里，我们仅仅在处理一个<code>IOError</code>的异常。大部分初学者还不知道的是，我们可以处理多个异常。</p>

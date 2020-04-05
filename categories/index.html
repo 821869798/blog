@@ -645,7 +645,21 @@
   <span class="author" itemprop="copyrightHolder">RindFan</span>
 
   
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">5k</span>
+  
 
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">4 分钟</span>
   
 </div>
 
@@ -827,6 +841,34 @@ window.addEventListener("message", function(e) {
 
 
 
+
+  
+    
+
+  
+
+<script src="//cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'VNXPNW33R5PowcC0N9wE6nD0-gzGzoHsz',
+    appKey: 'KgrvyqPHIRx1K2lcWKK5gkmE',
+    placeholder: 'Enter comments here,support MarkDown',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: '' || 'zh-cn'
+  });
+</script>
 
   
 
