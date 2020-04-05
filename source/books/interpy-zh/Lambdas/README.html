@@ -1,0 +1,19 @@
+<h1 id="17-lambda表达式"><a href="#17-lambda表达式" class="headerlink" title="17. lambda表达式"></a>17. <code>lambda</code>表达式</h1><p><code>lambda</code>表达式是一行函数。<br>它们在其他语言中也被称为匿名函数。如果你不想在程序中对一个函数使用两次，你也许会想用lambda表达式，它们和普通的函数完全一样。</p>
+<p><strong>原型</strong></p>
+<pre><code class="python"><span class="keyword">lambda</span> 参数:操作(参数)</code></pre>
+<p><strong>例子</strong></p>
+<pre><code class="python">add = <span class="keyword">lambda</span> x, y: x + y
+
+print(add(<span class="number">3</span>, <span class="number">5</span>))
+<span class="comment"># Output: 8</span></code></pre>
+<p>这还有一些lambda表达式的应用案例，可以在一些特殊情况下使用：</p>
+<p><strong>列表排序</strong></p>
+<pre><code class="python">a = [(<span class="number">1</span>, <span class="number">2</span>), (<span class="number">4</span>, <span class="number">1</span>), (<span class="number">9</span>, <span class="number">10</span>), (<span class="number">13</span>, <span class="number">-3</span>)]
+a.sort(key=<span class="keyword">lambda</span> x: x[<span class="number">1</span>])
+
+print(a)
+<span class="comment"># Output: [(13, -3), (4, 1), (1, 2), (9, 10)]</span></code></pre>
+<p><strong>列表并行排序</strong></p>
+<pre><code class="python">data = zip(list1, list2)
+data.sort()
+list1, list2 = map(<span class="keyword">lambda</span> t: list(t), zip(*data))</code></pre>

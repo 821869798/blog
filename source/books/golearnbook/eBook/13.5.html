@@ -1,0 +1,88 @@
+<h1 id="13-5-一种用闭包处理错误的模式"><a href="#13-5-一种用闭包处理错误的模式" class="headerlink" title="13.5 一种用闭包处理错误的模式"></a>13.5 一种用闭包处理错误的模式</h1><p>每当函数返回时，我们应该检查是否有错误发生：但是这会导致重复乏味的代码。结合 defer/panic/recover 机制和闭包可以得到一个我们马上要讨论的更加优雅的模式。不过这个模式只有当所有的函数都是同一种签名时可用，这样就有相当大的限制。一个很好的使用它的例子是 web 应用，所有的处理函数都是下面这样：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">handler1</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> { ... }</code></pre>
+<p>假设所有的函数都有这样的签名：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(a type1, b type2)</span></span></code></pre>
+<p>参数的数量和类型是不相关的。</p>
+<p>我们给这个类型一个名字：</p>
+<pre><code class="go">fType1 = <span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">(a type1, b type2)</span></span></code></pre>
+<p>在我们的模式中使用了两个帮助函数：</p>
+<p>1）check：这是用来检查是否有错误和 panic 发生的函数：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">check</span><span class="params">(err error)</span></span> { <span class="keyword">if</span> err != <span class="literal">nil</span> { <span class="built_in">panic</span>(err) } }</code></pre>
+<p>2）errorhandler：这是一个包装函数。接收一个 fType1 类型的函数 fn 并返回一个调用 fn 的函数。里面就包含有 defer/recover 机制，这在 <a href="13.3.md">13.3 节</a>中有相应描述。</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">errorHandler</span><span class="params">(fn fType1)</span> <span class="title">fType1</span></span> {
+    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(a type1, b type2)</span></span> {
+        <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {
+            <span class="keyword">if</span> err, ok := <span class="built_in">recover</span>().(error); ok {
+                log.Printf(“run time <span class="built_in">panic</span>: %v”, err)
+            }
+        }()
+        fn(a, b)
+    }
+}</code></pre>
+<p>当错误发生时会 recover 并打印在日志中；除了简单的打印，应用也可以用 template 包（参见 <a href="15.7.md">15.7 节</a>）为用户生成自定义的输出。check() 函数会在所有的被调函数中调用，像这样：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">f1</span><span class="params">(a type1, b type2)</span></span> {
+    ...
+    f, _, err := <span class="comment">// call function/method</span>
+    check(err)
+    t, err := <span class="comment">// call function/method</span>
+    check(err)
+    _, err2 := <span class="comment">// call function/method</span>
+    check(err2)
+    ...
+}</code></pre>
+<p>通过这种机制，所有的错误都会被 recover，并且调用函数后的错误检查代码也被简化为调用 check(err) 即可。在这种模式下，不同的错误处理必须对应不同的函数类型；它们（错误处理）可能被隐藏在错误处理包内部。可选的更加通用的方式是用一个空接口类型的切片作为参数和返回值。</p>
+<p>我们会在 <a href="15.5.md">15.5 节</a>的 web 应用中使用这种模式。</p>
+<p><u>练习</u></p>
+<p><strong>练习 13.1</strong>：<a href="exercises/chapter_13/recover_divbyzero.go">recover_dividebyzero.go</a></p>
+<p>用示例 13.3 中的编码模式通过整数除以 0 触发一个运行时 panic。</p>
+<p><strong>练习 13.2</strong>：<a href="exercises/chapter_13/panic_defer.go">panic_defer.go</a></p>
+<p>阅读下面的完整程序。不要执行它，写出程序的输出结果。然后编译执行并验证你的预想。</p>
+<pre><code class="go"><span class="comment">// panic_defer.go</span>
+<span class="keyword">package</span> main
+
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    f()
+    fmt.Println(<span class="string">"Returned normally from f."</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> {
+    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {
+        <span class="keyword">if</span> r := <span class="built_in">recover</span>(); r != <span class="literal">nil</span> {
+            fmt.Println(<span class="string">"Recovered in f"</span>, r)
+        }
+    }()
+    fmt.Println(<span class="string">"Calling g."</span>)
+    g(<span class="number">0</span>)
+    fmt.Println(<span class="string">"Returned normally from g."</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">g</span><span class="params">(i <span class="keyword">int</span>)</span></span> {
+    <span class="keyword">if</span> i &gt; <span class="number">3</span> {
+        fmt.Println(<span class="string">"Panicking!"</span>)
+        <span class="built_in">panic</span>(fmt.Sprintf(<span class="string">"%v"</span>, i))
+    }
+    <span class="keyword">defer</span> fmt.Println(<span class="string">"Defer in g"</span>, i)
+    fmt.Println(<span class="string">"Printing in g"</span>, i)
+    g(i + <span class="number">1</span>)
+}</code></pre>
+<p>输出：</p>
+<pre><code>Calling g.
+Printing in g 0
+Printing in g 1
+Printing in g 2
+Printing in g 3
+Panicking!
+Defer in g 3
+Defer in g 2
+Defer in g 1
+Defer in g 0
+Recovered in f 4
+Returned normally from f.</code></pre><p><strong>练习 13.3</strong>：<a href="exercises/chapter_13/panic_defer_convint.go">panic_defer_convint.go</a></p>
+<p>写一个 ConvertInt64ToInt 函数把 int64 值转换为 int 值，如果发生错误（提示：参见 <a href="04.5.md#4521-整型-int-和浮点型-float">4.5.2.1 节</a>）就 panic。然后在函数 IntFromInt64 中调用这个函数并 recover，返回一个整数和一个错误。请测试这个函数！</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="13.4.md">自定义包中的错误处理和 panicking</a></li>
+<li>下一节：<a href="13.6.md">启动外部命令和程序</a></li>
+</ul>

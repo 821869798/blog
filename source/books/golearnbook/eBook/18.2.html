@@ -1,0 +1,31 @@
+<h1 id="18-2-数组和切片"><a href="#18-2-数组和切片" class="headerlink" title="18.2 数组和切片"></a>18.2 数组和切片</h1><p>创建：</p>
+<p><code>arr1 := new([len]type)</code></p>
+<p><code>slice1 := make([]type, len)</code></p>
+<p>初始化：</p>
+<p><code>arr1 := [...]type{i1, i2, i3, i4, i5}</code></p>
+<p><code>arrKeyValue := [len]type{i1: val1, i2: val2}</code></p>
+<p><code>var slice1 []type = arr1[start:end]</code></p>
+<p>（1）如何截断数组或者切片的最后一个元素：</p>
+<p><code>line = line[:len(line)-1]</code></p>
+<p>（2）如何使用<code>for</code>或者<code>for-range</code>遍历一个数组（或者切片）：</p>
+<pre><code class="go"><span class="keyword">for</span> i:=<span class="number">0</span>; i &lt; <span class="built_in">len</span>(arr); i++ {
+… = arr[i]
+}
+<span class="keyword">for</span> ix, value := <span class="keyword">range</span> arr {
+…
+}</code></pre>
+<p>（3）如何在一个二维数组或者切片<code>arr2Dim</code>中查找一个指定值<code>V</code>：</p>
+<pre><code class="go">found := <span class="literal">false</span>
+Found: <span class="keyword">for</span> row := <span class="keyword">range</span> arr2Dim {
+    <span class="keyword">for</span> column := <span class="keyword">range</span> arr2Dim[row] {
+        <span class="keyword">if</span> arr2Dim[row][column] == V{
+            found = <span class="literal">true</span>
+            <span class="keyword">break</span> Found
+        }
+    }
+}</code></pre>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="18.1.md">字符串</a></li>
+<li>下一节：<a href="18.3.md">映射</a></li>
+</ul>

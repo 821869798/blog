@@ -1,0 +1,155 @@
+<h1 id="12-9-JSON-数据格式"><a href="#12-9-JSON-数据格式" class="headerlink" title="12.9 JSON 数据格式"></a>12.9 JSON 数据格式</h1><p>数据结构要在网络中传输或保存到文件，就必须对其编码和解码；目前存在很多编码格式：JSON，XML，gob，Google 缓冲协议等等。Go 语言支持所有这些编码格式；在后面的章节，我们将讨论前三种格式。</p>
+<p>结构可能包含二进制数据，如果将其作为文本打印，那么可读性是很差的。另外结构内部可能包含匿名字段，而不清楚数据的用意。</p>
+<p>通过把数据转换成纯文本，使用命名的字段来标注，让其具有可读性。这样的数据格式可以通过网络传输，而且是与平台无关的，任何类型的应用都能够读取和输出，不与操作系统和编程语言的类型相关。</p>
+<p>下面是一些术语说明：</p>
+<ul>
+<li>数据结构 –&gt; 指定格式 = <code>序列化</code> 或 <code>编码</code>（传输之前）</li>
+<li>指定格式 –&gt; 数据格式 = <code>反序列化</code> 或 <code>解码</code>（传输之后）</li>
+</ul>
+<p>序列化是在内存中把数据转换成指定格式（data -&gt; string），反之亦然（string -&gt; data structure）</p>
+<p>编码也是一样的，只是输出一个数据流（实现了 io.Writer 接口）；解码是从一个数据流（实现了 io.Reader）输出到一个数据结构。</p>
+<p>我们都比较熟悉 XML 格式(参阅 <a href="12.9.md">12.10</a>)；但有些时候 JSON（JavaScript Object Notation，参阅 <a href="http://json.org">http://json.org</a>）被作为首选，主要是由于其格式上非常简洁。通常 JSON 被用于 web 后端和浏览器之间的通讯，但是在其它场景也同样的有用。</p>
+<p>这是一个简短的 JSON 片段：</p>
+<pre><code class="javascript">{
+    <span class="string">"Person"</span>: {
+        <span class="string">"FirstName"</span>: <span class="string">"Laura"</span>,
+        <span class="string">"LastName"</span>: <span class="string">"Lynn"</span>
+    }
+}</code></pre>
+<p>尽管 XML 被广泛的应用，但是 JSON 更加简洁、轻量（占用更少的内存、磁盘及网络带宽）和更好的可读性，这也使它越来越受欢迎。</p>
+<p>Go 语言的 json 包可以让你在程序中方便的读取和写入 JSON 数据。</p>
+<p>我们将在下面的例子里使用 json 包，并使用练习 10.1 <a href="exercises/chapter_10/vcard.go">vcard.go</a> 中一个简化版本的 Address 和 VCard 结构（为了简单起见，我们忽略了很多错误处理，不过在实际应用中你必须要合理的处理这些错误，参阅 13 章）</p>
+<p>示例 12.16 <a href="examples/chapter_12/json.go">json.go</a>：</p>
+<pre><code class="go"><span class="comment">// json.go</span>
+<span class="keyword">package</span> main
+
+<span class="keyword">import</span> (
+    <span class="string">"encoding/json"</span>
+    <span class="string">"fmt"</span>
+    <span class="string">"log"</span>
+    <span class="string">"os"</span>
+)
+
+<span class="keyword">type</span> Address <span class="keyword">struct</span> {
+    Type    <span class="keyword">string</span>
+    City    <span class="keyword">string</span>
+    Country <span class="keyword">string</span>
+}
+
+<span class="keyword">type</span> VCard <span class="keyword">struct</span> {
+    FirstName <span class="keyword">string</span>
+    LastName  <span class="keyword">string</span>
+    Addresses []*Address
+    Remark    <span class="keyword">string</span>
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    pa := &amp;Address{<span class="string">"private"</span>, <span class="string">"Aartselaar"</span>, <span class="string">"Belgium"</span>}
+    wa := &amp;Address{<span class="string">"work"</span>, <span class="string">"Boom"</span>, <span class="string">"Belgium"</span>}
+    vc := VCard{<span class="string">"Jan"</span>, <span class="string">"Kersschot"</span>, []*Address{pa, wa}, <span class="string">"none"</span>}
+    <span class="comment">// fmt.Printf("%v: \n", vc) // {Jan Kersschot [0x126d2b80 0x126d2be0] none}:</span>
+    <span class="comment">// JSON format:</span>
+    js, _ := json.Marshal(vc)
+    fmt.Printf(<span class="string">"JSON format: %s"</span>, js)
+    <span class="comment">// using an encoder:</span>
+    file, _ := os.OpenFile(<span class="string">"vcard.json"</span>, os.O_CREATE|os.O_WRONLY, <span class="number">0666</span>)
+    <span class="keyword">defer</span> file.Close()
+    enc := json.NewEncoder(file)
+    err := enc.Encode(vc)
+    <span class="keyword">if</span> err != <span class="literal">nil</span> {
+        log.Println(<span class="string">"Error in encoding json"</span>)
+    }
+}</code></pre>
+<p><code>json.Marshal()</code> 的函数签名是 <code>func Marshal(v interface{}) ([]byte, error)</code>，下面是数据编码后的 JSON 文本（实际上是一个 []byte）：</p>
+<pre><code class="javascript">{
+    <span class="string">"FirstName"</span>: <span class="string">"Jan"</span>,
+    <span class="string">"LastName"</span>: <span class="string">"Kersschot"</span>,
+    <span class="string">"Addresses"</span>: [{
+        <span class="string">"Type"</span>: <span class="string">"private"</span>,
+        <span class="string">"City"</span>: <span class="string">"Aartselaar"</span>,
+        <span class="string">"Country"</span>: <span class="string">"Belgium"</span>
+    }, {
+        <span class="string">"Type"</span>: <span class="string">"work"</span>,
+        <span class="string">"City"</span>: <span class="string">"Boom"</span>,
+        <span class="string">"Country"</span>: <span class="string">"Belgium"</span>
+    }],
+    <span class="string">"Remark"</span>: <span class="string">"none"</span>
+}</code></pre>
+<p>出于安全考虑，在 web 应用中最好使用 <code>json.MarshalforHTML()</code> 函数，其对数据执行HTML转码，所以文本可以被安全地嵌在 HTML <code>&lt;script&gt;</code> 标签中。</p>
+<p><code>json.NewEncoder()</code> 的函数签名是 <code>func NewEncoder(w io.Writer) *Encoder</code>，返回的Encoder类型的指针可调用方法 <code>Encode(v interface{})</code>，将数据对象 v 的json编码写入 <code>io.Writer</code> w 中。</p>
+<p>JSON 与 Go 类型对应如下：</p>
+<ul>
+<li>bool 对应 JSON 的 booleans</li>
+<li>float64 对应 JSON 的 numbers</li>
+<li>string 对应 JSON 的 strings</li>
+<li>nil 对应 JSON 的 null</li>
+</ul>
+<p>不是所有的数据都可以编码为 JSON 类型：只有验证通过的数据结构才能被编码：</p>
+<ul>
+<li>JSON 对象只支持字符串类型的 key；要编码一个 Go map 类型，map 必须是 map[string]T（T是 <code>json</code> 包中支持的任何类型）</li>
+<li>Channel，复杂类型和函数类型不能被编码</li>
+<li>不支持循环数据结构；它将引起序列化进入一个无限循环</li>
+<li>指针可以被编码，实际上是对指针指向的值进行编码（或者指针是 nil）</li>
+</ul>
+<h3 id="反序列化："><a href="#反序列化：" class="headerlink" title="反序列化："></a>反序列化：</h3><p><code>UnMarshal()</code> 的函数签名是 <code>func Unmarshal(data []byte, v interface{}) error</code> 把 JSON 解码为数据结构。</p>
+<p>示例12.16中对 vc 编码后的数据为 <code>js</code> ，对其解码时，我们首先创建结构 VCard 用来保存解码的数据：<code>var v VCard</code> 并调用 <code>json.Unmarshal(js, &amp;v)</code>，解析 []byte 中的 JSON 数据并将结果存入指针 &amp;v 指向的值。</p>
+<p>虽然反射能够让 JSON 字段去尝试匹配目标结构字段；但是只有真正匹配上的字段才会填充数据。字段没有匹配不会报错，而是直接忽略掉。</p>
+<p>（练习 15.2b <a href="exercises/chapter_15/twitter_status_json.go">twitter_status_json.go</a> 中用到了 UnMarshal）</p>
+<h3 id="解码任意的数据："><a href="#解码任意的数据：" class="headerlink" title="解码任意的数据："></a>解码任意的数据：</h3><p>json 包使用 <code>map[string]interface{}</code> 和 <code>[]interface{}</code> 储存任意的 JSON 对象和数组；其可以被反序列化为任何的 JSON blob 存储到接口值中。</p>
+<p>来看这个 JSON 数据，被存储在变量 b 中：</p>
+<pre><code class="go">b := []<span class="keyword">byte</span>(<span class="string">`{"Name": "Wednesday", "Age": 6, "Parents": ["Gomez", "Morticia"]}`</span>)</code></pre>
+<p>不用理解这个数据的结构，我们可以直接使用 Unmarshal 把这个数据编码并保存在接口值中：</p>
+<pre><code class="go"><span class="keyword">var</span> f <span class="keyword">interface</span>{}
+err := json.Unmarshal(b, &amp;f)</code></pre>
+<p>f 指向的值是一个 map，key 是一个字符串，value 是自身存储作为空接口类型的值：</p>
+<pre><code class="go"><span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{} {
+    <span class="string">"Name"</span>: <span class="string">"Wednesday"</span>,
+    <span class="string">"Age"</span>:  <span class="number">6</span>,
+    <span class="string">"Parents"</span>: []<span class="keyword">interface</span>{} {
+        <span class="string">"Gomez"</span>,
+        <span class="string">"Morticia"</span>,
+    },
+}</code></pre>
+<p>要访问这个数据，我们可以使用类型断言</p>
+<pre><code class="go">m := f.(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{})</code></pre>
+<p>我们可以通过 for range 语法和 type switch 来访问其实际类型：</p>
+<pre><code class="go"><span class="keyword">for</span> k, v := <span class="keyword">range</span> m {
+    <span class="keyword">switch</span> vv := v.(<span class="keyword">type</span>) {
+    <span class="keyword">case</span> <span class="keyword">string</span>:
+        fmt.Println(k, <span class="string">"is string"</span>, vv)
+    <span class="keyword">case</span> <span class="keyword">int</span>:
+        fmt.Println(k, <span class="string">"is int"</span>, vv)
+
+    <span class="keyword">case</span> []<span class="keyword">interface</span>{}:
+        fmt.Println(k, <span class="string">"is an array:"</span>)
+        <span class="keyword">for</span> i, u := <span class="keyword">range</span> vv {
+            fmt.Println(i, u)
+        }
+    <span class="keyword">default</span>:
+        fmt.Println(k, <span class="string">"is of a type I don’t know how to handle"</span>)
+    }
+}</code></pre>
+<p>通过这种方式，你可以处理未知的 JSON 数据，同时可以确保类型安全。</p>
+<h3 id="解码数据到结构"><a href="#解码数据到结构" class="headerlink" title="解码数据到结构"></a>解码数据到结构</h3><p>如果我们事先知道 JSON 数据，我们可以定义一个适当的结构并对 JSON 数据反序列化。下面的例子中，我们将定义：</p>
+<pre><code class="go"><span class="keyword">type</span> FamilyMember <span class="keyword">struct</span> {
+    Name    <span class="keyword">string</span>
+    Age     <span class="keyword">int</span>
+    Parents []<span class="keyword">string</span>
+}
+</code></pre>
+<p>并对其反序列化：</p>
+<pre><code class="go"><span class="keyword">var</span> m FamilyMember
+err := json.Unmarshal(b, &amp;m)</code></pre>
+<p>程序实际上是分配了一个新的切片。这是一个典型的反序列化引用类型（指针、切片和 map）的例子。</p>
+<h3 id="编码和解码流"><a href="#编码和解码流" class="headerlink" title="编码和解码流"></a>编码和解码流</h3><p>json 包提供 Decoder 和 Encoder 类型来支持常用 JSON 数据流读写。NewDecoder 和 NewEncoder 函数分别封装了 io.Reader 和 io.Writer 接口。</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">NewDecoder</span><span class="params">(r io.Reader)</span> *<span class="title">Decoder</span></span>
+<span class="function"><span class="title">func</span> <span class="title">NewEncoder</span><span class="params">(w io.Writer)</span> *<span class="title">Encoder</span></span></code></pre>
+<p>要想把 JSON 直接写入文件，可以使用 json.NewEncoder 初始化文件（或者任何实现 io.Writer 的类型），并调用 Encode()；反过来与其对应的是使用 json.Decoder 和 Decode() 函数：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">NewDecoder</span><span class="params">(r io.Reader)</span> *<span class="title">Decoder</span></span>
+<span class="function"><span class="title">func</span> <span class="params">(dec *Decoder)</span> <span class="title">Decode</span><span class="params">(v <span class="keyword">interface</span>{})</span> <span class="title">error</span></span></code></pre>
+<p>来看下接口是如何对实现进行抽象的：数据结构可以是任何类型，只要其实现了某种接口，目标或源数据要能够被编码就必须实现 io.Writer 或 io.Reader 接口。由于 Go 语言中到处都实现了 Reader 和 Writer，因此 Encoder 和 Decoder 可被应用的场景非常广泛，例如读取或写入 HTTP 连接、websockets 或文件。</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="12.8.md">使用接口的实际例子:fmt.Fprintf</a></li>
+<li>下一节：<a href="12.10.md">XML 数据格式</a></li>
+</ul>
