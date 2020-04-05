@@ -440,7 +440,7 @@ codeblock:
 # `Follow me on GitHub` banner in the top-right corner.
 github_banner:
   enable: false
-  permalink: https://github.com/yourname
+  permalink: https://github.com/821869798
   title: Follow me on GitHub
 
 
