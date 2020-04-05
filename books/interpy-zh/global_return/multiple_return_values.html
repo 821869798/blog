@@ -1,0 +1,32 @@
+<h1 id="多个return值"><a href="#多个return值" class="headerlink" title="多个return值"></a>多个return值</h1><p>那如果你想从一个函数里返回两个变量而不是一个呢？<br>新手们有若干种方法。最著名的方法，是使用<code>global</code>关键字。让我们看下这个没用的例子：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">profile</span><span class="params">()</span>:</span>
+    <span class="keyword">global</span> name
+    <span class="keyword">global</span> age
+    name = <span class="string">"Danny"</span>
+    age = <span class="number">30</span>
+
+profile()
+print(name)
+<span class="comment"># Output: Danny</span>
+
+print(age)
+<span class="comment"># Output: 30</span></code></pre>
+<p><strong>注意:</strong> 不要试着使用上述方法。重要的事情说三遍，不要试着使用上述方法！</p>
+<p>有些人试着在函数结束时，返回一个包含多个值的<code>tuple</code>(元组)，<code>list</code>(列表)或者<code>dict</code>(字典),来解决这个问题。这是一种可行的方式，而且使用起来像一个黑魔法：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">profile</span><span class="params">()</span>:</span>
+    name = <span class="string">"Danny"</span>
+    age = <span class="number">30</span>
+    <span class="keyword">return</span> (name, age)
+
+profile_data = profile()
+print(profile_data[<span class="number">0</span>])
+<span class="comment"># Output: Danny</span>
+
+print(profile_data[<span class="number">1</span>])
+<span class="comment"># Output: 30</span></code></pre>
+<p>或者按照更常见的惯例：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">profile</span><span class="params">()</span>:</span>
+    name = <span class="string">"Danny"</span>
+    age = <span class="number">30</span>
+    <span class="keyword">return</span> name, age</code></pre>
+<p>这是一种比列表和字典更好的方式。不要使用<code>global</code>关键字，除非你知道你正在做什么。<code>global</code>也许在某些场景下是一个更好的选择（但其中大多数情况都不是）。</p>

@@ -1,0 +1,20 @@
+<h1 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h1><p>枚举(<code>enumerate</code>)是Python内置函数。它的用处很难在简单的一行中说明，但是大多数的新人，甚至一些高级程序员都没有意识到它。</p>
+<p>它允许我们遍历数据并自动计数，</p>
+<p>下面是一个例子：</p>
+<pre><code class="python"><span class="keyword">for</span> counter, value <span class="keyword">in</span> enumerate(some_list):
+    print(counter, value)</code></pre>
+<p>不只如此，<code>enumerate</code>也接受一些可选参数，这使它更有用。</p>
+<pre><code class="python">my_list = [<span class="string">'apple'</span>, <span class="string">'banana'</span>, <span class="string">'grapes'</span>, <span class="string">'pear'</span>]
+<span class="keyword">for</span> c, value <span class="keyword">in</span> enumerate(my_list, <span class="number">1</span>):
+    print(c, value)
+
+<span class="comment"># 输出:</span>
+(<span class="number">1</span>, <span class="string">'apple'</span>)
+(<span class="number">2</span>, <span class="string">'banana'</span>)
+(<span class="number">3</span>, <span class="string">'grapes'</span>)
+(<span class="number">4</span>, <span class="string">'pear'</span>)</code></pre>
+<p>上面这个可选参数允许我们定制从哪个数字开始枚举。<br>你还可以用来创建包含索引的元组列表，<br>例如：</p>
+<pre><code class="python">my_list = [<span class="string">'apple'</span>, <span class="string">'banana'</span>, <span class="string">'grapes'</span>, <span class="string">'pear'</span>]
+counter_list = list(enumerate(my_list, <span class="number">1</span>))
+print(counter_list)
+<span class="comment"># 输出: [(1, 'apple'), (2, 'banana'), (3, 'grapes'), (4, 'pear')]</span></code></pre>

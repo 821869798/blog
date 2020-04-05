@@ -1,0 +1,55 @@
+<h1 id="8-2-测试键值对是否存在及删除元素"><a href="#8-2-测试键值对是否存在及删除元素" class="headerlink" title="8.2 测试键值对是否存在及删除元素"></a>8.2 测试键值对是否存在及删除元素</h1><p>测试 map1 中是否存在 key1：</p>
+<p>在例子 8.1 中，我们已经见过可以使用 <code>val1 = map1[key1]</code> 的方法获取 key1 对应的值 val1。如果 map 中不存在 key1，val1 就是一个值类型的空值。</p>
+<p>这就会给我们带来困惑了：现在我们没法区分到底是 key1 不存在还是它对应的 value 就是空值。</p>
+<p>为了解决这个问题，我们可以这么用：<code>val1, isPresent = map1[key1]</code></p>
+<p>isPresent 返回一个 bool 值：如果 key1 存在于 map1，val1 就是 key1 对应的 value 值，并且 isPresent为true；如果 key1 不存在，val1 就是一个空值，并且 isPresent 会返回 false。</p>
+<p>如果你只是想判断某个 key 是否存在而不关心它对应的值到底是多少，你可以这么做：</p>
+<pre><code class="go">_, ok := map1[key1] <span class="comment">// 如果key1存在则ok == true，否则ok为false</span></code></pre>
+<p>或者和 if 混合使用：</p>
+<pre><code class="go"><span class="keyword">if</span> _, ok := map1[key1]; ok {
+    <span class="comment">// ...</span>
+}</code></pre>
+<p>从 map1 中删除 key1：</p>
+<p>直接 <code>delete(map1, key1)</code> 就可以。</p>
+<p>如果 key1 不存在，该操作不会产生错误。</p>
+<p>示例 8.4 <a href="examples/chapter_8/map_testelement.go">map_testelement.go</a></p>
+<pre><code class="go"><span class="keyword">package</span> main
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    <span class="keyword">var</span> value <span class="keyword">int</span>
+    <span class="keyword">var</span> isPresent <span class="keyword">bool</span>
+
+    map1 := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)
+    map1[<span class="string">"New Delhi"</span>] = <span class="number">55</span>
+    map1[<span class="string">"Beijing"</span>] = <span class="number">20</span>
+    map1[<span class="string">"Washington"</span>] = <span class="number">25</span>
+    value, isPresent = map1[<span class="string">"Beijing"</span>]
+    <span class="keyword">if</span> isPresent {
+        fmt.Printf(<span class="string">"The value of \"Beijing\" in map1 is: %d\n"</span>, value)
+    } <span class="keyword">else</span> {
+        fmt.Printf(<span class="string">"map1 does not contain Beijing"</span>)
+    }
+
+    value, isPresent = map1[<span class="string">"Paris"</span>]
+    fmt.Printf(<span class="string">"Is \"Paris\" in map1 ?: %t\n"</span>, isPresent)
+    fmt.Printf(<span class="string">"Value is: %d\n"</span>, value)
+
+    <span class="comment">// delete an item:</span>
+    <span class="built_in">delete</span>(map1, <span class="string">"Washington"</span>)
+    value, isPresent = map1[<span class="string">"Washington"</span>]
+    <span class="keyword">if</span> isPresent {
+        fmt.Printf(<span class="string">"The value of \"Washington\" in map1 is: %d\n"</span>, value)
+    } <span class="keyword">else</span> {
+        fmt.Println(<span class="string">"map1 does not contain Washington"</span>)
+    }
+}</code></pre>
+<p>输出结果：</p>
+<pre><code>The value of &quot;Beijing&quot; in map1 is: 20
+Is &quot;Paris&quot; in map1 ?: false
+Value is: 0
+map1 does not contain Washington</code></pre><h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="08.1.md">声明、初始化和 make</a></li>
+<li>下一节：<a href="08.3.md">for-range 的配套用法</a></li>
+</ul>

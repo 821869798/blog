@@ -1,0 +1,26 @@
+<h1 id="调试（Debugging）"><a href="#调试（Debugging）" class="headerlink" title="调试（Debugging）"></a>调试（Debugging）</h1><p>利用好调试，能大大提高你捕捉代码Bug的。大部分新人忽略了Python debugger(<code>pdb</code>)的重要性。 在这个章节我只会告诉你一些重要的命令，你可以从官方文档中学习到更多。</p>
+<blockquote>
+<p>译者注，参考：<a href="https://docs.python.org/2/library/pdb.html">https://docs.python.org/2/library/pdb.html</a><br>Or <a href="https://docs.python.org/3/library/pdb.html">https://docs.python.org/3/library/pdb.html</a></p>
+</blockquote>
+<h3 id="从命令行运行"><a href="#从命令行运行" class="headerlink" title="从命令行运行"></a>从命令行运行</h3><p>你可以在命令行使用Python debugger运行一个脚本， 举个例子：</p>
+<pre><code class="bash">$ python -m pdb my_script.py</code></pre>
+<p>这会触发debugger在脚本第一行指令处停止执行。这在脚本很短时会很有帮助。你可以通过(Pdb)模式接着查看变量信息，并且逐行调试。</p>
+<h3 id="从脚本内部运行"><a href="#从脚本内部运行" class="headerlink" title="从脚本内部运行"></a>从脚本内部运行</h3><p>同时，你也可以在脚本内部设置断点，这样就可以在某些特定点查看变量信息和各种执行时信息了。这里将使用<code>pdb.set_trace()</code>方法来实现。举个例子：</p>
+<pre><code class="python"><span class="keyword">import</span> pdb
+
+<span class="function"><span class="keyword">def</span> <span class="title">make_bread</span><span class="params">()</span>:</span>
+    pdb.set_trace()
+    <span class="keyword">return</span> <span class="string">"I don't have time"</span>
+
+print(make_bread())</code></pre>
+<p>试下保存上面的脚本后运行之。你会在运行时马上进入debugger模式。现在是时候了解下debugger模式下的一些命令了。</p>
+<p>#####命令列表：</p>
+<ul>
+<li><code>c</code>: 继续执行</li>
+<li><code>w</code>: 显示当前正在执行的代码行的上下文信息</li>
+<li><code>a</code>: 打印当前函数的参数列表</li>
+<li><code>s</code>: 执行当前代码行，并停在第一个能停的地方（相当于单步进入）</li>
+<li><code>n</code>: 继续执行到当前函数的下一行，或者当前行直接返回（单步跳过）</li>
+</ul>
+<p>单步跳过（<code>n</code>ext）和单步进入（<code>s</code>tep）的区别在于， 单步进入会进入当前行调用的函数内部并停在里面， 而单步跳过会（几乎）全速执行完当前行调用的函数，并停在当前函数的下一行。</p>
+<p>pdb真的是一个很方便的功能，上面仅列举少量用法，更多的命令强烈推荐你去看官方文档。</p>

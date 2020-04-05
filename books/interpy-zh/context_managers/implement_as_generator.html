@@ -1,0 +1,19 @@
+<h1 id="基于生成器的实现"><a href="#基于生成器的实现" class="headerlink" title="基于生成器的实现"></a>基于生成器的实现</h1><p>我们还可以用装饰器(decorators)和生成器(generators)来实现上下文管理器。<br>Python有个<code>contextlib</code>模块专门用于这个目的。我们可以使用一个生成器函数来实现一个上下文管理器，而不是使用一个类。<br>让我们看看一个基本的，没用的例子：</p>
+<pre><code class="python"><span class="keyword">from</span> contextlib <span class="keyword">import</span> contextmanager
+
+<span class="meta">@contextmanager</span>
+<span class="function"><span class="keyword">def</span> <span class="title">open_file</span><span class="params">(name)</span>:</span>
+    f = open(name, <span class="string">'w'</span>)
+    <span class="keyword">yield</span> f
+    f.close()</code></pre>
+<p>OK啦！这个实现方式看起来更加直观和简单。然而，这个方法需要关于生成器、<code>yield</code>和装饰器的一些知识。在这个例子中我们还没有捕捉可能产生的任何异常。它的工作方式和之前的方法大致相同。</p>
+<p>让我们小小地剖析下这个方法。</p>
+<ol>
+<li>Python解释器遇到了<code>yield</code>关键字。因为这个缘故它创建了一个生成器而不是一个普通的函数。</li>
+<li>因为这个装饰器，<code>contextmanager</code>会被调用并传入函数名（<code>open_file</code>）作为参数。</li>
+<li><code>contextmanager</code>函数返回一个以<code>GeneratorContextManager</code>对象封装过的生成器。</li>
+<li>这个<code>GeneratorContextManager</code>被赋值给<code>open_file</code>函数，我们实际上是在调用<code>GeneratorContextManager</code>对象。</li>
+</ol>
+<p>那现在我们既然知道了所有这些，我们可以用这个新生成的上下文管理器了，像这样：</p>
+<pre><code class="python"><span class="keyword">with</span> open_file(<span class="string">'some_file'</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">'hola!'</span>)</code></pre>

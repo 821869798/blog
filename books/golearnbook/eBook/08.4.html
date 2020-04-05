@@ -1,0 +1,30 @@
+<h1 id="8-4-map-类型的切片"><a href="#8-4-map-类型的切片" class="headerlink" title="8.4 map 类型的切片"></a>8.4 map 类型的切片</h1><p>假设我们想获取一个 map 类型的切片，我们必须使用两次 <code>make()</code> 函数，第一次分配切片，第二次分配 切片中每个 map 元素（参见下面的例子 8.4）。</p>
+<p>示例 8.4 <a href="examples/chapter_8/maps_forrange2.go">maps_forrange2.go</a>：</p>
+<pre><code class="go"><span class="keyword">package</span> main
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    <span class="comment">// Version A:</span>
+    items := <span class="built_in">make</span>([]<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>, <span class="number">5</span>)
+    <span class="keyword">for</span> i:= <span class="keyword">range</span> items {
+        items[i] = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>, <span class="number">1</span>)
+        items[i][<span class="number">1</span>] = <span class="number">2</span>
+    }
+    fmt.Printf(<span class="string">"Version A: Value of items: %v\n"</span>, items)
+
+    <span class="comment">// Version B: NOT GOOD!</span>
+    items2 := <span class="built_in">make</span>([]<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>, <span class="number">5</span>)
+    <span class="keyword">for</span> _, item := <span class="keyword">range</span> items2 {
+        item = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>, <span class="number">1</span>) <span class="comment">// item is only a copy of the slice element.</span>
+        item[<span class="number">1</span>] = <span class="number">2</span> <span class="comment">// This 'item' will be lost on the next iteration.</span>
+    }
+    fmt.Printf(<span class="string">"Version B: Value of items: %v\n"</span>, items2)
+}</code></pre>
+<p>输出结果：</p>
+<pre><code>Version A: Value of items: [map[1:2] map[1:2] map[1:2] map[1:2] map[1:2]]
+Version B: Value of items: [map[] map[] map[] map[] map[]]</code></pre><p>需要注意的是，应当像 A 版本那样通过索引使用切片的 map 元素。在 B 版本中获得的项只是 map 值的一个拷贝而已，所以真正的 map 元素没有得到初始化。</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="08.3.md">for-range 的配套用法</a></li>
+<li>下一节：<a href="08.5.md">map 的排序</a></li>
+</ul>

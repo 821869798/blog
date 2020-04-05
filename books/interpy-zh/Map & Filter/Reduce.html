@@ -1,0 +1,7 @@
+<h1 id="Reduce"><a href="#Reduce" class="headerlink" title="Reduce"></a><code>Reduce</code></h1><p>当需要对一个列表进行一些计算并返回结果时，<code>Reduce</code> 是个非常有用的函数。举个例子，当你需要计算一个整数列表的乘积时。</p>
+<p>通常在 python 中你可能会使用基本的 for 循环来完成这个任务。</p>
+<p>现在我们来试试 reduce：</p>
+<pre><code>from functools import reduce
+product = reduce( (lambda x, y: x * y), [1, 2, 3, 4] )
+
+# Output: 24</code></pre>

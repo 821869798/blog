@@ -1,0 +1,14 @@
+<h1 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a><code>Filter</code></h1><p>顾名思义，<code>filter</code>过滤列表中的元素，并且返回一个由所有符合要求的元素所构成的列表，<code>符合要求</code>即函数映射到该元素时返回值为True. 这里是一个简短的例子：</p>
+<pre><code class="python">number_list = range(<span class="number">-5</span>, <span class="number">5</span>)
+less_than_zero = filter(<span class="keyword">lambda</span> x: x &lt; <span class="number">0</span>, number_list)
+print(list(less_than_zero))  
+<span class="comment"># 译者注：上面print时，加了list转换，是为了python2/3的兼容性</span>
+<span class="comment">#        在python2中filter直接返回列表，但在python3中返回迭代器</span>
+<span class="comment">#        因此为了兼容python3, 需要list转换一下</span>
+
+<span class="comment"># Output: [-5, -4, -3, -2, -1]</span></code></pre>
+<p>这个<code>filter</code>类似于一个<code>for</code>循环，但它是一个内置函数，并且更快。</p>
+<p>注意：如果<code>map</code>和<code>filter</code>对你来说看起来并不优雅的话，那么你可以看看另外一章：列表/字典/元组推导式。</p>
+<blockquote>
+<p>译者注：大部分情况下推导式的可读性更好</p>
+</blockquote>

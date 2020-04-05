@@ -1,0 +1,2 @@
+<h1 id="函数缓存-Function-caching"><a href="#函数缓存-Function-caching" class="headerlink" title="函数缓存 (Function caching)"></a>函数缓存 (Function caching)</h1><p>函数缓存允许我们将一个函数对于给定参数的返回值缓存起来。<br>当一个I/O密集的函数被频繁使用相同的参数调用的时候，函数缓存可以节约时间。<br>在Python 3.2版本以前我们只有写一个自定义的实现。在Python 3.2以后版本，有个<code>lru_cache</code>的装饰器，允许我们将一个函数的返回值快速地缓存或取消缓存。</p>
+<p>我们来看看，Python 3.2前后的版本分别如何使用它。</p>

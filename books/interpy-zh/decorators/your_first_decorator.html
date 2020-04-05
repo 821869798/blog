@@ -1,0 +1,84 @@
+<h1 id="你的第一个装饰器"><a href="#你的第一个装饰器" class="headerlink" title="你的第一个装饰器"></a>你的第一个装饰器</h1><p>在上一个例子里，其实我们已经创建了一个装饰器！现在我们修改下上一个装饰器，并编写一个稍微更有用点的程序：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span><span class="params">(a_func)</span>:</span>
+
+    <span class="function"><span class="keyword">def</span> <span class="title">wrapTheFunction</span><span class="params">()</span>:</span>
+        print(<span class="string">"I am doing some boring work before executing a_func()"</span>)
+
+        a_func()
+
+        print(<span class="string">"I am doing some boring work after executing a_func()"</span>)
+
+    <span class="keyword">return</span> wrapTheFunction
+
+<span class="function"><span class="keyword">def</span> <span class="title">a_function_requiring_decoration</span><span class="params">()</span>:</span>
+    print(<span class="string">"I am the function which needs some decoration to remove my foul smell"</span>)
+
+a_function_requiring_decoration()
+<span class="comment">#outputs: "I am the function which needs some decoration to remove my foul smell"</span>
+
+a_function_requiring_decoration = a_new_decorator(a_function_requiring_decoration)
+<span class="comment">#now a_function_requiring_decoration is wrapped by wrapTheFunction()</span>
+
+a_function_requiring_decoration()
+<span class="comment">#outputs:I am doing some boring work before executing a_func()</span>
+<span class="comment">#        I am the function which needs some decoration to remove my foul smell</span>
+<span class="comment">#        I am doing some boring work after executing a_func()</span></code></pre>
+<p>你看明白了吗？我们刚刚应用了之前学习到的原理。这正是python中装饰器做的事情！它们封装一个函数，并且用这样或者那样的方式来修改它的行为。现在你也许疑惑，我们在代码里并没有使用@符号？那只是一个简短的方式来生成一个被装饰的函数。这里是我们如何使用@来运行之前的代码：</p>
+<pre><code class="python"><span class="meta">@a_new_decorator</span>
+<span class="function"><span class="keyword">def</span> <span class="title">a_function_requiring_decoration</span><span class="params">()</span>:</span>
+    <span class="string">"""Hey you! Decorate me!"""</span>
+    print(<span class="string">"I am the function which needs some decoration to "</span>
+          <span class="string">"remove my foul smell"</span>)
+
+a_function_requiring_decoration()
+<span class="comment">#outputs: I am doing some boring work before executing a_func()</span>
+<span class="comment">#         I am the function which needs some decoration to remove my foul smell</span>
+<span class="comment">#         I am doing some boring work after executing a_func()</span>
+
+<span class="comment">#the @a_new_decorator is just a short way of saying:</span>
+a_function_requiring_decoration = a_new_decorator(a_function_requiring_decoration)</code></pre>
+<p>希望你现在对Python装饰器的工作原理有一个基本的理解。如果我们运行如下代码会存在一个问题：</p>
+<pre><code class="python">print(a_function_requiring_decoration.__name__)
+<span class="comment"># Output: wrapTheFunction</span></code></pre>
+<p>这并不是我们想要的！Ouput输出应该是“a_function_requiring_decoration”。这里的函数被warpTheFunction替代了。它重写了我们函数的名字和注释文档(docstring)。幸运的是Python提供给我们一个简单的函数来解决这个问题，那就是functools.wraps。我们修改上一个例子来使用functools.wraps：</p>
+<pre><code class="python"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps
+
+<span class="function"><span class="keyword">def</span> <span class="title">a_new_decorator</span><span class="params">(a_func)</span>:</span>
+<span class="meta">    @wraps(a_func)</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">wrapTheFunction</span><span class="params">()</span>:</span>
+        print(<span class="string">"I am doing some boring work before executing a_func()"</span>)
+        a_func()
+        print(<span class="string">"I am doing some boring work after executing a_func()"</span>)
+    <span class="keyword">return</span> wrapTheFunction
+
+<span class="meta">@a_new_decorator</span>
+<span class="function"><span class="keyword">def</span> <span class="title">a_function_requiring_decoration</span><span class="params">()</span>:</span>
+    <span class="string">"""Hey yo! Decorate me!"""</span>
+    print(<span class="string">"I am the function which needs some decoration to "</span>
+          <span class="string">"remove my foul smell"</span>)
+
+print(a_function_requiring_decoration.__name__)
+<span class="comment"># Output: a_function_requiring_decoration</span></code></pre>
+<p>现在好多了。我们接下来学习装饰器的一些常用场景。</p>
+<p>蓝本规范:</p>
+<pre><code class="python"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps
+<span class="function"><span class="keyword">def</span> <span class="title">decorator_name</span><span class="params">(f)</span>:</span>
+<span class="meta">    @wraps(f)</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">decorated</span><span class="params">(*args, **kwargs)</span>:</span>
+        <span class="keyword">if</span> <span class="keyword">not</span> can_run:
+            <span class="keyword">return</span> <span class="string">"Function will not run"</span>
+        <span class="keyword">return</span> f(*args, **kwargs)
+    <span class="keyword">return</span> decorated
+
+<span class="meta">@decorator_name</span>
+<span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span>
+    <span class="keyword">return</span>(<span class="string">"Function is running"</span>)
+
+can_run = <span class="literal">True</span>
+print(func())
+<span class="comment"># Output: Function is running</span>
+
+can_run = <span class="literal">False</span>
+print(func())
+<span class="comment"># Output: Function will not run</span></code></pre>
+<p>注意：@wraps接受一个函数来进行装饰，并加入了复制函数名称、注释文档、参数列表等等的功能。这可以让我们在装饰器里面访问在装饰之前的函数的属性。</p>

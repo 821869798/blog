@@ -1,0 +1,68 @@
+<h1 id="13-6-启动外部命令和程序"><a href="#13-6-启动外部命令和程序" class="headerlink" title="13.6 启动外部命令和程序"></a>13.6 启动外部命令和程序</h1><p>os 包有一个 <code>StartProcess</code> 函数可以调用或启动外部系统命令和二进制可执行文件；它的第一个参数是要运行的进程，第二个参数用来传递选项或参数，第三个参数是含有系统环境基本信息的结构体。</p>
+<p>这个函数返回被启动进程的 id（pid），或者启动失败返回错误。</p>
+<p>exec 包中也有同样功能的更简单的结构体和函数；主要是 <code>exec.Command(name string, arg ...string)</code> 和 <code>Run()</code>。首先需要用系统命令或可执行文件的名字创建一个 <code>Command</code> 对象，然后用这个对象作为接收者调用 <code>Run()</code>。下面的程序（因为是执行 Linux 命令，只能在 Linux 下面运行）演示了它们的使用：</p>
+<p>示例 13.6 <a href="examples/chapter_13/exec.go">exec.go</a>：</p>
+<pre><code class="go"><span class="comment">// exec.go</span>
+<span class="keyword">package</span> main
+<span class="keyword">import</span> (
+    <span class="string">"fmt"</span>
+    <span class="string">"os/exec"</span>
+    <span class="string">"os"</span>
+)
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+<span class="comment">// 1) os.StartProcess //</span>
+<span class="comment">/*********************/</span>
+<span class="comment">/* Linux: */</span>
+env := os.Environ()
+procAttr := &amp;os.ProcAttr{
+            Env: env,
+            Files: []*os.File{
+                os.Stdin,
+                os.Stdout,
+                os.Stderr,
+            },
+        }
+<span class="comment">// 1st example: list files</span>
+pid, err := os.StartProcess(<span class="string">"/bin/ls"</span>, []<span class="keyword">string</span>{<span class="string">"ls"</span>, <span class="string">"-l"</span>}, procAttr)  
+<span class="keyword">if</span> err != <span class="literal">nil</span> {
+        fmt.Printf(<span class="string">"Error %v starting process!"</span>, err)  <span class="comment">//</span>
+        os.Exit(<span class="number">1</span>)
+}
+fmt.Printf(<span class="string">"The process id is %v"</span>, pid)</code></pre>
+<p>输出：</p>
+<pre><code class="go">The process id is &amp;{<span class="number">2054</span> <span class="number">0</span>}total <span class="number">2056</span>
+-rwxr-xr-x <span class="number">1</span> ivo ivo <span class="number">1157555</span> <span class="number">2011</span><span class="number">-07</span><span class="number">-04</span> <span class="number">16</span>:<span class="number">48</span> Mieken_exec
+-rw-r--r-- <span class="number">1</span> ivo ivo    <span class="number">2124</span> <span class="number">2011</span><span class="number">-07</span><span class="number">-04</span> <span class="number">16</span>:<span class="number">48</span> Mieken_exec.<span class="keyword">go</span>
+-rw-r--r-- <span class="number">1</span> ivo ivo   <span class="number">18528</span> <span class="number">2011</span><span class="number">-07</span><span class="number">-04</span> <span class="number">16</span>:<span class="number">48</span> Mieken_exec_go_<span class="number">.6</span>
+-rwxr-xr-x <span class="number">1</span> ivo ivo  <span class="number">913920</span> <span class="number">2011</span><span class="number">-06</span><span class="number">-03</span> <span class="number">16</span>:<span class="number">13</span> <span class="built_in">panic</span>.exe
+-rw-r--r-- <span class="number">1</span> ivo ivo     <span class="number">180</span> <span class="number">2011</span><span class="number">-04</span><span class="number">-11</span> <span class="number">20</span>:<span class="number">39</span> <span class="built_in">panic</span>.<span class="keyword">go</span></code></pre>
+<pre><code class="go"><span class="comment">// 2nd example: show all processes</span>
+pid, err = os.StartProcess(<span class="string">"/bin/ps"</span>, []<span class="keyword">string</span>{<span class="string">"-e"</span>, <span class="string">"-opid,ppid,comm"</span>}, procAttr)  
+
+<span class="keyword">if</span> err != <span class="literal">nil</span> {
+        fmt.Printf(<span class="string">"Error %v starting process!"</span>, err)  <span class="comment">//</span>
+        os.Exit(<span class="number">1</span>)
+}
+
+fmt.Printf(<span class="string">"The process id is %v"</span>, pid)</code></pre>
+<pre><code class="go"><span class="comment">// 2) exec.Run //</span>
+<span class="comment">/***************/</span>
+<span class="comment">// Linux:  OK, but not for ls ?</span>
+<span class="comment">// cmd := exec.Command("ls", "-l")  // no error, but doesn't show anything ?</span>
+<span class="comment">// cmd := exec.Command("ls")          // no error, but doesn't show anything ?</span>
+    cmd := exec.Command(<span class="string">"gedit"</span>)  <span class="comment">// this opens a gedit-window</span>
+    err = cmd.Run()
+    <span class="keyword">if</span> err != <span class="literal">nil</span> {
+        fmt.Printf(<span class="string">"Error %v executing command!"</span>, err)
+        os.Exit(<span class="number">1</span>)
+    }
+    fmt.Printf(<span class="string">"The command is %v"</span>, cmd)
+<span class="comment">// The command is &amp;{/bin/ls [ls -l] []  &lt;nil&gt; &lt;nil&gt; &lt;nil&gt; 0xf840000210 &lt;nil&gt; true [0xf84000ea50 0xf84000e9f0 0xf84000e9c0] [0xf84000ea50 0xf84000e9f0 0xf84000e9c0] [] [] 0xf8400128c0}</span>
+}
+<span class="comment">// in Windows: uitvoering: Error fork/exec /bin/ls: The system cannot find the path specified. starting process!</span></code></pre>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="13.5.md">一种用闭包处理错误的模式</a></li>
+<li>下一节：<a href="13.7.md">Go 中的单元测试和基准测试</a></li>
+</ul>

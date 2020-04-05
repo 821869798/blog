@@ -1,0 +1,32 @@
+<h1 id="处理异常"><a href="#处理异常" class="headerlink" title="处理异常"></a>处理异常</h1><p>我们还没有谈到<code>__exit__</code>方法的这三个参数：<code>type</code>, <code>value</code>和<code>traceback</code>。<br>在第4步和第6步之间，如果发生异常，Python会将异常的<code>type</code>,<code>value</code>和<code>traceback</code>传递给<code>__exit__</code>方法。<br>它让<code>__exit__</code>方法来决定如何关闭文件以及是否需要其他步骤。在我们的案例中，我们并没有注意它们。</p>
+<p>那如果我们的文件对象抛出一个异常呢？万一我们尝试访问文件对象的一个不支持的方法。举个例子：</p>
+<pre><code class="python"><span class="keyword">with</span> File(<span class="string">'demo.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> opened_file:
+    opened_file.undefined_function(<span class="string">'Hola!'</span>)</code></pre>
+<p>我们来列一下，当异常发生时，<code>with</code>语句会采取哪些步骤。</p>
+<ol>
+<li>它把异常的<code>type</code>,<code>value</code>和<code>traceback</code>传递给<code>__exit__</code>方法</li>
+<li>它让<code>__exit__</code>方法来处理异常</li>
+<li>如果<code>__exit__</code>返回的是True，那么这个异常就被优雅地处理了。</li>
+<li>如果<code>__exit__</code>返回的是True以外的任何东西，那么这个异常将被<code>with</code>语句抛出。</li>
+</ol>
+<p>在我们的案例中，<code>__exit__</code>方法返回的是<code>None</code>(如果没有<code>return</code>语句那么方法会返回<code>None</code>)。因此，<code>with</code>语句抛出了那个异常。</p>
+<pre><code class="python">Traceback (most recent call last):
+  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;module&gt;
+AttributeError: <span class="string">'file'</span> object has no attribute <span class="string">'undefined_function'</span></code></pre>
+<p>我们尝试下在<code>__exit__</code>方法中处理异常：</p>
+<pre><code class="python"><span class="class"><span class="keyword">class</span> <span class="title">File</span><span class="params">(object)</span>:</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, file_name, method)</span>:</span>
+        self.file_obj = open(file_name, method)
+    <span class="function"><span class="keyword">def</span> <span class="title">__enter__</span><span class="params">(self)</span>:</span>
+        <span class="keyword">return</span> self.file_obj
+    <span class="function"><span class="keyword">def</span> <span class="title">__exit__</span><span class="params">(self, type, value, traceback)</span>:</span>
+        print(<span class="string">"Exception has been handled"</span>)
+        self.file_obj.close()
+        <span class="keyword">return</span> <span class="literal">True</span>
+
+<span class="keyword">with</span> File(<span class="string">'demo.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> opened_file:
+    opened_file.undefined_function()
+
+<span class="comment"># Output: Exception has been handled</span></code></pre>
+<p>我们的<code>__exit__</code>方法返回了<code>True</code>,因此没有异常会被<code>with</code>语句抛出。</p>
+<p>这还不是实现上下文管理器的唯一方式。还有一种方式，我们会在下一节中一起看看。</p>

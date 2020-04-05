@@ -1,0 +1,41 @@
+<h1 id="SWIG"><a href="#SWIG" class="headerlink" title="SWIG"></a>SWIG</h1><p>SWIG是Simplified Wrapper and Interface Generator的缩写。是Python中调用C代码的另一种方法。在这个方法中，开发人员必须编写一个额外的接口文件来作为SWIG(终端工具)的入口。</p>
+<p>Python开发者一般不会采用这种方法，因为大多数情况它会带来不必要的复杂。而当你有一个C/C++代码库需要被多种语言调用时，这将是个非常不错的选择。</p>
+<p>示例如下(来自<a href="http://www.swig.org/tutorial.html">SWIG官网</a>)</p>
+<p><code>example.c</code>文件中的C代码包含了不同的变量和函数</p>
+<pre><code class="C"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;time.h&gt;</span></span>
+<span class="keyword">double</span> My_variable = <span class="number">3.0</span>;
+
+<span class="function"><span class="keyword">int</span> <span class="title">fact</span><span class="params">(<span class="keyword">int</span> n)</span> </span>{
+    <span class="keyword">if</span> (n &lt;= <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;
+    <span class="keyword">else</span> <span class="keyword">return</span> n*fact(n<span class="number">-1</span>);
+
+}
+
+<span class="function"><span class="keyword">int</span> <span class="title">my_mod</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>{
+    <span class="keyword">return</span> (x%y);
+
+}
+
+<span class="function"><span class="keyword">char</span> *<span class="title">get_time</span><span class="params">()</span></span>
+<span class="function"></span>{
+    <span class="keyword">time_t</span> ltime;
+    time(&amp;ltime);
+    <span class="keyword">return</span> ctime(&amp;ltime);
+
+}</code></pre>
+<p>编译它</p>
+<pre><code class="Shell">unix % swig -python example.i
+unix % gcc -c example.c example_wrap.c \
+    -I/usr/local/include/python2.1
+unix % ld -shared example.o example_wrap.o -o _example.so
+</code></pre>
+<p>最后，Python的输出</p>
+<pre><code class="Python"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> example
+<span class="meta">&gt;&gt;&gt; </span>example.fact(<span class="number">5</span>)
+<span class="number">120</span>
+<span class="meta">&gt;&gt;&gt; </span>example.my_mod(<span class="number">7</span>,<span class="number">3</span>)
+<span class="number">1</span>
+<span class="meta">&gt;&gt;&gt; </span>example.get_time()
+<span class="string">'Sun Feb 11 23:01:07 1996'</span>
+&gt;&gt;&gt;</code></pre>
+<p>我们可以看到，使用SWIG确实达到了同样的效果，虽然下了更多的工夫，但如果你的目标是多语言还是很值得的。</p>

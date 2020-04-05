@@ -1,0 +1,22 @@
+<h1 id="14-6-协程和恢复（recover）"><a href="#14-6-协程和恢复（recover）" class="headerlink" title="14.6 协程和恢复（recover）"></a>14.6 协程和恢复（recover）</h1><p>一个用到 <code>recover</code> 的程序（参见第 13.3 节）停掉了服务器内部一个失败的协程而不影响其他协程的工作。</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">server</span><span class="params">(workChan &lt;-<span class="keyword">chan</span> *Work)</span></span> {
+    <span class="keyword">for</span> work := <span class="keyword">range</span> workChan {
+        <span class="keyword">go</span> safelyDo(work)   <span class="comment">// start the goroutine for that work</span>
+    }
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">safelyDo</span><span class="params">(work *Work)</span></span> {
+    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span></span> {
+        <span class="keyword">if</span> err := <span class="built_in">recover</span>(); err != <span class="literal">nil</span> {
+            log.Printf(<span class="string">"Work failed with %s in %v"</span>, err, work)
+        }
+    }()
+    do(work)
+}</code></pre>
+<p>上边的代码，如果 <code>do(work)</code> 发生 panic，错误会被记录且协程会退出并释放，而其他协程不受影响。</p>
+<p>因为 <code>recover</code> 总是返回 <code>nil</code>，除非直接在 <code>defer</code> 修饰的函数中调用，<code>defer</code> 修饰的代码可以调用那些自身可以使用 <code>panic</code> 和 <code>recover</code> 避免失败的库例程（库函数）。举例，<code>safelyDo()</code> 中 <code>defer</code> 修饰的函数可能在调用 <code>recover</code> 之前就调用了一个 <code>logging</code> 函数，<code>panicking</code> 状态不会影响 <code>logging</code> 代码的运行。因为加入了恢复模式，函数 <code>do</code>（以及它调用的任何东西）可以通过调用 <code>panic</code> 来摆脱不好的情况。但是恢复是在 <code>panicking</code> 的协程内部的：不能被另外一个协程恢复。</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="14.5.md">通道，超时和计时器</a></li>
+<li>下一节：<a href="14.7.md">对比新旧模型：任务和工作</a></li>
+</ul>

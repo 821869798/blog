@@ -1,0 +1,209 @@
+<h1 id="容器-Collections"><a href="#容器-Collections" class="headerlink" title="容器(Collections)"></a>容器(<code>Collections</code>)</h1><p>Python附带一个模块，它包含许多容器数据类型，名字叫作<code>collections</code>。我们将讨论它的作用和用法。</p>
+<p>我们将讨论的是：</p>
+<ul>
+<li>defaultdict</li>
+<li>counter</li>
+<li>deque</li>
+<li>namedtuple</li>
+<li>enum.Enum (包含在Python 3.4以上)</li>
+</ul>
+<h1 id="defaultdict"><a href="#defaultdict" class="headerlink" title="defaultdict"></a>defaultdict</h1><p>我个人使用<code>defaultdict</code>较多，与<code>dict</code>类型不同，你不需要检查<strong>key</strong>是否存在，所以我们能这样做：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> defaultdict
+
+colours = (
+    (<span class="string">'Yasoob'</span>, <span class="string">'Yellow'</span>),
+    (<span class="string">'Ali'</span>, <span class="string">'Blue'</span>),
+    (<span class="string">'Arham'</span>, <span class="string">'Green'</span>),
+    (<span class="string">'Ali'</span>, <span class="string">'Black'</span>),
+    (<span class="string">'Yasoob'</span>, <span class="string">'Red'</span>),
+    (<span class="string">'Ahmed'</span>, <span class="string">'Silver'</span>),
+)
+
+favourite_colours = defaultdict(list)
+
+<span class="keyword">for</span> name, colour <span class="keyword">in</span> colours:
+    favourite_colours[name].append(colour)
+
+print(favourite_colours)</code></pre>
+<h2 id="运行输出"><a href="#运行输出" class="headerlink" title="运行输出"></a>运行输出</h2><pre><code class="python"><span class="comment"># defaultdict(&lt;type 'list'&gt;,</span>
+<span class="comment">#    {'Arham': ['Green'],</span>
+<span class="comment">#     'Yasoob': ['Yellow', 'Red'],</span>
+<span class="comment">#     'Ahmed': ['Silver'],</span>
+<span class="comment">#     'Ali': ['Blue', 'Black']</span>
+<span class="comment"># })</span></code></pre>
+<p>另一种重要的是例子就是：当你在一个字典中对一个键进行嵌套赋值时，如果这个键不存在，会触发<code>keyError</code>异常。 <code>defaultdict</code>允许我们用一个聪明的方式绕过这个问题。<br> 首先我分享一个使用<code>dict</code>触发<code>KeyError</code>的例子，然后提供一个使用<code>defaultdict</code>的解决方案。</p>
+<p><strong>问题</strong>：</p>
+<pre><code class="python">some_dict = {}
+some_dict[<span class="string">'colours'</span>][<span class="string">'favourite'</span>] = <span class="string">"yellow"</span>
+
+<span class="comment">## 异常输出：KeyError: 'colours'</span></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre><code class="python"><span class="keyword">import</span> collections
+tree = <span class="keyword">lambda</span>: collections.defaultdict(tree)
+some_dict = tree()
+some_dict[<span class="string">'colours'</span>][<span class="string">'favourite'</span>] = <span class="string">"yellow"</span>
+
+<span class="comment">## 运行正常</span></code></pre>
+<p>你可以用<code>json.dumps</code>打印出<code>some_dict</code>，例如：</p>
+<pre><code class="python"><span class="keyword">import</span> json
+print(json.dumps(some_dict))
+
+<span class="comment">## 输出: {"colours": {"favourite": "yellow"}}</span></code></pre>
+<h1 id="counter"><a href="#counter" class="headerlink" title="counter"></a>counter</h1><p>Counter是一个计数器，它可以帮助我们针对某项数据进行计数。比如它可以用来计算每个人喜欢多少种颜色：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter
+
+colours = (
+    (<span class="string">'Yasoob'</span>, <span class="string">'Yellow'</span>),
+    (<span class="string">'Ali'</span>, <span class="string">'Blue'</span>),
+    (<span class="string">'Arham'</span>, <span class="string">'Green'</span>),
+    (<span class="string">'Ali'</span>, <span class="string">'Black'</span>),
+    (<span class="string">'Yasoob'</span>, <span class="string">'Red'</span>),
+    (<span class="string">'Ahmed'</span>, <span class="string">'Silver'</span>),
+)
+
+favs = Counter(name <span class="keyword">for</span> name, colour <span class="keyword">in</span> colours)
+print(favs)
+
+<span class="comment">## 输出:</span>
+<span class="comment">## Counter({</span>
+<span class="comment">##     'Yasoob': 2,</span>
+<span class="comment">##     'Ali': 2,</span>
+<span class="comment">##     'Arham': 1,</span>
+<span class="comment">##     'Ahmed': 1</span>
+<span class="comment">##  })</span></code></pre>
+<p>我们也可以在利用它统计一个文件，例如：</p>
+<pre><code class="python"><span class="keyword">with</span> open(<span class="string">'filename'</span>, <span class="string">'rb'</span>) <span class="keyword">as</span> f:
+    line_count = Counter(f)
+print(line_count)</code></pre>
+<h1 id="deque"><a href="#deque" class="headerlink" title="deque"></a>deque</h1><p>deque提供了一个双端队列，你可以从头/尾两端添加或删除元素。要想使用它，首先我们要从<code>collections</code>中导入<code>deque</code>模块：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</code></pre>
+<p>现在，你可以创建一个<code>deque</code>对象。</p>
+<pre><code class="python">d = deque()</code></pre>
+<p>它的用法就像python的<code>list</code>，并且提供了类似的方法，例如：</p>
+<pre><code class="python">d = deque()
+d.append(<span class="string">'1'</span>)
+d.append(<span class="string">'2'</span>)
+d.append(<span class="string">'3'</span>)
+
+print(len(d))
+
+<span class="comment">## 输出: 3</span>
+
+print(d[<span class="number">0</span>])
+
+<span class="comment">## 输出: '1'</span>
+
+print(d[<span class="number">-1</span>])
+
+<span class="comment">## 输出: '3'</span></code></pre>
+<p>你可以从两端取出(pop)数据：</p>
+<pre><code class="python">d = deque(range(<span class="number">5</span>))
+print(len(d))
+
+<span class="comment">## 输出: 5</span>
+
+d.popleft()
+
+<span class="comment">## 输出: 0</span>
+
+d.pop()
+
+<span class="comment">## 输出: 4</span>
+
+print(d)
+
+<span class="comment">## 输出: deque([1, 2, 3])</span></code></pre>
+<p>我们也可以限制这个列表的大小，当超出你设定的限制时，数据会从对队列另一端被挤出去(pop)。<br>最好的解释是给出一个例子：</p>
+<pre><code class="python">d = deque(maxlen=<span class="number">30</span>)</code></pre>
+<p>现在当你插入30条数据时，最左边一端的数据将从队列中删除。</p>
+<p>你还可以从任一端扩展这个队列中的数据：</p>
+<pre><code class="python">d = deque([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])
+d.extendleft([<span class="number">0</span>])
+d.extend([<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>])
+print(d)
+
+<span class="comment">## 输出: deque([0, 1, 2, 3, 4, 5, 6, 7, 8])</span></code></pre>
+<h1 id="namedtuple"><a href="#namedtuple" class="headerlink" title="namedtuple"></a>namedtuple</h1><p>您可能已经熟悉元组。<br>一个元组是一个不可变的列表，你可以存储一个数据的序列，它和命名元组(<code>namedtuples</code>)非常像，但有几个关键的不同。<br>主要相似点是都不像列表，你不能修改元组中的数据。为了获取元组中的数据，你需要使用整数作为索引：</p>
+<pre><code class="python">man = (<span class="string">'Ali'</span>, <span class="number">30</span>)
+print(man[<span class="number">0</span>])
+
+<span class="comment">## 输出: Ali</span></code></pre>
+<p>嗯，那<code>namedtuples</code>是什么呢？它把元组变成一个针对简单任务的容器。你不必使用整数索引来访问一个<code>namedtuples</code>的数据。你可以像字典(<code>dict</code>)一样访问<code>namedtuples</code>，但<code>namedtuples</code>是不可变的。</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple
+
+Animal = namedtuple(<span class="string">'Animal'</span>, <span class="string">'name age type'</span>)
+perry = Animal(name=<span class="string">"perry"</span>, age=<span class="number">31</span>, type=<span class="string">"cat"</span>)
+
+print(perry)
+
+<span class="comment">## 输出: Animal(name='perry', age=31, type='cat')</span>
+
+print(perry.name)
+
+<span class="comment">## 输出: 'perry'</span></code></pre>
+<p>现在你可以看到，我们可以用名字来访问<code>namedtuple</code>中的数据。我们再继续分析它。一个命名元组(<code>namedtuple</code>)有两个必需的参数。它们是元组名称和字段名称。</p>
+<p>在上面的例子中，我们的元组名称是<code>Animal</code>，字段名称是’name’，’age’和’type’。<br><code>namedtuple</code>让你的元组变得<strong>自文档</strong>了。你只要看一眼就很容易理解代码是做什么的。<br>你也不必使用整数索引来访问一个命名元组，这让你的代码更易于维护。<br>而且，<strong><code>namedtuple</code>的每个实例没有对象字典</strong>，所以它们很轻量，与普通的元组比，并不需要更多的内存。这使得它们比字典更快。</p>
+<p>然而，要记住它是一个元组，属性值在<code>namedtuple</code>中是不可变的，所以下面的代码不能工作：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple
+
+Animal = namedtuple(<span class="string">'Animal'</span>, <span class="string">'name age type'</span>)
+perry = Animal(name=<span class="string">"perry"</span>, age=<span class="number">31</span>, type=<span class="string">"cat"</span>)
+perry.age = <span class="number">42</span>
+
+<span class="comment">## 输出:</span>
+<span class="comment">## Traceback (most recent call last):</span>
+<span class="comment">##     File "", line 1, in</span>
+<span class="comment">## AttributeError: can't set attribute</span></code></pre>
+<p>你应该使用命名元组来让代码<strong>自文档</strong>，<strong>它们向后兼容于普通的元组</strong>，这意味着你可以既使用整数索引，也可以使用名称来访问<code>namedtuple</code>：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple
+
+Animal = namedtuple(<span class="string">'Animal'</span>, <span class="string">'name age type'</span>)
+perry = Animal(name=<span class="string">"perry"</span>, age=<span class="number">31</span>, type=<span class="string">"cat"</span>)
+print(perry[<span class="number">0</span>])
+
+<span class="comment">## 输出: perry</span></code></pre>
+<p>最后，你可以将一个命名元组转换为字典，方法如下：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple
+
+Animal = namedtuple(<span class="string">'Animal'</span>, <span class="string">'name age type'</span>)
+perry = Animal(name=<span class="string">"Perry"</span>, age=<span class="number">31</span>, type=<span class="string">"cat"</span>)
+print(perry._asdict())
+
+<span class="comment">## 输出: OrderedDict([('name', 'Perry'), ('age', 31), ...</span></code></pre>
+<h1 id="enum-Enum-Python-3-4"><a href="#enum-Enum-Python-3-4" class="headerlink" title="enum.Enum (Python 3.4+)"></a>enum.Enum (Python 3.4+)</h1><p>另一个有用的容器是枚举对象，它属于<code>enum</code>模块，存在于Python 3.4以上版本中（同时作为一个独立的PyPI包<code>enum34</code>供老版本使用）。Enums(枚举类型)基本上是一种组织各种东西的方式。</p>
+<p>让我们回顾一下上一个’Animal’命名元组的例子。<br>它有一个type字段，问题是，type是一个字符串。<br>那么问题来了，万一程序员输入了<code>Cat</code>，因为他按到了Shift键，或者输入了’CAT’，甚至’kitten’？</p>
+<p>枚举可以帮助我们避免这个问题，通过不使用字符串。考虑以下这个例子：</p>
+<pre><code class="python"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple
+<span class="keyword">from</span> enum <span class="keyword">import</span> Enum
+
+<span class="class"><span class="keyword">class</span> <span class="title">Species</span><span class="params">(Enum)</span>:</span>
+    cat = <span class="number">1</span>
+    dog = <span class="number">2</span>
+    horse = <span class="number">3</span>
+    aardvark = <span class="number">4</span>
+    butterfly = <span class="number">5</span>
+    owl = <span class="number">6</span>
+    platypus = <span class="number">7</span>
+    dragon = <span class="number">8</span>
+    unicorn = <span class="number">9</span>
+    <span class="comment"># 依次类推</span>
+
+    <span class="comment"># 但我们并不想关心同一物种的年龄，所以我们可以使用一个别名</span>
+    kitten = <span class="number">1</span>  <span class="comment"># (译者注：幼小的猫咪)</span>
+    puppy = <span class="number">2</span>   <span class="comment"># (译者注：幼小的狗狗)</span>
+
+Animal = namedtuple(<span class="string">'Animal'</span>, <span class="string">'name age type'</span>)
+perry = Animal(name=<span class="string">"Perry"</span>, age=<span class="number">31</span>, type=Species.cat)
+drogon = Animal(name=<span class="string">"Drogon"</span>, age=<span class="number">4</span>, type=Species.dragon)
+tom = Animal(name=<span class="string">"Tom"</span>, age=<span class="number">75</span>, type=Species.cat)
+charlie = Animal(name=<span class="string">"Charlie"</span>, age=<span class="number">2</span>, type=Species.kitten)</code></pre>
+<h2 id="现在，我们进行一些测试："><a href="#现在，我们进行一些测试：" class="headerlink" title="现在，我们进行一些测试："></a>现在，我们进行一些测试：</h2><pre><code class="python"><span class="meta">&gt;&gt;&gt; </span>charlie.type == tom.type
+<span class="literal">True</span>
+<span class="meta">&gt;&gt;&gt; </span>charlie.type
+&lt;Species.cat: <span class="number">1</span>&gt;</code></pre>
+<p>这样就没那么容易错误，我们必须更明确，而且我们应该只使用定义后的枚举类型。</p>
+<p>有三种方法访问枚举数据，例如以下方法都可以获取到’cat’的值：</p>
+<pre><code class="python">Species(<span class="number">1</span>)
+Species[<span class="string">'cat'</span>]
+Species.cat</code></pre>
+<p>这只是一个快速浏览<code>collections</code>模块的介绍，建议你阅读本文最后的官方文档。</p>

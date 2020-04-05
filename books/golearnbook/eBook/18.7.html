@@ -1,0 +1,42 @@
+<h1 id="18-7-文件"><a href="#18-7-文件" class="headerlink" title="18.7 文件"></a>18.7 文件</h1><p>（1）如何打开一个文件并读取：</p>
+<pre><code class="go">file, err := os.Open(<span class="string">"input.dat"</span>)
+  <span class="keyword">if</span> err != <span class="literal">nil</span> {
+    fmt.Printf(<span class="string">"An error occurred on opening the inputfile\n"</span> +
+      <span class="string">"Does the file exist?\n"</span> +
+      <span class="string">"Have you got acces to it?\n"</span>)
+    <span class="keyword">return</span>
+  }
+  <span class="keyword">defer</span> file.Close()
+  iReader := bufio.NewReader(file)
+  <span class="keyword">for</span> {
+    str, err := iReader.ReadString(<span class="string">'\n'</span>)
+    <span class="keyword">if</span> err != <span class="literal">nil</span> {
+      <span class="keyword">return</span> <span class="comment">// error or EOF</span>
+    }
+    fmt.Printf(<span class="string">"The input was: %s"</span>, str)
+  }</code></pre>
+<p>（2）如何通过切片读写文件：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">cat</span><span class="params">(f *file.File)</span></span> {
+  <span class="keyword">const</span> NBUF = <span class="number">512</span>
+  <span class="keyword">var</span> buf [NBUF]<span class="keyword">byte</span>
+  <span class="keyword">for</span> {
+    <span class="keyword">switch</span> nr, er := f.Read(buf[:]); <span class="literal">true</span> {
+    <span class="keyword">case</span> nr &lt; <span class="number">0</span>:
+      fmt.Fprintf(os.Stderr, <span class="string">"cat: error reading from %s: %s\n"</span>,
+        f.String(), er.String())
+      os.Exit(<span class="number">1</span>)
+    <span class="keyword">case</span> nr == <span class="number">0</span>: <span class="comment">// EOF</span>
+      <span class="keyword">return</span>
+    <span class="keyword">case</span> nr &gt; <span class="number">0</span>:
+      <span class="keyword">if</span> nw, ew := file.Stdout.Write(buf[<span class="number">0</span>:nr]); nw != nr {
+        fmt.Fprintf(os.Stderr, <span class="string">"cat: error writing from %s: %s\n"</span>,
+          f.String(), ew.String())
+      }
+    }
+  }
+}</code></pre>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="18.6.md">函数</a></li>
+<li>下一节：<a href="18.8.md">协程（goroutine）与通道（channel）</a></li>
+</ul>

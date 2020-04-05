@@ -1,0 +1,15 @@
+<h3 id="4-4-2-结构体比较"><a href="#4-4-2-结构体比较" class="headerlink" title="4.4.2. 结构体比较"></a>4.4.2. 结构体比较</h3><p>如果结构体的全部成员都是可以比较的，那么结构体也是可以比较的，那样的话两个结构体将可以使用==或!=运算符进行比较。相等比较运算符==将比较两个结构体的每个成员，因此下面两个比较的表达式是等价的：</p>
+<pre><code class="Go"><span class="keyword">type</span> Point <span class="keyword">struct</span>{ X, Y <span class="keyword">int</span> }
+
+p := Point{<span class="number">1</span>, <span class="number">2</span>}
+q := Point{<span class="number">2</span>, <span class="number">1</span>}
+fmt.Println(p.X == q.X &amp;&amp; p.Y == q.Y) <span class="comment">// "false"</span>
+fmt.Println(p == q)                   <span class="comment">// "false"</span></code></pre>
+<p>可比较的结构体类型和其他可比较的类型一样，可以用于map的key类型。</p>
+<pre><code class="Go"><span class="keyword">type</span> address <span class="keyword">struct</span> {
+    hostname <span class="keyword">string</span>
+    port     <span class="keyword">int</span>
+}
+
+hits := <span class="built_in">make</span>(<span class="keyword">map</span>[address]<span class="keyword">int</span>)
+hits[address{<span class="string">"golang.org"</span>, <span class="number">443</span>}]++</code></pre>

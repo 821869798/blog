@@ -1,0 +1,14 @@
+<h1 id="Python-3-2及以后版本"><a href="#Python-3-2及以后版本" class="headerlink" title="Python 3.2及以后版本"></a>Python 3.2及以后版本</h1><p>我们来实现一个斐波那契计算器，并使用<code>lru_cache</code>。</p>
+<pre><code class="python"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache
+
+<span class="meta">@lru_cache(maxsize=32)</span>
+<span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span>
+    <span class="keyword">if</span> n &lt; <span class="number">2</span>:
+        <span class="keyword">return</span> n
+    <span class="keyword">return</span> fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>)
+
+<span class="meta">&gt;&gt;&gt; </span>print([fib(n) <span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">10</span>)])
+<span class="comment"># Output: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]</span></code></pre>
+<p>那个<code>maxsize</code>参数是告诉<code>lru_cache</code>，最多缓存最近多少个返回值。</p>
+<p>我们也可以轻松地对返回值清空缓存，通过这样：</p>
+<pre><code class="python">fib.cache_clear()</code></pre>

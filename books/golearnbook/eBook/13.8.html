@@ -1,0 +1,91 @@
+<h1 id="13-8-测试的具体例子"><a href="#13-8-测试的具体例子" class="headerlink" title="13.8 测试的具体例子"></a>13.8 测试的具体例子</h1><p>在练习 9.4 中你写了一个叫 <a href="exercises/chapter_9/main_oddeven.go">main_oddeven.go</a> 的程序用来测试前 100 个整数是否是偶数。这个函数属于 even 包。</p>
+<p>下面是一种可能的方案：</p>
+<p>示例 13.7 <a href="examples/chapter_13/even/even_main/even_main.go">even_main.go</a>：</p>
+<pre><code class="go"><span class="keyword">package</span> main
+
+<span class="keyword">import</span> (
+    <span class="string">"fmt"</span>
+    <span class="string">"even/even"</span>
+)
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    <span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;=<span class="number">100</span>; i++ {
+        fmt.Printf(<span class="string">"Is the integer %d even? %v\n"</span>, i, even.Even(i))
+    }
+}</code></pre>
+<p>上面使用了 even.go 中的 even 包：</p>
+<p>示例 13.8 <a href="examples/chapter_13/even/even/even.go">even/even.go</a>：</p>
+<pre><code class="go"><span class="keyword">package</span> even
+
+<span class="function"><span class="keyword">func</span> <span class="title">Even</span><span class="params">(i <span class="keyword">int</span>)</span> <span class="title">bool</span></span> {        <span class="comment">// Exported function</span>
+    <span class="keyword">return</span> i%<span class="number">2</span> == <span class="number">0</span>
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">Odd</span><span class="params">(i <span class="keyword">int</span>)</span> <span class="title">bool</span></span> {        <span class="comment">// Exported function</span>
+    <span class="keyword">return</span> i%<span class="number">2</span> != <span class="number">0</span>
+}</code></pre>
+<p>在 even 包的路径下，我们创建一个名为 oddeven_test.go 的测试程序：</p>
+<p>示例 13.9 <a href="examples/chapter_13/even/even/oddeven_test.go">even/oddeven_test.go</a>：</p>
+<pre><code class="go"><span class="keyword">package</span> even
+
+<span class="keyword">import</span> <span class="string">"testing"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">TestEven</span><span class="params">(t *testing.T)</span></span> {
+    <span class="keyword">if</span> !Even(<span class="number">10</span>) {
+        t.Log(<span class="string">" 10 must be even!"</span>)
+        t.Fail()
+    }
+    <span class="keyword">if</span> Even(<span class="number">7</span>) {
+        t.Log(<span class="string">" 7 is not even!"</span>)
+        t.Fail()
+    }
+
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">TestOdd</span><span class="params">(t *testing.T)</span></span> {
+    <span class="keyword">if</span> !Odd(<span class="number">11</span>) {
+        t.Log(<span class="string">" 11 must be odd!"</span>)
+        t.Fail()
+    }
+    <span class="keyword">if</span> Odd(<span class="number">10</span>) {
+        t.Log(<span class="string">" 10 is not odd!"</span>)
+        t.Fail()
+    }
+}</code></pre>
+<p>由于测试需要具体的输入用例且不可能测试到所有的用例（非常像一个无穷的数），所以我们必须对要使用的测试用例思考再三。</p>
+<p>至少应该包括：</p>
+<ul>
+<li>正常的用例</li>
+<li>反面的用例（错误的输入，如用负数或字母代替数字，没有输入等）</li>
+<li>边界检查用例（如果参数的取值范围是 0 到 1000，检查 0 和 1000 的情况）</li>
+</ul>
+<p>可以直接执行 go install 安装 even 或者创建一个 以下内容的 Makefile：</p>
+<pre><code class="bash">include $(GOROOT)/src/Make.inc
+TARG=even
+GOFILES=\
+       even.go\
+include $(GOROOT)/src/Make.pkg</code></pre>
+<p>然后执行 make（或 gomake）命令来构建归档文件 even.a</p>
+<p>测试代码不能在 GOFILES 参数中引用，因为我们不希望生成的程序中有测试代码。如果包含了测试代码，go test 会给出错误提示！go test 会生成一个单独的包含测试代码的 <code>_test</code> 程序。</p>
+<p>现在我们可以用命令：<code>go test</code>（或 <code>make test</code>）来测试 even 包。</p>
+<p>因为示例 13.5 中的测试函数不会调用 t.Log 和 t.Fail，所以会得到一个 PASS 的结果。在这个简单例子中一切都正常执行。</p>
+<p>为了看到失败时的输出，把函数 TestEven 改为：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">TestEven</span><span class="params">(t *testing.T)</span></span> {
+    <span class="keyword">if</span> Even(<span class="number">10</span>) {
+        t.Log(“Everything OK: <span class="number">10</span> is even, just a test to see failed output!”)
+        t.Fail()
+     }
+}</code></pre>
+<p>现在会调用 t.Log 和 t.Fail，得到的结果如下：</p>
+<pre><code class="go">--- FAIL: even.TestEven (<span class="number">0.00</span> seconds)
+Everything OK: <span class="number">10</span> is even, just a test to see failed output!
+FAIL</code></pre>
+<p><strong>练习 13.4：</strong><a href="exercises/chapter_13/string_reverse_test.go">string_reverse_test.go</a></p>
+<p>为练习 7.11 <a href="exercises/chapter_7/string_reverse.go">string_reverse.go</a> 写一个单元测试。</p>
+<p>把 string_reverse 放到自己的包 strev 中，只包含一个可导出函数 reverse。</p>
+<p>实现并测试它。</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="13.7.md">Go 中的单元测试和基准测试</a></li>
+<li>下一节：<a href="13.9.md">用（测试数据）表驱动测试</a></li>
+</ul>

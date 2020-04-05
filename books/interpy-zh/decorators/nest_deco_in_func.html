@@ -1,0 +1,32 @@
+<h1 id="在函数中嵌入装饰器"><a href="#在函数中嵌入装饰器" class="headerlink" title="在函数中嵌入装饰器"></a>在函数中嵌入装饰器</h1><p>我们回到日志的例子，并创建一个包裹函数，能让我们指定一个用于输出的日志文件。</p>
+<pre><code class="python"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps
+
+<span class="function"><span class="keyword">def</span> <span class="title">logit</span><span class="params">(logfile=<span class="string">'out.log'</span>)</span>:</span>
+    <span class="function"><span class="keyword">def</span> <span class="title">logging_decorator</span><span class="params">(func)</span>:</span>
+<span class="meta">        @wraps(func)</span>
+        <span class="function"><span class="keyword">def</span> <span class="title">wrapped_function</span><span class="params">(*args, **kwargs)</span>:</span>
+            log_string = func.__name__ + <span class="string">" was called"</span>
+            print(log_string)
+            <span class="comment"># 打开logfile，并写入内容</span>
+            <span class="keyword">with</span> open(logfile, <span class="string">'a'</span>) <span class="keyword">as</span> opened_file:
+                <span class="comment"># 现在将日志打到指定的logfile</span>
+                opened_file.write(log_string + <span class="string">'\n'</span>)
+            <span class="keyword">return</span> func(*args, **kwargs)
+        <span class="keyword">return</span> wrapped_function
+    <span class="keyword">return</span> logging_decorator
+
+<span class="meta">@logit()</span>
+<span class="function"><span class="keyword">def</span> <span class="title">myfunc1</span><span class="params">()</span>:</span>
+    <span class="keyword">pass</span>
+
+myfunc1()
+<span class="comment"># Output: myfunc1 was called</span>
+<span class="comment"># 现在一个叫做 out.log 的文件出现了，里面的内容就是上面的字符串</span>
+
+<span class="meta">@logit(logfile='func2.log')</span>
+<span class="function"><span class="keyword">def</span> <span class="title">myfunc2</span><span class="params">()</span>:</span>
+    <span class="keyword">pass</span>
+
+myfunc2()
+<span class="comment"># Output: myfunc2 was called</span>
+<span class="comment"># 现在一个叫做 func2.log 的文件出现了，里面的内容就是上面的字符串</span></code></pre>

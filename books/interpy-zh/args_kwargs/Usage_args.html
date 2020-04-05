@@ -1,0 +1,15 @@
+<h1 id="args-的用法"><a href="#args-的用法" class="headerlink" title="*args 的用法"></a>*args 的用法</h1><p><code>*args</code> 和 <code>**kwargs</code> 主要用于函数定义。 你可以将不定数量的参数传递给一个函数。 </p>
+<p>这里的不定的意思是：预先并不知道, 函数使用者会传递多少个参数给你, 所以在这个场景下使用这两个关键字。 <code>*args</code> 是用来发送一个非键值对的可变数量的参数列表给一个函数. </p>
+<p>这里有个例子帮你理解这个概念:</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">test_var_args</span><span class="params">(f_arg, *argv)</span>:</span>
+    print(<span class="string">"first normal arg:"</span>, f_arg)
+    <span class="keyword">for</span> arg <span class="keyword">in</span> argv:
+        print(<span class="string">"another arg through *argv:"</span>, arg)
+
+test_var_args(<span class="string">'yasoob'</span>, <span class="string">'python'</span>, <span class="string">'eggs'</span>, <span class="string">'test'</span>)</code></pre>
+<p>这会产生如下输出:</p>
+<pre><code class="python">first normal arg: yasoob
+another arg through *argv: python
+another arg through *argv: eggs
+another arg through *argv: test</code></pre>
+<p>我希望这解决了你所有的困惑. 那接下来让我们谈谈 <code>**kwargs</code></p>

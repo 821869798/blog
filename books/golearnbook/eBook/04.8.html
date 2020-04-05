@@ -1,0 +1,43 @@
+<h1 id="4-8-时间和日期"><a href="#4-8-时间和日期" class="headerlink" title="4.8 时间和日期"></a>4.8 时间和日期</h1><p><code>time</code> 包为我们提供了一个数据类型 <code>time.Time</code>（作为值使用）以及显示和测量时间和日期的功能函数。</p>
+<p>当前时间可以使用 <code>time.Now()</code> 获取，或者使用 <code>t.Day()</code>、<code>t.Minute()</code> 等等来获取时间的一部分；你甚至可以自定义时间格式化字符串，例如： <code>fmt.Printf(&quot;%02d.%02d.%4d\n&quot;, t.Day(), t.Month(), t.Year())</code> 将会输出 <code>21.07.2011</code>。</p>
+<p>Duration 类型表示两个连续时刻所相差的纳秒数，类型为 int64。Location 类型映射某个时区的时间，UTC 表示通用协调世界时间。</p>
+<p>包中的一个预定义函数 <code>func (t Time) Format(layout string) string</code> 可以根据一个格式化字符串来将一个时间 t 转换为相应格式的字符串，你可以使用一些预定义的格式，如：<code>time.ANSIC</code> 或 <code>time.RFC822</code>。 </p>
+<p>一般的格式化设计是通过对于一个标准时间的格式化描述来展现的，这听起来很奇怪，但看下面这个例子你就会一目了然：</p>
+<pre><code class="go">fmt.Println(t.Format(<span class="string">"02 Jan 2006 15:04"</span>)) </code></pre>
+<p>输出：</p>
+<pre><code>21 Jul 2011 10:31</code></pre><p>其它有关时间操作的文档请参阅 <a href="http://golang.org/pkg/time/">官方文档</a>（ <strong>译者注：国内用户可访问 <a href="http://docs.studygolang.com/pkg/time/">该页面</a></strong> ）。</p>
+<p>示例 4.20 <a href="examples/chapter_4/time.go">time.go</a></p>
+<pre><code class="go"><span class="keyword">package</span> main
+<span class="keyword">import</span> (
+    <span class="string">"fmt"</span>
+    <span class="string">"time"</span>
+)
+
+<span class="keyword">var</span> week time.Duration
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    t := time.Now()
+    fmt.Println(t) <span class="comment">// e.g. Wed Dec 21 09:52:14 +0100 RST 2011</span>
+    fmt.Printf(<span class="string">"%02d.%02d.%4d\n"</span>, t.Day(), t.Month(), t.Year())
+    <span class="comment">// 21.12.2011</span>
+    t = time.Now().UTC()
+    fmt.Println(t) <span class="comment">// Wed Dec 21 08:52:14 +0000 UTC 2011</span>
+    fmt.Println(time.Now()) <span class="comment">// Wed Dec 21 09:52:14 +0100 RST 2011</span>
+    <span class="comment">// calculating times:</span>
+    week = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">7</span> * <span class="number">1e9</span> <span class="comment">// must be in nanosec</span>
+    week_from_now := t.Add(week)
+    fmt.Println(week_from_now) <span class="comment">// Wed Dec 28 08:52:14 +0000 UTC 2011</span>
+    <span class="comment">// formatting times:</span>
+    fmt.Println(t.Format(time.RFC822)) <span class="comment">// 21 Dec 11 0852 UTC</span>
+    fmt.Println(t.Format(time.ANSIC)) <span class="comment">// Wed Dec 21 08:56:34 2011</span>
+    fmt.Println(t.Format(<span class="string">"02 Jan 2006 15:04"</span>)) <span class="comment">// 21 Dec 2011 08:52</span>
+    s := t.Format(<span class="string">"20060102"</span>)
+    fmt.Println(t, <span class="string">"=&gt;"</span>, s)
+    <span class="comment">// Wed Dec 21 08:52:14 +0000 UTC 2011 =&gt; 20111221</span>
+}</code></pre>
+<p>输出的结果已经写在每行 <code>//</code> 的后面。</p>
+<p>如果你需要在应用程序在经过一定时间或周期执行某项任务（事件处理的特例），则可以使用 <code>time.After</code> 或者 <code>time.Ticker</code>：我们将会在第 14.5 节讨论这些有趣的事情。 另外，<code>time.Sleep（Duration d）</code> 可以实现对某个进程（实质上是 goroutine）时长为 d 的暂停。</p>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="04.7.md">strings 和 strconv 包</a></li>
+<li>下一节：<a href="04.9.md">指针</a></li>
+</ul>

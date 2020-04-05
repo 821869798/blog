@@ -1,0 +1,26 @@
+<h1 id="在函数中定义函数"><a href="#在函数中定义函数" class="headerlink" title="在函数中定义函数"></a>在函数中定义函数</h1><p>刚才那些就是函数的基本知识了。我们来让你的知识更进一步。在Python中我们可以在一个函数中定义另一个函数：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">hi</span><span class="params">(name=<span class="string">"yasoob"</span>)</span>:</span>
+    print(<span class="string">"now you are inside the hi() function"</span>)
+
+    <span class="function"><span class="keyword">def</span> <span class="title">greet</span><span class="params">()</span>:</span>
+        <span class="keyword">return</span> <span class="string">"now you are in the greet() function"</span>
+
+    <span class="function"><span class="keyword">def</span> <span class="title">welcome</span><span class="params">()</span>:</span>
+        <span class="keyword">return</span> <span class="string">"now you are in the welcome() function"</span>
+
+    print(greet())
+    print(welcome())
+    print(<span class="string">"now you are back in the hi() function"</span>)
+
+hi()
+<span class="comment">#output:now you are inside the hi() function</span>
+<span class="comment">#       now you are in the greet() function</span>
+<span class="comment">#       now you are in the welcome() function</span>
+<span class="comment">#       now you are back in the hi() function</span>
+
+<span class="comment"># 上面展示了无论何时你调用hi(), greet()和welcome()将会同时被调用。</span>
+<span class="comment"># 然后greet()和welcome()函数在hi()函数之外是不能访问的，比如：</span>
+
+greet()
+<span class="comment">#outputs: NameError: name 'greet' is not defined</span></code></pre>
+<p>那现在我们知道了可以在函数中定义另外的函数。也就是说：我们可以创建嵌套的函数。现在你需要再多学一点，就是函数也能返回函数。</p>

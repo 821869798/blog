@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title><![CDATA[关于UnityEditor.Selection的坑]]></title>
+    <url>%2F2020%2F04%2F05%2F%E5%85%B3%E4%BA%8ESelection%E7%9A%84%E5%9D%91%2F</url>
+    <content type="text"><![CDATA[问题介绍在使用UnityEditor.Selection.objects的时候在Project面板的双栏布局下的左侧面板中选中文件夹，会出现明明已经选中了，但是Selection.objects得到的是空的。 解决方法经过调试发现使用Selection.assetGUIDs可以兼容这种情况 12345678910foreach (var obj in Selection.assetGUIDs)&#123; string path = AssetDatabase.GUIDToAssetPath(obj); //如果是文件夹才处理 if (Directory.Exists(path)) &#123; var characterName = Path.GetFileName(path).ToLower(); animatorGenerator.GenerateController(path, characterName); &#125;&#125;]]></content>
+      <categories>
+        <category>Unity</category>
+      </categories>
+      <tags>
+        <tag>Unity</tag>
+        <tag>UnityEditor</tag>
+        <tag>Editor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[UnityHub破解]]></title>
+    <url>%2F2019%2F07%2F27%2FUnityHub%E7%A0%B4%E8%A7%A3%2F</url>
+    <content type="text"><![CDATA[准备 安装UnityHub 安装nodejs 点击下载UnityHub 点击下载nodejs 10.15.3 长期支持版 修改安装nodejs后执行以下命令 npm install -g asar 打开UnityHub安装目录，如C:\Program Files\Unity Hub\resources点击文件–&gt;打开Windows PowerShell,执行以下命令解压app.asar asar extract .\app.asar app 解压后删除app.asar 修改Unity Hub\resources\app\src\services\licenseService\licenseClient.js 12345678910getLicenseInfo(callback) &#123; // load license // get latest data from licenseCore //licenseInfo.activated = licenseCore.getLicenseToken().length &gt; 0;//注释这行 licenseInfo.activated = true;//新增这行 licenseInfo.flow = licenseCore.getLicenseKind(); licenseInfo.label = licenseCore.getLicenseKind(true); licenseInfo.offlineDisabled = licenseCore.offlineDisabled; licenseInfo.transactionId = licenseCore.getTransactionId();&#125; Unity Hub\resources\app\src\services\licenseService\licenseCore.js 12345678910verifyLicenseData(xml, newfile = false) &#123; return new Promise((resolve, reject) =&gt; &#123; resolve(true);//新增这行 if (xml === '') &#123; this.licenseStatus = LICENSE_STATUS.kLicenseErrorFlag_NoLicense; reject(); return; &#125; &#125;&#125;]]></content>
+      <categories>
+        <category>Unity</category>
+      </categories>
+      <tags>
+        <tag>Unity</tag>
+        <tag>UnityHub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[centos云服务器配置]]></title>
+    <url>%2F2017%2F06%2F08%2Fcentos%2F</url>
+    <content type="text"><![CDATA[Centos服务器配置必装软件 nethogs 网速监控 screen 后台运行 lrzsz 上传下载 htop 进程管理 更改系统编码为中文 vim /etc/profile 在文件最后加上 12export LC_ALL="zh_CN.UTF-8" export LANG="zh_CN.UTF-8" source /etc/profile 立即生效 echo $LANG 显示默认编码 安装gcc,g++12yum install python34-develyum install python-devel 安装python3.4和pip3.4 添加epel源 1yum install epel-release 安装Python3.4 1yum install python34 安装pip3 12yum install python34-setuptoolseasy_install-3.4 -i https://pypi.tuna.tsinghua.edu.cn/simple pip 之后就可以使用pip3了,例如： 1pip3 install requests pip还源加速Linux下，修改 ~/.pip/pip.conf (没有就创建一个)， 修改内容如下： 12[global] index-url = https://pypi.tuna.tsinghua.edu.cn/simple 安装mono123rpm --import &quot;http://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF&quot; yum-config-manager --add-repo http://download.mono-project.com/repo/centos/ （yum -y install yum-utils）yum -y install mono-complete 安装jdk 安装 1rpm -ivh jdk.rpm 环境变量 1vim /etc/profile 加入内容如下： 1234export JAVA_HOME=/usr/local/jdk1.8.0_131CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/libexport PATH=$JAVA_HOME/bin:$PATHsource /etc/profile]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Centos</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[ArchLinux系统安装过程]]></title>
+    <url>%2F2017%2F06%2F08%2Farch_install%2F</url>
+    <content type="text"><![CDATA[arch安装配置过程安装 分区，使用fdisk ，使用mkfs.ext4格式化分区后的磁盘 测试网络 1ping -c 4 http://www.baidu.com 更改系统源 1234cd /etc/pacman.dsed -i &quot;s/^\b/#/g&quot; mirrorlist vim mirrorlist然后把163开头的#去掉 安装系统基础 1234pacman -Syypacstrap /mnt base base-develgenfstab -U -p /mnt &gt;&gt;/mnt/etc/fstabarch-chroot /mnt /bin/bash 编码和时区 1vim /etc/locale.gen 内容大致修改为： 123en_US.UTF-8 UTF-8zh_CN.UTF-8 UTF-8zh_TW.UTF-8 UTF-8 设置 1234locale-genecho LANG=en_US.UTF-8 &gt; /etc/locale.confln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtimehwclock --systohc --utc 设置主机名： 1echo archlinuxpc &gt; /etc/hostname 设置自动连接有线网络 12systemctl start dhcpcdsystemctl enable dhcpcd 更改密码,添加用户 修改root密码 1passwd 添加用户 12useradd -m -g users -G wheel -s /bin/bash 用户名passwd 用户名 添加sudo 1vim /etc/sudoers 添加引导 对于UEFI: 1234567mkdir -p /mnt/boot/EFI (创建UEFI挂载点)mount /dev/sdX(Y) /mnt/boot/efi (挂载UEFI分区，一般情况下使用靠前的分区)pacman -S dosfstools efibootmgrpacman -S grubpacman -S os-probergrub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=arch_grub --recheckgrub-mkconfig -o /boot/grub/grub.cfg 对于bios 123pacman -S grubgrub-install /dev/sda --forcegrub-mkconfig -o /boot/grub/grub.cfg 退出安装 退出前先安装wifi123456pacman -S dialog (wifi-menu)exitpacman -S dialogumount /mnt/&#123;home,boot&#125; umount /mnt reboot 安装驱动 声卡驱动 12pacman -S alsa-utilsalsamixer #调节音量 安装intel核显 1pacman -S mesa xf86-video-intel 其他驱动 12pacman -S xf86-input-synapticspacman -S xorg xorg-server xorg-xinit xorg-utils xorg-server-utils 常用安装 常用软件安装 1pacman -S fcitx fcitx-qt unrar p7zip cpio zip unzip leafpad xarchiver firefox firefox-i18n-zh-cn flashplugin 安装常用字体： 1pacman -S ttf-dejavu wqy-zenhei wqy-microhei 安装gnome桌面 12pacman -S gdm gnome gnome-extrasystemctl enable gdm 安装ntfs磁盘读写 1sudo pacman -S ntfs-3g 使用网络管理 1systemctl enable NetworkManager wifi热点 1sudo pacman -S dnsmasq 常用配置 输入法配置1vim ~/.profile 修改为 123456export XIM=fcitxexport XMODIFIERS=&quot;@im=fcitx&quot;export GTK_IM_MODULE=fcitxexport QT_IM_MODULE=fcitxexport XIM_PROGRAM=fcitxfcitx &amp; 挂载硬盘不用密码1vim /usr/share/polkit-1/actions/org.freedesktop.udisks2.policy 把与id=”org.freedesktop.udisks2.filesystem-mount-system”中auth_admin_keep改为yes]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>ArchLinux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[VSCode配置执行python]]></title>
+    <url>%2F2017%2F06%2F08%2Fvscode%2F</url>
+    <content type="text"><![CDATA[VSCode 配置键盘快捷键12345[ &#123; "key": "ctrl+'", "command": "workbench.action.tasks.terminate" &#125;, &#123; "key":"ctrl+b", "command": "workbench.action.tasks.build"&#125;, &#123; "key":"ctrl+shift+b", "command": "workbench.action.toggleSidebarVisibility"&#125;] 执行python1234567891011121314151617task.json&#123; // See https://go.microsoft.com/fwlink/?LinkId=733558 // for the documentation about the tasks.json format "version": "0.1.0", "command": "E:/MyProgram/python/python.exe", "isShellCommand": true, "args": [ "$&#123;file&#125;" ], "showOutput": "always", "options": &#123; "env": &#123; "PYTHONIOENCODING": "UTF-8" &#125; &#125;&#125;]]></content>
+      <categories>
+        <category>Tools</category>
+      </categories>
+      <tags>
+        <tag>Tools</tag>
+      </tags>
+  </entry>
+</search>

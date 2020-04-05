@@ -1,0 +1,10 @@
+<h1 id="什么时候使用它们？"><a href="#什么时候使用它们？" class="headerlink" title="什么时候使用它们？"></a>什么时候使用它们？</h1><p>这还真的要看你的需求而定。</p>
+<p>最常见的用例是在写函数装饰器的时候（会在另一章里讨论）。</p>
+<p>此外它也可以用来做猴子补丁(monkey patching)。猴子补丁的意思是在程序运行时(runtime)修改某些代码。 打个比方，你有一个类，里面有个叫<code>get_info</code>的函数会调用一个API并返回相应的数据。如果我们想测试它，可以把API调用替换成一些测试数据。例如：</p>
+<pre><code class="python"><span class="keyword">import</span> someclass
+
+<span class="function"><span class="keyword">def</span> <span class="title">get_info</span><span class="params">(self, *args)</span>:</span>
+    <span class="keyword">return</span> <span class="string">"Test data"</span>
+
+someclass.get_info = get_info</code></pre>
+<p>我敢肯定你也可以想象到一些其他的用例。</p>

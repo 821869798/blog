@@ -1,0 +1,22 @@
+<h1 id="一切皆对象"><a href="#一切皆对象" class="headerlink" title="一切皆对象"></a>一切皆对象</h1><p>首先我们来理解下Python中的函数</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">hi</span><span class="params">(name=<span class="string">"yasoob"</span>)</span>:</span>
+    <span class="keyword">return</span> <span class="string">"hi "</span> + name
+
+print(hi())
+<span class="comment"># output: 'hi yasoob'</span>
+
+<span class="comment"># 我们甚至可以将一个函数赋值给一个变量，比如</span>
+greet = hi
+<span class="comment"># 我们这里没有在使用小括号，因为我们并不是在调用hi函数</span>
+<span class="comment"># 而是在将它放在greet变量里头。我们尝试运行下这个</span>
+
+print(greet())
+<span class="comment"># output: 'hi yasoob'</span>
+
+<span class="comment"># 如果我们删掉旧的hi函数，看看会发生什么！</span>
+<span class="keyword">del</span> hi
+print(hi())
+<span class="comment">#outputs: NameError</span>
+
+print(greet())
+<span class="comment">#outputs: 'hi yasoob'</span></code></pre>

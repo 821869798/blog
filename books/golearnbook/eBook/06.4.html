@@ -1,0 +1,182 @@
+<h1 id="6-4-defer-和追踪"><a href="#6-4-defer-和追踪" class="headerlink" title="6.4 defer 和追踪"></a>6.4 defer 和追踪</h1><p>关键字 defer 允许我们推迟到函数返回之前（或任意位置执行 <code>return</code> 语句之后）一刻才执行某个语句或函数（为什么要在返回之后才执行这些语句？因为 <code>return</code> 语句同样可以包含一些操作，而不是单纯地返回某个值）。</p>
+<p>关键字 defer 的用法类似于面向对象编程语言 Java 和 C# 的 <code>finally</code> 语句块，它一般用于释放某些已分配的资源。</p>
+<p>示例 6.8 <a href="examples/chapter_6/defer.go">defer.go</a>：</p>
+<pre><code class="go"><span class="keyword">package</span> main
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    function1()
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">function1</span><span class="params">()</span></span> {
+    fmt.Printf(<span class="string">"In function1 at the top\n"</span>)
+    <span class="keyword">defer</span> function2()
+    fmt.Printf(<span class="string">"In function1 at the bottom!\n"</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">function2</span><span class="params">()</span></span> {
+    fmt.Printf(<span class="string">"function2: Deferred until the end of the calling function!"</span>)
+}</code></pre>
+<p>输出：</p>
+<pre><code>In Function1 at the top
+In Function1 at the bottom!
+Function2: Deferred until the end of the calling function!</code></pre><p>请将 defer 关键字去掉并对比输出结果。</p>
+<p>使用 defer 的语句同样可以接受参数，下面这个例子就会在执行 defer 语句时打印 <code>0</code>：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> {
+    i := <span class="number">0</span>
+    <span class="keyword">defer</span> fmt.Println(i)
+    i++
+    <span class="keyword">return</span>
+}</code></pre>
+<p>当有多个 defer 行为被注册时，它们会以逆序执行（类似栈，即后进先出）：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">f</span><span class="params">()</span></span> {
+    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">5</span>; i++ {
+        <span class="keyword">defer</span> fmt.Printf(<span class="string">"%d "</span>, i)
+    }
+}</code></pre>
+<p>上面的代码将会输出：<code>4 3 2 1 0</code>。</p>
+<p>关键字 defer 允许我们进行一些函数执行完成后的收尾工作，例如：</p>
+<ol>
+<li>关闭文件流 （详见 <a href="12.2.md">第 12.2 节</a>）</li>
+</ol>
+<pre><code class="go"><span class="comment">// open a file  </span>
+<span class="keyword">defer</span> file.Close()</code></pre>
+<ol start="2">
+<li>解锁一个加锁的资源 （详见 <a href="09.3.md">第 9.3 节</a>）</li>
+</ol>
+<pre><code class="go">mu.Lock()  
+<span class="keyword">defer</span> mu.Unlock() </code></pre>
+<ol start="3">
+<li>打印最终报告</li>
+</ol>
+<pre><code class="go">printHeader()  
+<span class="keyword">defer</span> printFooter()</code></pre>
+<ol start="4">
+<li>关闭数据库链接</li>
+</ol>
+<pre><code class="go"><span class="comment">// open a database connection  </span>
+<span class="keyword">defer</span> disconnectFromDB()</code></pre>
+<p>合理使用 defer 语句能够使得代码更加简洁。</p>
+<p>以下代码模拟了上面描述的第 4 种情况：</p>
+<pre><code class="go"><span class="keyword">package</span> main
+
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    doDBOperations()
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">connectToDB</span><span class="params">()</span></span> {
+    fmt.Println(<span class="string">"ok, connected to db"</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">disconnectFromDB</span><span class="params">()</span></span> {
+    fmt.Println(<span class="string">"ok, disconnected from db"</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">doDBOperations</span><span class="params">()</span></span> {
+    connectToDB()
+    fmt.Println(<span class="string">"Defering the database disconnect."</span>)
+    <span class="keyword">defer</span> disconnectFromDB() <span class="comment">//function called here with defer</span>
+    fmt.Println(<span class="string">"Doing some DB operations ..."</span>)
+    fmt.Println(<span class="string">"Oops! some crash or network error ..."</span>)
+    fmt.Println(<span class="string">"Returning from function here!"</span>)
+    <span class="keyword">return</span> <span class="comment">//terminate the program</span>
+    <span class="comment">// deferred function executed here just before actually returning, even if</span>
+    <span class="comment">// there is a return or abnormal termination before</span>
+}</code></pre>
+<p>输出：</p>
+<pre><code>ok, connected to db
+Defering the database disconnect.
+Doing some DB operations ...
+Oops! some crash or network error ...
+Returning from function here!
+ok, disconnected from db</code></pre><p><strong>使用 defer 语句实现代码追踪</strong></p>
+<p>一个基础但十分实用的实现代码执行追踪的方案就是在进入和离开某个函数打印相关的消息，即可以提炼为下面两个函数：</p>
+<pre><code class="go"><span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="keyword">string</span>)</span></span> { fmt.Println(<span class="string">"entering:"</span>, s) }
+<span class="function"><span class="keyword">func</span> <span class="title">untrace</span><span class="params">(s <span class="keyword">string</span>)</span></span> { fmt.Println(<span class="string">"leaving:"</span>, s) }</code></pre>
+<p>以下代码展示了何时调用两个函数：</p>
+<p>示例 6.10 <a href="examples/chapter_6/defer_tracing.go">defer_tracing.go</a>:</p>
+<pre><code class="go"><span class="keyword">package</span> main
+
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="keyword">string</span>)</span></span>   { fmt.Println(<span class="string">"entering:"</span>, s) }
+<span class="function"><span class="keyword">func</span> <span class="title">untrace</span><span class="params">(s <span class="keyword">string</span>)</span></span> { fmt.Println(<span class="string">"leaving:"</span>, s) }
+
+<span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> {
+    trace(<span class="string">"a"</span>)
+    <span class="keyword">defer</span> untrace(<span class="string">"a"</span>)
+    fmt.Println(<span class="string">"in a"</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">b</span><span class="params">()</span></span> {
+    trace(<span class="string">"b"</span>)
+    <span class="keyword">defer</span> untrace(<span class="string">"b"</span>)
+    fmt.Println(<span class="string">"in b"</span>)
+    a()
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    b()
+}</code></pre>
+<p>输出：</p>
+<pre><code>entering: b
+in b
+entering: a
+in a
+leaving: a
+leaving: b</code></pre><p>上面的代码还可以修改为更加简便的版本（示例 6.11 <a href="examples/chapter_6/defer_tracing2.go">defer_tracing2.go</a>）：</p>
+<pre><code class="go"><span class="keyword">package</span> main
+
+<span class="keyword">import</span> <span class="string">"fmt"</span>
+
+<span class="function"><span class="keyword">func</span> <span class="title">trace</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> {
+    fmt.Println(<span class="string">"entering:"</span>, s)
+    <span class="keyword">return</span> s
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">un</span><span class="params">(s <span class="keyword">string</span>)</span></span> {
+    fmt.Println(<span class="string">"leaving:"</span>, s)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">a</span><span class="params">()</span></span> {
+    <span class="keyword">defer</span> un(trace(<span class="string">"a"</span>))
+    fmt.Println(<span class="string">"in a"</span>)
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">b</span><span class="params">()</span></span> {
+    <span class="keyword">defer</span> un(trace(<span class="string">"b"</span>))
+    fmt.Println(<span class="string">"in b"</span>)
+    a()
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    b()
+}</code></pre>
+<p><strong>使用 defer 语句来记录函数的参数与返回值</strong></p>
+<p>下面的代码展示了另一种在调试时使用 defer 语句的手法（示例 6.12 <a href="examples/chapter_6/defer_logvalues.go">defer_logvalues.go</a>）：</p>
+<pre><code class="go"><span class="keyword">package</span> main
+
+<span class="keyword">import</span> (
+    <span class="string">"io"</span>
+    <span class="string">"log"</span>
+)
+
+<span class="function"><span class="keyword">func</span> <span class="title">func1</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="params">(n <span class="keyword">int</span>, err error)</span></span> {
+    <span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> {
+        log.Printf(<span class="string">"func1(%q) = %d, %v"</span>, s, n, err)
+    }()
+    <span class="keyword">return</span> <span class="number">7</span>, io.EOF
+}
+
+<span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> {
+    func1(<span class="string">"Go"</span>)
+}
+</code></pre>
+<p>输出：</p>
+<pre><code>Output: 2011/10/04 10:46:11 func1(&quot;Go&quot;) = 7, EOF</code></pre><h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><ul>
+<li><a href="directory.md">目录</a></li>
+<li>上一节：<a href="06.3.md">传递变长参数</a></li>
+<li>下一节：<a href="06.5.md">内置函数</a></li>
+</ul>

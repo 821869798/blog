@@ -1,0 +1,21 @@
+<h1 id="使用-args-和-kwargs-来调用函数"><a href="#使用-args-和-kwargs-来调用函数" class="headerlink" title="使用 *args 和 **kwargs 来调用函数"></a>使用 <code>*args</code> 和 <code>**kwargs</code> 来调用函数</h1><p>那现在我们将看到怎样使用<code>*args</code>和<code>**kwargs</code> 来调用一个函数。<br> 假设，你有这样一个小函数：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">test_args_kwargs</span><span class="params">(arg1, arg2, arg3)</span>:</span>
+    print(<span class="string">"arg1:"</span>, arg1)
+    print(<span class="string">"arg2:"</span>, arg2)
+    print(<span class="string">"arg3:"</span>, arg3)</code></pre>
+<p>你可以使用<code>*args</code>或<code>**kwargs</code>来给这个小函数传递参数。<br>下面是怎样做：</p>
+<pre><code class="python"><span class="comment"># 首先使用 *args</span>
+<span class="meta">&gt;&gt;&gt; </span>args = (<span class="string">"two"</span>, <span class="number">3</span>, <span class="number">5</span>)
+<span class="meta">&gt;&gt;&gt; </span>test_args_kwargs(*args)
+arg1: two
+arg2: <span class="number">3</span>
+arg3: <span class="number">5</span>
+
+<span class="comment"># 现在使用 **kwargs:</span>
+<span class="meta">&gt;&gt;&gt; </span>kwargs = {<span class="string">"arg3"</span>: <span class="number">3</span>, <span class="string">"arg2"</span>: <span class="string">"two"</span>, <span class="string">"arg1"</span>: <span class="number">5</span>}
+<span class="meta">&gt;&gt;&gt; </span>test_args_kwargs(**kwargs)
+arg1: <span class="number">5</span>
+arg2: two
+arg3: <span class="number">3</span></code></pre>
+<h3 id="标准参数与-args、-kwargs在使用时的顺序"><a href="#标准参数与-args、-kwargs在使用时的顺序" class="headerlink" title="标准参数与*args、**kwargs在使用时的顺序"></a>标准参数与<code>*args、**kwargs</code>在使用时的顺序</h3><p>那么如果你想在函数里同时使用所有这三种参数， 顺序是这样的：</p>
+<pre><code class="python">some_func(fargs, *args, **kwargs)</code></pre>

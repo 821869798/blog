@@ -1,0 +1,11 @@
+<h1 id="finally从句"><a href="#finally从句" class="headerlink" title="finally从句"></a><code>finally</code>从句</h1><p>我们把我们的主程序代码包裹进了<code>try</code>从句。然后我们把一些代码包裹进一个<code>except</code>从句，它会在<code>try</code>从句中的代码触发异常时执行。</p>
+<p>在下面的例子中，我们还会使用第三个从句，那就是<code>finally</code>从句。包裹到<code>finally</code>从句中的代码不管异常是否触发都将会被执行。这可以被用来在脚本执行之后做清理工作。这里是个简单的例子：</p>
+<pre><code class="python"><span class="keyword">try</span>:
+    file = open(<span class="string">'test.txt'</span>, <span class="string">'rb'</span>)
+<span class="keyword">except</span> IOError <span class="keyword">as</span> e:
+    print(<span class="string">'An IOError occurred. {}'</span>.format(e.args[<span class="number">-1</span>]))
+<span class="keyword">finally</span>:
+    print(<span class="string">"This would be printed whether or not an exception occurred!"</span>)
+
+<span class="comment"># Output: An IOError occurred. No such file or directory</span>
+<span class="comment"># This would be printed whether or not an exception occurred!</span></code></pre>

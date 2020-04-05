@@ -1,0 +1,12 @@
+<h1 id="列表推导式（list-comprehensions）"><a href="#列表推导式（list-comprehensions）" class="headerlink" title="列表推导式（list comprehensions）"></a>列表推导式（<code>list</code> comprehensions）</h1><p>列表推导式（又称列表解析式）提供了一种简明扼要的方法来创建列表。<br>它的结构是在一个中括号里包含一个表达式，然后是一个<code>for</code>语句，然后是0个或多个<code>for</code>或者<code>if</code>语句。那个表达式可以是任意的，意思是你可以在列表中放入任意类型的对象。返回结果将是一个新的列表，在这个以<code>if</code>和<code>for</code>语句为上下文的表达式运行完成之后产生。</p>
+<h3 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h3><pre><code class="python">variable = [out_exp <span class="keyword">for</span> out_exp <span class="keyword">in</span> input_list <span class="keyword">if</span> out_exp == <span class="number">2</span>]</code></pre>
+<p>这里是另外一个简明例子:</p>
+<pre><code class="python">multiples = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">30</span>) <span class="keyword">if</span> i % <span class="number">3</span> <span class="keyword">is</span> <span class="number">0</span>]
+print(multiples)
+<span class="comment"># Output: [0, 3, 6, 9, 12, 15, 18, 21, 24, 27]</span></code></pre>
+<p>这将对快速生成列表非常有用。<br>有些人甚至更喜欢使用它而不是<code>filter</code>函数。<br>列表推导式在有些情况下超赞，特别是当你需要使用<code>for</code>循环来生成一个新列表。举个例子，你通常会这样做：</p>
+<pre><code class="python">squared = []
+<span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>):
+    squared.append(x**<span class="number">2</span>)</code></pre>
+<p>你可以使用列表推导式来简化它，就像这样：</p>
+<pre><code class="python">squared = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">10</span>)]</code></pre>

@@ -1,0 +1,63 @@
+<h1 id="对象变动-Mutation"><a href="#对象变动-Mutation" class="headerlink" title="对象变动(Mutation)"></a>对象变动(Mutation)</h1><p>Python中可变(<strong>mutable</strong>)与不可变(<strong>immutable</strong>)的数据类型让新手很是头痛。简单的说，可变(mutable)意味着”可以被改动”，而不可变(immutable)的意思是“常量(constant)”。想把脑筋转动起来吗？考虑下这个例子：</p>
+<pre><code class="python">foo = [<span class="string">'hi'</span>]
+print(foo)
+<span class="comment"># Output: ['hi']</span>
+
+bar = foo
+bar += [<span class="string">'bye'</span>]
+print(foo)
+<span class="comment"># Output: ['hi', 'bye']</span></code></pre>
+<p>刚刚发生了什么？我们预期的不是那样！我们期望看到是这样的：</p>
+<pre><code class="python">foo = [<span class="string">'hi'</span>]
+print(foo)
+<span class="comment"># Output: ['hi']</span>
+
+bar = foo
+bar += [<span class="string">'bye'</span>]
+
+print(foo)
+<span class="comment"># Output: ['hi']</span>
+
+print(bar)
+<span class="comment"># Output: ['hi', 'bye']</span></code></pre>
+<p>这不是一个bug。这是对象可变性(<strong>mutability</strong>)在作怪。每当你将一个变量赋值为另一个可变类型的变量时，对这个数据的任意改动会同时反映到这两个变量上去。新变量只不过是老变量的一个别名而已。这个情况只是针对可变数据类型。下面的函数和可变数据类型让你一下就明白了：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">add_to</span><span class="params">(num, target=[])</span>:</span>
+    target.append(num)
+    <span class="keyword">return</span> target
+
+add_to(<span class="number">1</span>)
+<span class="comment"># Output: [1]</span>
+
+add_to(<span class="number">2</span>)
+<span class="comment"># Output: [1, 2]</span>
+
+add_to(<span class="number">3</span>)
+<span class="comment"># Output: [1, 2, 3]</span></code></pre>
+<p>你可能预期它表现的不是这样子。你可能希望，当你调用<code>add_to</code>时，有一个新的列表被创建，就像这样：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">add_to</span><span class="params">(num, target=[])</span>:</span>
+    target.append(num)
+    <span class="keyword">return</span> target
+
+add_to(<span class="number">1</span>)
+<span class="comment"># Output: [1]</span>
+
+add_to(<span class="number">2</span>)
+<span class="comment"># Output: [2]</span>
+
+add_to(<span class="number">3</span>)
+<span class="comment"># Output: [3]</span></code></pre>
+<p>啊哈！这次又没有达到预期，是列表的可变性在作怪。在Python中当函数被定义时，默认参数只会运算一次，而不是每次被调用时都会重新运算。你应该永远不要定义可变类型的默认参数，除非你知道你正在做什么。你应该像这样做：</p>
+<pre><code class="python"><span class="function"><span class="keyword">def</span> <span class="title">add_to</span><span class="params">(element, target=None)</span>:</span>
+    <span class="keyword">if</span> target <span class="keyword">is</span> <span class="literal">None</span>:
+        target = []
+    target.append(element)
+    <span class="keyword">return</span> target</code></pre>
+<p>现在每当你在调用这个函数不传入<code>target</code>参数的时候，一个新的列表会被创建。举个例子：</p>
+<pre><code class="python">add_to(<span class="number">42</span>)
+<span class="comment"># Output: [42]</span>
+
+add_to(<span class="number">42</span>)
+<span class="comment"># Output: [42]</span>
+
+add_to(<span class="number">42</span>)
+<span class="comment"># Output: [42]</span></code></pre>

@@ -1,0 +1,31 @@
+<h1 id="else从句"><a href="#else从句" class="headerlink" title="else从句"></a><code>else</code>从句</h1><p><code>for</code>循环还有一个<code>else</code>从句，我们大多数人并不熟悉。这个<code>else</code>从句会在循环正常结束时执行。这意味着，循环没有遇到任何<code>break</code>. 一旦你掌握了何时何地使用它，它真的会非常有用。我自己对它真是相见恨晚。</p>
+<p>有个常见的构造是跑一个循环，并查找一个元素。如果这个元素被找到了，我们使用<code>break</code>来中断这个循环。有两个场景会让循环停下来。</p>
+<ul>
+<li>第一个是当一个元素被找到，<code>break</code>被触发。</li>
+<li>第二个场景是循环结束。  </li>
+</ul>
+<p>现在我们也许想知道其中哪一个，才是导致循环完成的原因。一个方法是先设置一个标记，然后在循环结束时打上标记。另一个是使用<code>else</code>从句。</p>
+<p>这就是<code>for/else</code>循环的基本结构：</p>
+<pre><code class="python"><span class="keyword">for</span> item <span class="keyword">in</span> container:
+    <span class="keyword">if</span> search_something(item):
+        <span class="comment"># Found it!</span>
+        process(item)
+        <span class="keyword">break</span>
+<span class="keyword">else</span>:
+    <span class="comment"># Didn't find anything..</span>
+    not_found_in_container()</code></pre>
+<p>考虑下这个简单的案例，它是我从官方文档里拿来的：</p>
+<pre><code class="python"><span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">10</span>):
+    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, n):
+        <span class="keyword">if</span> n % x == <span class="number">0</span>:
+            print(n, <span class="string">'equals'</span>, x, <span class="string">'*'</span>, n/x)
+            <span class="keyword">break</span></code></pre>
+<p>它会找出2到10之间的数字的因子。现在是趣味环节了。我们可以加上一个附加的else语句块，来抓住质数，并且告诉我们：</p>
+<pre><code class="python"><span class="keyword">for</span> n <span class="keyword">in</span> range(<span class="number">2</span>, <span class="number">10</span>):
+    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">2</span>, n):
+        <span class="keyword">if</span> n % x == <span class="number">0</span>:
+            print( n, <span class="string">'equals'</span>, x, <span class="string">'*'</span>, n/x)
+            <span class="keyword">break</span>
+    <span class="keyword">else</span>:
+        <span class="comment"># loop fell through without finding a factor</span>
+        print(n, <span class="string">'is a prime number'</span>)</code></pre>

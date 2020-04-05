@@ -1,0 +1,1012 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>goroutine的生老病死 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.2">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="05.3.html" />
+    
+    
+    <link rel="prev" href="05.1.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="01.0.html">
+            
+                <a href="01.0.html">
+            
+                    
+                    如何研究Go内部实现
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="01.1.html">
+            
+                <a href="01.1.html">
+            
+                    
+                    从源代码安装Go
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="01.2.html">
+            
+                <a href="01.2.html">
+            
+                    
+                    本书的组织结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="01.3.html">
+            
+                <a href="01.3.html">
+            
+                    
+                    基本技巧
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="02.0.html">
+            
+                <a href="02.0.html">
+            
+                    
+                    基本数据结构
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="02.1.html">
+            
+                <a href="02.1.html">
+            
+                    
+                    基本类型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="02.2.html">
+            
+                <a href="02.2.html">
+            
+                    
+                    slice
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.3" data-path="02.3.html">
+            
+                <a href="02.3.html">
+            
+                    
+                    map的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.4" data-path="02.4.html">
+            
+                <a href="02.4.html">
+            
+                    
+                    nil
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="03.0.html">
+            
+                <a href="03.0.html">
+            
+                    
+                    函数调用协议
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="03.1.html">
+            
+                <a href="03.1.html">
+            
+                    
+                    Go调用汇编和C
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="03.2.html">
+            
+                <a href="03.2.html">
+            
+                    
+                    多值返回
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.3" data-path="03.3.html">
+            
+                <a href="03.3.html">
+            
+                    
+                    go关键字
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.4" data-path="03.4.html">
+            
+                <a href="03.4.html">
+            
+                    
+                    defer关键字
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.5" data-path="03.5.html">
+            
+                <a href="03.5.html">
+            
+                    
+                    连续栈
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.6" data-path="03.6.html">
+            
+                <a href="03.6.html">
+            
+                    
+                    闭包的实现
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" data-path="04.0.html">
+            
+                <a href="04.0.html">
+            
+                    
+                    Go语言程序初始化过程
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="04.1.html">
+            
+                <a href="04.1.html">
+            
+                    
+                    系统初始化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="04.2.html">
+            
+                <a href="04.2.html">
+            
+                    
+                    main.main之前的准备
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" data-path="05.0.html">
+            
+                <a href="05.0.html">
+            
+                    
+                    goroutine调度
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="05.1.html">
+            
+                <a href="05.1.html">
+            
+                    
+                    调度器相关数据结构
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.6.2" data-path="05.2.html">
+            
+                <a href="05.2.html">
+            
+                    
+                    goroutine的生老病死
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="05.3.html">
+            
+                <a href="05.3.html">
+            
+                    
+                    设计与演化
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" >
+            
+                <span>
+            
+                    
+                    [死锁检测和竞态检测]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="05.5.html">
+            
+                <a href="05.5.html">
+            
+                    
+                    抢占式调度
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" data-path="06.0.html">
+            
+                <a href="06.0.html">
+            
+                    
+                    内存管理
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="06.1.html">
+            
+                <a href="06.1.html">
+            
+                    
+                    内存池
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="06.2.html">
+            
+                <a href="06.2.html">
+            
+                    
+                    垃圾回收上篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="06.3.html">
+            
+                <a href="06.3.html">
+            
+                    
+                    垃圾回收下篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" data-path="07.0.html">
+            
+                <a href="07.0.html">
+            
+                    
+                    高级数据结构的实现
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="07.1.html">
+            
+                <a href="07.1.html">
+            
+                    
+                    channel
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.2" data-path="07.2.html">
+            
+                <a href="07.2.html">
+            
+                    
+                    interface
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8.3" data-path="07.3.html">
+            
+                <a href="07.3.html">
+            
+                    
+                    方法调用
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" data-path="08.0.html">
+            
+                <a href="08.0.html">
+            
+                    
+                    网络
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="08.1.html">
+            
+                <a href="08.1.html">
+            
+                    
+                    非阻塞io
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" >
+            
+                <span>
+            
+                    
+                    [net包]
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" data-path="09.0.html">
+            
+                <a href="09.0.html">
+            
+                    
+                    cgo
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="09.1.html">
+            
+                <a href="09.1.html">
+            
+                    
+                    预备知识
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="09.2.html">
+            
+                <a href="09.2.html">
+            
+                    
+                    cgo关键技术
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="09.3.html">
+            
+                <a href="09.3.html">
+            
+                    
+                    Go调用C
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="09.4.html">
+            
+                <a href="09.4.html">
+            
+                    
+                    C调用Go
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    [杂项]
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="10.1.html">
+            
+                <a href="10.1.html">
+            
+                    
+                    内存模型
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" >
+            
+                <span>
+            
+                    
+                    [pprof]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" >
+            
+                <span>
+            
+                    
+                    [底层同步机制]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.4" >
+            
+                <span>
+            
+                    
+                    [系统调用]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.5" >
+            
+                <span>
+            
+                    
+                    [timer]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.6" >
+            
+                <span>
+            
+                    
+                    [运行时符号信息]
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.7" >
+            
+                <span>
+            
+                    
+                    [signal处理]
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >goroutine的生老病死</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="52-goroutine&#x7684;&#x751F;&#x8001;&#x75C5;&#x6B7B;">5.2 goroutine&#x7684;&#x751F;&#x8001;&#x75C5;&#x6B7B;</h1>
+<p>&#x672C;&#x5C0F;&#x8282;&#x5C06;&#x901A;&#x8FC7;goroutine&#x7684;&#x521B;&#x5EFA;&#xFF0C;&#x6D88;&#x4EA1;&#xFF0C;&#x963B;&#x585E;&#x548C;&#x6062;&#x590D;&#x7B49;&#x8FC7;&#x7A0B;&#xFF0C;&#x6765;&#x89C2;&#x5BDF;Go&#x8BED;&#x8A00;&#x7684;&#x8C03;&#x5EA6;&#x7B56;&#x7565;&#xFF0C;&#x8FD9;&#x91CC;&#x5C31;&#x79F0;&#x4E4B;&#x4E3A;&#x751F;&#x8001;&#x75C5;&#x6B7B;&#x5427;&#x3002;&#x6574;&#x4E2A;Go&#x8BED;&#x8A00;&#x7684;&#x8C03;&#x5EA6;&#x7CFB;&#x7EDF;&#x662F;&#x6BD4;&#x8F83;&#x590D;&#x6742;&#x7684;&#xFF0C;&#x4E3A;&#x4E86;&#x907F;&#x514D;&#x7ED3;&#x6784;&#x4F53;M&#x548C;&#x7ED3;&#x6784;&#x4F53;P&#x5F15;&#x5165;&#x7684;&#x5176;&#x5B83;&#x5E72;&#x6270;&#xFF0C;&#x8FD9;&#x91CC;&#x4E3B;&#x8981;&#x5C06;&#x6CE8;&#x610F;&#x529B;&#x96C6;&#x4E2D;&#x5230;&#x7ED3;&#x6784;&#x4F53;G&#x4E2D;&#xFF0C;&#x4EE5;goroutine&#x4E3A;&#x4E3B;&#x7EBF;&#x3002;</p>
+<h2 id="goroutine&#x7684;&#x521B;&#x5EFA;">goroutine&#x7684;&#x521B;&#x5EFA;</h2>
+<p>&#x524D;&#x9762;&#x8BB2;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x534F;&#x8BAE;&#x65F6;&#x8BF4;&#x8FC7;go&#x5173;&#x952E;&#x5B57;&#x6700;&#x7EC8;&#x88AB;&#x5F04;&#x6210;&#x4E86;runtime.newproc&#x3002;&#x8FD9;&#x5C31;&#x662F;&#x4E00;&#x4E2A;goroutine&#x7684;&#x51FA;&#x751F;&#xFF0C;&#x6240;&#x6709;&#x65B0;&#x7684;goroutine&#x90FD;&#x662F;&#x901A;&#x8FC7;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x521B;&#x5EFA;&#x7684;&#x3002;</p>
+<p>runtime.newproc(size, f, args)&#x529F;&#x80FD;&#x5C31;&#x662F;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x7684;g&#xFF0C;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x4E0D;&#x80FD;&#x7528;&#x5206;&#x6BB5;&#x6808;&#xFF0C;&#x56E0;&#x4E3A;&#x5B83;&#x5047;&#x8BBE;&#x53C2;&#x6570;&#x7684;&#x653E;&#x7F6E;&#x987A;&#x5E8F;&#x662F;&#x7D27;&#x63A5;&#x7740;&#x51FD;&#x6570;f&#x7684;&#xFF08;&#x89C1;&#x524D;&#x9762;&#x51FD;&#x6570;&#x8C03;&#x7528;&#x534F;&#x8BAE;&#x4E00;&#x7AE0;&#xFF0C;&#x6709;&#x5173;go&#x5173;&#x952E;&#x5B57;&#x8C03;&#x7528;&#x65F6;&#x7684;&#x5185;&#x5B58;&#x5E03;&#x5C40;&#xFF09;&#x3002;&#x5206;&#x6BB5;&#x6808;&#x4F1A;&#x7834;&#x574F;&#x8FD9;&#x4E2A;&#x5E03;&#x5C40;&#xFF0C;&#x6240;&#x4EE5;&#x5728;&#x4EE3;&#x7801;&#x4E2D;&#x52A0;&#x5165;&#x4E86;&#x6807;&#x8BB0;#pragma textflag 7&#x8868;&#x793A;&#x4E0D;&#x4F7F;&#x7528;&#x5206;&#x6BB5;&#x6808;&#x3002;&#x5B83;&#x4F1A;&#x8C03;&#x7528;&#x51FD;&#x6570;newproc1&#xFF0C;&#x5728;newproc1&#x4E2D;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x5206;&#x6BB5;&#x6808;&#x3002;&#x771F;&#x6B63;&#x7684;&#x5DE5;&#x4F5C;&#x662F;&#x8C03;&#x7528;newproc1&#x5B8C;&#x6210;&#x7684;&#x3002;newproc1&#x8FDB;&#x884C;&#x4E0B;&#x9762;&#x8FD9;&#x4E9B;&#x52A8;&#x4F5C;&#x3002;</p>
+<p>&#x9996;&#x5148;&#xFF0C;&#x5B83;&#x4F1A;&#x68C0;&#x67E5;&#x5F53;&#x524D;&#x7ED3;&#x6784;&#x4F53;M&#x4E2D;&#x7684;P&#x4E2D;&#xFF0C;&#x662F;&#x5426;&#x6709;&#x53EF;&#x7528;&#x7684;&#x7ED3;&#x6784;&#x4F53;G&#x3002;&#x5982;&#x679C;&#x6709;&#xFF0C;&#x5219;&#x76F4;&#x63A5;&#x4ECE;&#x4E2D;&#x53D6;&#x4E00;&#x4E2A;&#xFF0C;&#x5426;&#x5219;&#xFF0C;&#x9700;&#x8981;&#x5206;&#x914D;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x7ED3;&#x6784;&#x4F53;G&#x3002;&#x5982;&#x679C;&#x5206;&#x914D;&#x4E86;&#x65B0;&#x7684;G&#xFF0C;&#x9700;&#x8981;&#x5C06;&#x5B83;&#x6302;&#x5230;runtime&#x7684;&#x76F8;&#x5173;&#x961F;&#x5217;&#x4E2D;&#x3002;</p>
+<p>&#x83B7;&#x53D6;&#x4E86;&#x7ED3;&#x6784;&#x4F53;G&#x4E4B;&#x540E;&#xFF0C;&#x5C06;&#x8C03;&#x7528;&#x53C2;&#x6570;&#x4FDD;&#x5B58;&#x5230;g&#x7684;&#x6808;&#xFF0C;&#x5C06;sp&#xFF0C;pc&#x7B49;&#x4E0A;&#x4E0B;&#x6587;&#x73AF;&#x5883;&#x4FDD;&#x5B58;&#x5728;g&#x7684;sched&#x57DF;&#xFF0C;&#x8FD9;&#x6837;&#x6574;&#x4E2A;goroutine&#x5C31;&#x51C6;&#x5907;&#x597D;&#x4E86;&#xFF0C;&#x6574;&#x4E2A;&#x72B6;&#x6001;&#x548C;&#x4E00;&#x4E2A;&#x8FD0;&#x884C;&#x4E2D;&#x7684;goroutine&#x88AB;&#x4E2D;&#x65AD;&#x65F6;&#x4E00;&#x6837;&#xFF0C;&#x53EA;&#x8981;&#x7B49;&#x5206;&#x914D;&#x5230;CPU&#xFF0C;&#x5B83;&#x5C31;&#x53EF;&#x4EE5;&#x7EE7;&#x7EED;&#x8FD0;&#x884C;&#x3002;</p>
+<pre><code>newg-&gt;sched.sp = (uintptr)sp;
+newg-&gt;sched.pc = (byte*)runtime&#xB7;goexit;
+newg-&gt;sched.g = newg;
+runtime&#xB7;gostartcallfn(&amp;newg-&gt;sched, fn);
+newg-&gt;gopc = (uintptr)callerpc;
+newg-&gt;status = Grunnable;
+newg-&gt;goid = runtime&#xB7;xadd64(&amp;runtime&#xB7;sched.goidgen, 1);
+</code></pre><p>&#x7136;&#x540E;&#x5C06;&#x8FD9;&#x4E2A;&#x201C;&#x51C6;&#x5907;&#x597D;&#x201D;&#x7684;&#x7ED3;&#x6784;&#x4F53;G&#x6302;&#x5230;&#x5F53;&#x524D;M&#x7684;P&#x7684;&#x961F;&#x5217;&#x4E2D;&#x3002;&#x8FD9;&#x91CC;&#x4F1A;&#x7ED9;&#x4E88;&#x65B0;&#x7684;goroutine&#x4E00;&#x6B21;&#x8FD0;&#x884C;&#x7684;&#x673A;&#x4F1A;&#xFF0C;&#x5373;&#xFF1A;&#x5982;&#x679C;&#x5F53;&#x524D;&#x7684;P&#x7684;&#x6570;&#x76EE;&#x6CA1;&#x6709;&#x5230;&#x4E0A;&#x9650;&#xFF0C;&#x4E5F;&#x6CA1;&#x6709;&#x6B63;&#x5728;&#x81EA;&#x65CB;&#x62A2;CPU&#x7684;M&#xFF0C;&#x5219;&#x8C03;&#x7528;wakep&#x5C06;P&#x7ACB;&#x5373;&#x6295;&#x5165;&#x8FD0;&#x884C;&#x3002;</p>
+<p>wakep&#x51FD;&#x6570;&#x5524;&#x9192;P&#x65F6;&#xFF0C;&#x8C03;&#x5EA6;&#x5668;&#x4F1A;&#x8BD5;&#x7740;&#x5BFB;&#x627E;&#x4E00;&#x4E2A;&#x53EF;&#x7528;&#x7684;M&#x6765;&#x7ED1;&#x5B9A;P&#xFF0C;&#x5FC5;&#x8981;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x65B0;&#x5EFA;M&#x3002;&#x8BA9;&#x6211;&#x4EEC;&#x770B;&#x770B;&#x65B0;&#x5EFA;M&#x7684;&#x51FD;&#x6570;newm&#xFF1A;</p>
+<pre><code>// &#x65B0;&#x5EFA;&#x4E00;&#x4E2A;m&#xFF0C;&#x5B83;&#x5C06;&#x4EE5;&#x8C03;&#x7528;fn&#x5F00;&#x59CB;&#xFF0C;&#x6216;&#x8005;&#x662F;&#x4ECE;&#x8C03;&#x5EA6;&#x5668;&#x5F00;&#x59CB;
+static void
+newm(void(*fn)(void), P *p)
+{
+    M *mp;
+    mp = runtime&#xB7;allocm(p);
+    mp-&gt;nextp = p;
+    mp-&gt;mstartfn = fn;
+    runtime&#xB7;newosproc(mp, (byte*)mp-&gt;g0-&gt;stackbase);
+}
+</code></pre><p>runtime.newm&#x529F;&#x80FD;&#x8DDF;newproc&#x76F8;&#x4F3C;,&#x524D;&#x8005;&#x5206;&#x914D;&#x4E00;&#x4E2A;goroutine,&#x800C;&#x540E;&#x8005;&#x5206;&#x914D;&#x4E00;&#x4E2A;M&#x3002;&#x5176;&#x5B9E;&#x4E00;&#x4E2A;M&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7EBF;&#x7A0B;&#x7684;&#x62BD;&#x8C61;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5B83;&#x4F1A;&#x8C03;&#x7528;runtime.newosproc&#x3002;</p>
+<p>&#x603B;&#x7B97;&#x770B;&#x5230;&#x4E86;&#x4ECE;Go&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5E93;&#x5230;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7684;&#x63A5;&#x53E3;&#xFF0C;runtime.newosproc(&#x5E73;&#x53F0;&#x76F8;&#x5173;&#x7684;)&#x4F1A;&#x8C03;&#x7528;&#x7CFB;&#x7EDF;&#x7684;runtime.clone(&#x5E73;&#x53F0;&#x76F8;&#x5173;&#x7684;)&#x6765;&#x65B0;&#x5EFA;&#x4E00;&#x4E2A;&#x7EBF;&#x7A0B;&#xFF0C;&#x65B0;&#x7684;&#x7EBF;&#x7A0B;&#x5C06;&#x4EE5;runtime.mstart&#x4E3A;&#x5165;&#x53E3;&#x51FD;&#x6570;&#x3002;runtime.newosproc&#x662F;&#x4E2A;&#x5F88;&#x6709;&#x610F;&#x601D;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x8FD8;&#x6709;&#x4E00;&#x4E9B;&#x4FE1;&#x53F7;&#x5904;&#x7406;&#x65B9;&#x9762;&#x7684;&#x7EC6;&#x8282;&#xFF0C;&#x4F46;&#x662F;&#x5BF9;&#x9274;&#x4E8E;&#x6211;&#x4EEC;&#x662F;&#x4E13;&#x6CE8;&#x4E8E;&#x8C03;&#x5EA6;&#x65B9;&#x9762;&#xFF0C;&#x5C31;&#x4E0D;&#x5BF9;&#x5B83;&#x8FDB;&#x884C;&#x66F4;&#x7EC6;&#x81F4;&#x7684;&#x5206;&#x6790;&#x4E86;&#xFF0C;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x8BFB;&#x8005;&#x53EF;&#x4EE5;&#x81EA;&#x884C;&#x53BB;runtime/os_linux.c&#x770B;&#x770B;&#x6E90;&#x4EE3;&#x7801;&#x3002;runtime.clone&#x662F;&#x7528;&#x6C47;&#x7F16;&#x5B9E;&#x73B0;&#x7684;,&#x4EE3;&#x7801;&#x5728;sys_linux_amd64.s&#x3002;</p>
+<p>&#x65E2;&#x7136;&#x7EBF;&#x7A0B;&#x662F;&#x4EE5;runtime.mstart&#x4E3A;&#x5165;&#x53E3;&#x7684;&#xFF0C;&#x90A3;&#x4E48;&#x63A5;&#x4E0B;&#x6765;&#x770B;mstart&#x51FD;&#x6570;&#x3002;</p>
+<p>mstart&#x662F;runtime.newosproc&#x65B0;&#x5EFA;&#x7684;&#x7CFB;&#x7EDF;&#x7EBF;&#x7A0B;&#x7684;&#x5165;&#x53E3;&#x5730;&#x5740;&#xFF0C;&#x65B0;&#x7EBF;&#x7A0B;&#x6267;&#x884C;&#x65F6;&#x4F1A;&#x4ECE;&#x8FD9;&#x91CC;&#x5F00;&#x59CB;&#x8FD0;&#x884C;&#x3002;&#x65B0;&#x7EBF;&#x7A0B;&#x7684;&#x6267;&#x884C;&#x548C;goroutine&#x7684;&#x6267;&#x884C;&#x662F;&#x4E24;&#x4E2A;&#x6982;&#x5FF5;&#xFF0C;&#x7531;&#x4E8E;&#x6709;m&#x8FD9;&#x4E00;&#x5C42;&#x5BF9;&#x673A;&#x5668;&#x7684;&#x62BD;&#x8C61;&#xFF0C;&#x662F;m&#x5728;&#x6267;&#x884C;g&#x800C;&#x4E0D;&#x662F;&#x7EBF;&#x7A0B;&#x5728;&#x6267;&#x884C;g&#x3002;&#x6240;&#x4EE5;&#x7EBF;&#x7A0B;&#x7684;&#x5165;&#x53E3;&#x662F;mstart&#xFF0C;g&#x7684;&#x6267;&#x884C;&#x8981;&#x5230;schedule&#x624D;&#x7B97;&#x5165;&#x53E3;&#x3002;&#x51FD;&#x6570;mstart&#x6700;&#x540E;&#x8C03;&#x7528;&#x4E86;schedule&#x3002;</p>
+<p>&#x7EC8;&#x4E8E;&#x5230;&#x4E86;schedule&#x4E86;&#xFF01;</p>
+<p>&#x5982;&#x679C;&#x662F;&#x4ECE;mstart&#x8FDB;&#x5165;&#x5230;schedule&#x7684;&#xFF0C;&#x90A3;&#x4E48;schedule&#x4E2D;&#x903B;&#x8F91;&#x975E;&#x5E38;&#x7B80;&#x5355;&#xFF0C;&#x5927;&#x6982;&#x5C31;&#x8FD9;&#x51E0;&#x6B65;&#xFF1A;</p>
+<pre><code>&#x627E;&#x5230;&#x4E00;&#x4E2A;&#x7B49;&#x5F85;&#x8FD0;&#x884C;&#x7684;g
+&#x5982;&#x679C;g&#x662F;&#x9501;&#x5B9A;&#x5230;&#x67D0;&#x4E2A;M&#x7684;&#xFF0C;&#x5219;&#x8BA9;&#x90A3;&#x4E2A;M&#x8FD0;&#x884C;
+&#x5426;&#x5219;&#xFF0C;&#x8C03;&#x7528;execute&#x51FD;&#x6570;&#x8BA9;g&#x5728;&#x5F53;&#x524D;&#x7684;M&#x4E2D;&#x8FD0;&#x884C;
+</code></pre><p>execute&#x4F1A;&#x6062;&#x590D;newproc1&#x4E2D;&#x8BBE;&#x7F6E;&#x7684;&#x4E0A;&#x4E0B;&#x6587;&#xFF0C;&#x8FD9;&#x6837;&#x5C31;&#x8DF3;&#x8F6C;&#x5230;&#x65B0;&#x7684;goroutine&#x53BB;&#x6267;&#x884C;&#x4E86;&#x3002;&#x4ECE;newproc&#x51FA;&#x751F;&#x4E00;&#x76F4;&#x5230;&#x8FD0;&#x884C;&#x7684;&#x8FC7;&#x7A0B;&#x5206;&#x6790;&#xFF0C;&#x5230;&#x6B64;&#x7ED3;&#x675F;!</p>
+<p>&#x867D;&#x7136;&#x6309;&#x8FD9;&#x6837;a&#x8C03;&#x7528;b&#xFF0C;b&#x8C03;&#x7528;c&#xFF0C;c&#x8C03;&#x7528;d&#xFF0C;d&#x8C03;&#x7528;e&#x7684;&#x65B9;&#x5F0F;&#x53BB;&#x5206;&#x6790;&#x6E90;&#x4EE3;&#x7801;&#x8C01;&#x770B;&#x90FD;&#x4F1A;&#x6655;&#x6389;&#xFF0C;&#x4F46;&#x8FD8;&#x662F;&#x8981;&#x91CD;&#x590D;&#x4E00;&#x904D;&#x8FD9;&#x91CC;&#x7684;&#x8BFB;&#x4EE3;&#x7801;&#x8FC7;&#x7A0B;&#xFF0C;&#x5E0C;&#x671B;&#x611F;&#x5174;&#x8DA3;&#x7684;&#x8BFB;&#x8005;&#x53EF;&#x4EE5;&#x62FF;&#x7740;&#x6CE8;&#x91CA;&#x8FC7;&#x7684;&#x6E90;&#x7801;&#x6309;&#x987A;&#x5E8F;&#x8D70;&#x4E00;&#x904D;&#xFF1A;</p>
+<p>newproc -&gt; newproc1 -&gt; (&#x5982;&#x679C;P&#x6570;&#x76EE;&#x6CA1;&#x5230;&#x4E0A;&#x9650;)wakep -&gt; startm -&gt; (&#x53EF;&#x80FD;&#x5F15;&#x53D1;)newm -&gt; newosproc -&gt; (&#x7EBF;&#x7A0B;&#x5165;&#x53E3;)mstart -&gt; schedule -&gt; execute -&gt; goroutine&#x8FD0;&#x884C;</p>
+<h2 id="&#x8FDB;&#x51FA;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;">&#x8FDB;&#x51FA;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;</h2>
+<p>&#x5047;&#x8BBE;goroutine&quot;&#x751F;&#x75C5;&quot;&#x4E86;&#xFF0C;&#x5B83;&#x8981;&#x8FDB;&#x5165;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E86;&#xFF0C;&#x6682;&#x65F6;&#x65E0;&#x6CD5;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x3002;&#x8FDB;&#x5165;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x662F;&#x963B;&#x585E;&#x7684;&#xFF0C;goroutine&#x4F1A;&#x88AB;&#x5265;&#x593A;CPU&#xFF0C;&#x5C06;&#x72B6;&#x6001;&#x8BBE;&#x7F6E;&#x6210;Gsyscall&#x540E;&#x653E;&#x5230;&#x5C31;&#x7EEA;&#x961F;&#x5217;&#x3002;Go&#x7684;syscall&#x5E93;&#x4E2D;&#x63D0;&#x4F9B;&#x4E86;&#x5BF9;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x7684;&#x5C01;&#x88C5;&#xFF0C;&#x5B83;&#x4F1A;&#x5728;&#x771F;&#x6B63;&#x6267;&#x884C;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E4B;&#x524D;&#x5148;&#x8C03;&#x7528;&#x51FD;&#x6570;.entersyscall&#xFF0C;&#x5E76;&#x5728;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x540E;&#x8C03;&#x7528;.exitsyscall&#x51FD;&#x6570;&#x3002;&#x8FD9;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x5C31;&#x662F;&#x901A;&#x77E5;Go&#x7684;&#x8FD0;&#x884C;&#x65F6;&#x5E93;&#x8FD9;&#x4E2A;goroutine&#x8FDB;&#x5165;&#x4E86;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x6216;&#x8005;&#x5B8C;&#x6210;&#x4E86;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#xFF0C;&#x8C03;&#x5EA6;&#x5668;&#x4F1A;&#x505A;&#x76F8;&#x5E94;&#x7684;&#x8C03;&#x5EA6;&#x3002;</p>
+<p>&#x6BD4;&#x5982;syscall&#x5305;&#x4E2D;&#x7684;Open&#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x4F1A;&#x8C03;&#x7528;Syscall(SYS_OPEN, uintptr(unsafe.Pointer(_p0)), uintptr(mode), uintptr(perm))&#x5B9E;&#x73B0;&#x3002;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x662F;&#x7528;&#x6C47;&#x7F16;&#x5199;&#x7684;&#xFF0C;&#x5728;syscall/asm_linux_amd64.s&#x4E2D;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5B83;&#x7684;&#x5B9A;&#x4E49;&#xFF1A;</p>
+<pre><code>TEXT    &#xB7;Syscall(SB),7,$0
+    CALL    runtime&#xB7;entersyscall(SB)
+    MOVQ    16(SP), DI
+    MOVQ    24(SP), SI
+    MOVQ    32(SP), DX
+    MOVQ    $0, R10
+    MOVQ    $0, R8
+    MOVQ    $0, R9
+    MOVQ    8(SP), AX    // syscall entry
+    SYSCALL
+    CMPQ    AX, $0xfffffffffffff001
+    JLS    ok
+    MOVQ    $-1, 40(SP)    // r1
+    MOVQ    $0, 48(SP)    // r2
+    NEGQ    AX
+    MOVQ    AX, 56(SP)  // errno
+    CALL    runtime&#xB7;exitsyscall(SB)
+    RET
+ok:
+    MOVQ    AX, 40(SP)    // r1
+    MOVQ    DX, 48(SP)    // r2
+    MOVQ    $0, 56(SP)    // errno
+    CALL    runtime&#xB7;exitsyscall(SB)
+    RET
+</code></pre><p>&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5B83;&#x8FDB;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x548C;&#x51FA;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x65F6;&#x5206;&#x522B;&#x8C03;&#x7528;&#x4E86;runtime.entersyscall&#x548C;runtime.exitsyscall&#x51FD;&#x6570;&#x3002;&#x90A3;&#x4E48;&#xFF0C;&#x8FD9;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#x505A;&#x4EC0;&#x4E48;&#x7279;&#x6B8A;&#x7684;&#x5904;&#x7406;&#x5462;&#xFF1F;</p>
+<p>&#x9996;&#x5148;&#xFF0C;&#x5C06;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x8005;&#x7684;SP,PC&#x7B49;&#x4FDD;&#x5B58;&#x5230;&#x7ED3;&#x6784;&#x4F53;G&#x7684;sched&#x57DF;&#x4E2D;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x4E5F;&#x4FDD;&#x5B58;&#x5230;g-&gt;gcsp&#x548C;g-&gt;gcpc&#x7B49;&#xFF0C;&#x8FD9;&#x4E2A;&#x662F;&#x8DDF;&#x5783;&#x573E;&#x56DE;&#x6536;&#x76F8;&#x5173;&#x7684;&#x3002;</p>
+<p>&#x7136;&#x540E;&#x68C0;&#x67E5;&#x7ED3;&#x6784;&#x4F53;Sched&#x4E2D;&#x7684;sysmonwait&#x57DF;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x4E3A;0&#xFF0C;&#x5219;&#x5C06;&#x5B83;&#x7F6E;&#x4E3A;0&#xFF0C;&#x5E76;&#x8C03;&#x7528;runtime&#xB7;notewakeup(&amp;runtime&#xB7;sched.sysmonnote)&#x3002;&#x505A;&#x8FD9;&#x8FD9;&#x4E00;&#x6B65;&#x7684;&#x539F;&#x56E0;&#x662F;&#xFF0C;&#x76EE;&#x524D;&#x8FD9;&#x4E2A;goroutine&#x8981;&#x8FDB;&#x5165;Gsyscall&#x72B6;&#x6001;&#x4E86;&#xFF0C;&#x5B83;&#x5C06;&#x8981;&#x8BA9;&#x51FA;CPU&#x3002;&#x5982;&#x679C;&#x6709;&#x4EBA;&#x5728;&#x7B49;&#x5F85;CPU&#x7684;&#x8BDD;&#xFF0C;&#x4F1A;&#x901A;&#x77E5;&#x5E76;&#x5524;&#x9192;&#x7B49;&#x5F85;&#x8005;&#xFF0C;&#x9A6C;&#x4E0A;&#x5C31;&#x6709;CPU&#x53EF;&#x7528;&#x4E86;&#x3002;</p>
+<p>&#x63A5;&#x4E0B;&#x6765;&#xFF0C;&#x5C06;m&#x7684;MCache&#x7F6E;&#x4E3A;&#x7A7A;&#xFF0C;&#x5E76;&#x5C06;m-&gt;p-&gt;m&#x7F6E;&#x4E3A;&#x7A7A;&#xFF0C;&#x8868;&#x793A;&#x8FDB;&#x5165;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x540E;&#x7ED3;&#x6784;&#x4F53;M&#x662F;&#x4E0D;&#x9700;&#x8981;MCache&#x7684;&#xFF0C;&#x5E76;&#x4E14;P&#x4E5F;&#x88AB;&#x5265;&#x79BB;&#x4E86;&#xFF0C;&#x5C06;P&#x7684;&#x72B6;&#x6001;&#x8BBE;&#x7F6E;&#x4E3A;PSyscall&#x3002;</p>
+<p>&#x6709;&#x4E00;&#x4E2A;&#x4E0E;entersyscall&#x51FD;&#x6570;&#x7A0D;&#x5FAE;&#x4E0D;&#x540C;&#x7684;&#x51FD;&#x6570;&#x53EB;entersyscallblock&#xFF0C;&#x5B83;&#x4F1A;&#x544A;&#x8BC9;&#x63D0;&#x793A;&#x8FD9;&#x4E2A;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x662F;&#x4F1A;&#x963B;&#x585E;&#x7684;&#xFF0C;&#x56E0;&#x6B64;&#x4F1A;&#x6709;&#x4E00;&#x70B9;&#x70B9;&#x533A;&#x522B;&#x3002;&#x5B83;&#x8C03;&#x7528;&#x7684;releasep&#x548C;handoffp&#x3002;</p>
+<p>releasep&#x5C06;P&#x548C;M&#x5B8C;&#x5168;&#x5206;&#x79BB;&#xFF0C;&#x4F7F;p-&gt;m&#x4E3A;&#x7A7A;&#xFF0C;m-&gt;p&#x4E5F;&#x4E3A;&#x7A7A;&#xFF0C;&#x5265;&#x79BB;m-&gt;mcache&#xFF0C;&#x5E76;&#x5C06;P&#x7684;&#x72B6;&#x6001;&#x8BBE;&#x7F6E;&#x4E3A;Pidle&#x3002;&#x6CE8;&#x610F;&#x8FD9;&#x91CC;&#x7684;&#x533A;&#x522B;&#xFF0C;&#x5728;&#x975E;&#x963B;&#x585E;&#x7684;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;entersyscall&#x4E2D;&#x53EA;&#x662F;&#x8BBE;&#x7F6E;&#x6210;Psyscall&#xFF0C;&#x5E76;&#x4E14;&#x4E5F;&#x6CA1;&#x6709;&#x5C06;m-&gt;p&#x7F6E;&#x4E3A;&#x7A7A;&#x3002;</p>
+<p>handoffp&#x5207;&#x6362;P&#x3002;&#x5C06;P&#x4ECE;&#x5904;&#x4E8E;syscall&#x6216;&#x8005;locked&#x7684;M&#x4E2D;&#xFF0C;&#x5207;&#x6362;&#x51FA;&#x6765;&#x4EA4;&#x7ED9;&#x5176;&#x5B83;M&#x3002;&#x6BCF;&#x4E2A;P&#x4E2D;&#x662F;&#x6302;&#x4E86;&#x4E00;&#x4E2A;&#x53EF;&#x6267;&#x884C;&#x7684;G&#x7684;&#x961F;&#x5217;&#x7684;&#xFF0C;&#x5982;&#x679C;&#x8FD9;&#x4E2A;&#x961F;&#x5217;&#x4E0D;&#x4E3A;&#x7A7A;&#xFF0C;&#x5373;&#x5982;&#x679C;P&#x4E2D;&#x8FD8;&#x6709;G&#x9700;&#x8981;&#x6267;&#x884C;&#xFF0C;&#x5219;&#x8C03;&#x7528;startm&#x8BA9;P&#x4E0E;&#x67D0;&#x4E2A;M&#x7ED1;&#x5B9A;&#x540E;&#x7ACB;&#x523B;&#x53BB;&#x6267;&#x884C;&#xFF0C;&#x5426;&#x5219;&#x5C06;P&#x6302;&#x5230;idlep&#x961F;&#x5217;&#x4E2D;&#x3002;</p>
+<p>&#x51FA;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x65F6;&#x4F1A;&#x8C03;&#x7528;&#x5230;runtime&#xB7;exitsyscall&#xFF0C;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x8DDF;&#x8FDB;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x505A;&#x76F8;&#x53CD;&#x7684;&#x64CD;&#x4F5C;&#x3002;&#x5B83;&#x4F1A;&#x5148;&#x68C0;&#x67E5;&#x5F53;&#x524D;m&#x7684;P&#x548C;&#x5B83;&#x72B6;&#x6001;&#xFF0C;&#x5982;&#x679C;P&#x4E0D;&#x7A7A;&#x4E14;&#x72B6;&#x6001;&#x4E3A;Psyscall&#xFF0C;&#x5219;&#x8BF4;&#x660E;&#x662F;&#x4ECE;&#x4E00;&#x4E2A;&#x975E;&#x963B;&#x585E;&#x7684;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E2D;&#x8FD4;&#x56DE;&#x7684;&#xFF0C;&#x8FD9;&#x65F6;&#x662F;&#x4ECD;&#x7136;&#x6709;CPU&#x53EF;&#x7528;&#x7684;&#x3002;&#x56E0;&#x6B64;&#x5C06;p-&gt;m&#x8BBE;&#x7F6E;&#x4E3A;&#x5F53;&#x524D;m&#xFF0C;&#x5C06;p&#x7684;mcache&#x653E;&#x56DE;&#x5230;m&#xFF0C;&#x6062;&#x590D;g&#x7684;&#x72B6;&#x6001;&#x4E3A;Grunning&#x3002;&#x5426;&#x5219;&#xFF0C;&#x5B83;&#x662F;&#x4ECE;&#x4E00;&#x4E2A;&#x963B;&#x585E;&#x7684;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E2D;&#x8FD4;&#x56DE;&#x7684;&#xFF0C;&#x56E0;&#x6B64;&#x4E4B;&#x524D;m&#x7684;P&#x5DF2;&#x7ECF;&#x5B8C;&#x5168;&#x88AB;&#x5265;&#x79BB;&#x4E86;&#x3002;&#x8FD9;&#x65F6;&#x4F1A;&#x67E5;&#x770B;&#x8C03;&#x7528;&#x4E2D;&#x662F;&#x5426;&#x8FD8;&#x6709;idle&#x7684;P&#xFF0C;&#x5982;&#x679C;&#x6709;&#xFF0C;&#x5219;&#x5C06;&#x5B83;&#x4E0E;&#x5F53;&#x524D;&#x7684;M&#x7ED1;&#x5B9A;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4ECE;&#x4E00;&#x4E2A;&#x963B;&#x585E;&#x7684;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E2D;&#x51FA;&#x6765;&#xFF0C;&#x5E76;&#x4E14;&#x51FA;&#x6765;&#x7684;&#x8FD9;&#x4E00;&#x65F6;&#x523B;&#x53C8;&#x6CA1;&#x6709;idle&#x7684;P&#x4E86;&#xFF0C;&#x8981;&#x600E;&#x4E48;&#x529E;&#x5462;&#xFF1F;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x4EE3;&#x7801;&#x5F53;&#x524D;&#x7684;goroutine&#x65E0;&#x6CD5;&#x7EE7;&#x7EED;&#x8FD0;&#x884C;&#x4E86;&#xFF0C;&#x8C03;&#x5EA6;&#x5668;&#x4F1A;&#x5C06;&#x5B83;&#x7684;&#x72B6;&#x6001;&#x8BBE;&#x7F6E;&#x4E3A;Grunnable&#xFF0C;&#x5C06;&#x5B83;&#x6302;&#x5230;&#x5168;&#x5C40;&#x7684;&#x5C31;&#x7EEA;G&#x961F;&#x5217;&#x4E2D;&#xFF0C;&#x7136;&#x540E;&#x505C;&#x6B62;&#x5F53;&#x524D;m&#x5E76;&#x8C03;&#x7528;schedule&#x51FD;&#x6570;&#x3002;</p>
+<h2 id="goroutine&#x7684;&#x6D88;&#x4EA1;&#x4EE5;&#x53CA;&#x72B6;&#x6001;&#x53D8;&#x5316;">goroutine&#x7684;&#x6D88;&#x4EA1;&#x4EE5;&#x53CA;&#x72B6;&#x6001;&#x53D8;&#x5316;</h2>
+<p>goroutine&#x7684;&#x6D88;&#x4EA1;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF0C;&#x6CE8;&#x610F;&#x5728;&#x51FD;&#x6570;newproc1&#xFF0C;&#x8BBE;&#x7F6E;&#x4E86;fnstart&#x4E3A;goroutine&#x6267;&#x884C;&#x7684;&#x51FD;&#x6570;&#xFF0C;&#x800C;&#x5C06;&#x65B0;&#x5EFA;&#x7684;goroutine&#x7684;sched&#x57DF;&#x7684;pc&#x8BBE;&#x7F6E;&#x4E3A;&#x4E86;&#x51FD;&#x6570;runtime.exit&#x3002;&#x5F53;fnstart&#x51FD;&#x6570;&#x6267;&#x884C;&#x5B8C;&#x8FD4;&#x56DE;&#x65F6;&#xFF0C;&#x5B83;&#x4F1A;&#x8FD4;&#x56DE;&#x5230;runtime.exit&#x4E2D;&#x3002;&#x8FD9;&#x65F6;Go&#x5C31;&#x77E5;&#x9053;&#x8FD9;&#x4E2A;goroutine&#x8981;&#x7ED3;&#x675F;&#x4E86;&#xFF0C;runtime.exit&#x4E2D;&#x4F1A;&#x505A;&#x4E00;&#x4E9B;&#x56DE;&#x6536;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F1A;&#x5C06;g&#x7684;&#x72B6;&#x6001;&#x8BBE;&#x7F6E;&#x4E3A;Gdead&#x7B49;&#xFF0C;&#x5E76;&#x5C06;g&#x6302;&#x5230;P&#x7684;free&#x961F;&#x5217;&#x4E2D;&#x3002;</p>
+<p>&#x4ECE;&#x4EE5;&#x4E0A;&#x7684;&#x5206;&#x6790;&#x4E2D;&#xFF0C;&#x5176;&#x5B9E;&#x5DF2;&#x7ECF;&#x57FA;&#x672C;&#x4E0A;&#x7ECF;&#x5386;&#x4E86;goroutine&#x7684;&#x5404;&#x79CD;&#x72B6;&#x6001;&#x53D8;&#x5316;&#x3002;&#x5728;newproc1&#x4E2D;&#x65B0;&#x5EFA;&#x7684;goroutine&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;Grunnable&#x72B6;&#x6001;&#xFF0C;&#x6295;&#x5165;&#x8FD0;&#x884C;&#x65F6;&#x8BBE;&#x7F6E;&#x6210;Grunning&#x3002;&#x5728;entersyscall&#x7684;&#x65F6;&#x5019;goroutine&#x7684;&#x72B6;&#x6001;&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;Gsyscall&#xFF0C;&#x5230;&#x51FA;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x65F6;&#x6839;&#x636E;&#x5B83;&#x662F;&#x4ECE;&#x963B;&#x585E;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E2D;&#x51FA;&#x6765;&#x8FD8;&#x662F;&#x975E;&#x963B;&#x585E;&#x7CFB;&#x7EDF;&#x8C03;&#x7528;&#x4E2D;&#x51FA;&#x6765;&#xFF0C;&#x53C8;&#x4F1A;&#x88AB;&#x8BBE;&#x7F6E;&#x6210;Grunning&#x6216;&#x8005;Grunnable&#x7684;&#x72B6;&#x6001;&#x3002;&#x5728;goroutine&#x6700;&#x7EC8;&#x9000;&#x51FA;&#x7684;runtime.exit&#x51FD;&#x6570;&#x4E2D;&#xFF0C;goroutine&#x88AB;&#x8BBE;&#x7F6E;&#x4E3A;Gdead&#x72B6;&#x6001;&#x3002;</p>
+<p>&#x7B49;&#x7B49;&#xFF0C;&#x597D;&#x50CF;&#x7F3A;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;&#x662F;&#x7684;&#xFF0C;Gidle&#x59CB;&#x7EC8;&#x6CA1;&#x6709;&#x51FA;&#x73B0;&#x8FC7;&#x3002;&#x8FD9;&#x4E2A;&#x72B6;&#x6001;&#x597D;&#x50CF;&#x5B9E;&#x9645;&#x4E0A;&#x6CA1;&#x6709;&#x88AB;&#x7528;&#x5230;&#x3002;&#x53EA;&#x6709;&#x4E00;&#x4E2A;runtime.park&#x51FD;&#x6570;&#x4F1A;&#x4F7F;goroutine&#x8FDB;&#x5165;&#x5230;Gwaiting&#x72B6;&#x6001;&#xFF0C;&#x4F46;&#x662F;park&#x8FD9;&#x4E2A;&#x6709;&#x4EC0;&#x4E48;&#x4F5C;&#x7528;&#x6211;&#x6682;&#x65F6;&#x8FD8;&#x6CA1;&#x770B;&#x61C2;...</p>
+<p>goroutine&#x7684;&#x72B6;&#x6001;&#x53D8;&#x8FC1;&#x56FE;&#xFF1A;</p>
+<p><img src="images/5.2.goroutine_state.jpg?raw=true" alt=""></p>
+<h2 id="links">links</h2>
+<ul>
+<li><a href="preface.md">&#x76EE;&#x5F55;</a></li>
+<li>&#x4E0A;&#x4E00;&#x8282;: <a href="05.1.html">&#x8C03;&#x5EA6;&#x5668;&#x76F8;&#x5173;&#x6570;&#x636E;&#x7ED3;&#x6784;</a></li>
+<li>&#x4E0B;&#x4E00;&#x8282;: <a href="05.3.html">&#x8BBE;&#x8BA1;&#x4E0E;&#x6F14;&#x5316;</a></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="05.1.html" class="navigation navigation-prev " aria-label="Previous page: 调度器相关数据结构">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="05.3.html" class="navigation navigation-next " aria-label="Next page: 设计与演化">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"goroutine的生老病死","level":"1.6.2","depth":2,"next":{"title":"设计与演化","level":"1.6.3","depth":2,"path":"05.3.md","ref":"05.3.md","articles":[]},"previous":{"title":"调度器相关数据结构","level":"1.6.1","depth":2,"path":"05.1.md","ref":"05.1.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"05.2.md","mtime":"2017-07-30T11:40:41.561Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-07-30T11:41:16.869Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/shizuku.model.json"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
+

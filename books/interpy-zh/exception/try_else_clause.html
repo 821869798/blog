@@ -1,0 +1,19 @@
+<h1 id="try-else从句"><a href="#try-else从句" class="headerlink" title="try/else从句"></a><code>try/else</code>从句</h1><p>我们常常想在没有触发异常的时候执行一些代码。这可以很轻松地通过一个<code>else</code>从句来达到。</p>
+<p>有人也许问了：如果你只是想让一些代码在没有触发异常的情况下执行，为啥你不直接把代码放在<code>try</code>里面呢？<br>回答是，那样的话这段代码中的任意异常都还是会被<code>try</code>捕获，而你并不一定想要那样。</p>
+<p>大多数人并不使用<code>else</code>从句，而且坦率地讲我自己也没有大范围使用。这里是个例子：</p>
+<pre><code class="python"><span class="keyword">try</span>:
+    print(<span class="string">'I am sure no exception is going to occur!'</span>)
+<span class="keyword">except</span> Exception:
+    print(<span class="string">'exception'</span>)
+<span class="keyword">else</span>:
+    <span class="comment"># 这里的代码只会在try语句里没有触发异常时运行,</span>
+    <span class="comment"># 但是这里的异常将 *不会* 被捕获</span>
+    print(<span class="string">'This would only run if no exception occurs. And an error here '</span>
+          <span class="string">'would NOT be caught.'</span>)
+<span class="keyword">finally</span>:
+    print(<span class="string">'This would be printed in every case.'</span>)
+
+<span class="comment"># Output: I am sure no exception is going to occur!</span>
+<span class="comment"># This would only run if no exception occurs.</span>
+<span class="comment"># This would be printed in every case.</span></code></pre>
+<p><code>else</code>从句只会在没有异常的情况下执行，而且它会在<code>finally</code>语句之前执行。</p>
