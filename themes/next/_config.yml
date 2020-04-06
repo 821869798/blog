@@ -192,7 +192,7 @@ site_state: true
 # Value after `||` delimiter is the name of Font Awesome icon. If icon (with or without delimiter) is not specified, globe icon will be loaded.
 social:
   GitHub: https://github.com/821869798 || github
-  E-Mail: 821869798@qq.com || envelope
+  E-Mail: mailto:821869798@qq.com || envelope
   Weibo: http://weibo.com/nineghost || weibo
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
