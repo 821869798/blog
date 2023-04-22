@@ -690,7 +690,7 @@ google_analytics:
   only_pageview: false
 
 # Baidu Analytics
-baidu_analytics: 32fcb2160460983b4dac49e9fb6a5af0 # <app_id>
+baidu_analytics: #32fcb2160460983b4dac49e9fb6a5af0 # <app_id>
 
 # Growingio Analytics
 growingio_analytics: # <project_id>
@@ -1033,7 +1033,7 @@ vendors:
   # valine
   # See: https://github.com/xCss/Valine
   # Example:
-  valine: //cdn.jsdelivr.net/npm/valine@1.5.1/dist/Valine.min.js
+  valine: //cdn.jsdelivr.net/npm/valine@1.3.4/dist/Valine.min.js
   # valine: //cdnjs.cloudflare.com/ajax/libs/valine/1.3.4/Valine.min.js
   # valine:
 
