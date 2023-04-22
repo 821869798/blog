@@ -142,3 +142,35 @@ symbols_count_time:
   total_symbols: true          # 站点总字数统计
   total_time: true             # 站点总阅读时长
   exclude_codeblock: false     # 排除代码字数统计
+
+filter_optimize:
+  enable: true
+  # remove the surrounding comments in each of the bundled files
+  remove_comments: false
+  css:
+    # minify all css files
+    minify: true
+    # bundle loaded css files into one
+    bundle: true
+    # use a script block to load css elements dynamically
+    delivery: true
+    # make specific css content inline into the html page
+    #   - only support the full path
+    #   - default is ['css/main.css']
+    inlines:
+    excludes:
+  js:
+    # minify all js files
+    minify: true
+    # bundle loaded js files into one
+    bundle: true
+    excludes:
+  # set the priority of this plugin,
+  # lower means it will be executed first, default of Hexo is 10
+  priority: 12
+
+emoji:
+  enable: true
+  className: github-emoji
+  styles:
+  customEmojis:
