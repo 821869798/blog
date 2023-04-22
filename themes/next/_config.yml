@@ -82,6 +82,12 @@ footer:
   beian:
     enable: false
     icp:
+    # The digit in the num of gongan beian.
+    gongan_id:
+    # The full num of gongan beian.
+    gongan_num:
+    # The icon for gongan beian. See: http://www.beian.gov.cn/portal/download
+    gongan_icon_url:
 
 # Creative Commons 4.0 International License.
 # See: https://creativecommons.org/share-your-work/licensing-types-examples
@@ -668,49 +674,6 @@ rating:
 # Go to https://www.addthis.com/dashboard to customize your tools.
 add_this_id:
 
-# Likely Share
-# See: https://ilyabirman.net/projects/likely/
-# Likely supports four looks, nine social networks, any button text.
-# You are free to modify the text value and order of any network.
-likely:
-  enable: false
-  look: normal # Available values: normal | light | small | big
-  networks:
-    twitter: Tweet
-    facebook: Share
-    linkedin: Link
-    gplus: Plus
-    vkontakte: Share
-    odnoklassniki: Class
-    telegram: Send
-    whatsapp: Send
-    pinterest: Pin
-
-# NeedMoreShare2
-# Dependencies: https://github.com/theme-next/theme-next-needmoreshare2
-# iconStyle: default | box
-# boxForm: horizontal | vertical
-# position: top / middle / bottom + Left / Center / Right
-# networks:
-# Weibo | Wechat | Douban | QQZone | Twitter | Facebook | Linkedin | Mailto | Reddit | Delicious | StumbleUpon | Pinterest
-# GooglePlus | Tumblr | GoogleBookmarks | Newsvine | Evernote | Friendfeed | Vkontakte | Odnoklassniki | Mailru
-needmoreshare2:
-  enable: false
-  postbottom:
-    enable: false
-    options:
-      iconStyle: box
-      boxForm: horizontal
-      position: bottomCenter
-      networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook
-  float:
-    enable: false
-    options:
-      iconStyle: box
-      boxForm: horizontal
-      position: middleRight
-      networks: Weibo,Wechat,Douban,QQZone,Twitter,Facebook
-
 
 # ---------------------------------------------------------------
 # Statistics and Analytics
@@ -738,9 +701,9 @@ cnzz_siteid:
 # AppID and AppKey are recommended to be the same as valine's for counter compatibility.
 # Do not enable both `valine.visitor` and `leancloud_visitors`.
 leancloud_visitors:
-  enable: false
-  app_id: # <your app id>
-  app_key: # <your app key>
+  enable: true
+  app_id: VNXPNW33R5PowcC0N9wE6nD0-gzGzoHsz # <your app id>
+  app_key: KgrvyqPHIRx1K2lcWKK5gkmE # <your app key>
   # Required for apps from CN region
   server_url: # <your server url>
   # Dependencies: https://github.com/theme-next/hexo-leancloud-counter-security
