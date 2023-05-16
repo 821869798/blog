@@ -35,7 +35,7 @@ i18n_dir: :lang
 skip_render:
   - books/**
   - public_data/**
-  - baidu_verify_codeva-W6ArCUeWf1.html
+  - baidu_verify_codeva-5LbWs3zztv.html
 
 # Writing
 new_post_name: :title.md # File name of new posts
