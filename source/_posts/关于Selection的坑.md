@@ -2,7 +2,7 @@
 title: 关于UnityEditor.Selection的坑
 date: 2020-04-05 15:38:19
 categories: Unity
-tags: [Unity,UnityEditor,Editor]
+tags: [Unity,UnityEditor]
 ---
 
 # 问题介绍
