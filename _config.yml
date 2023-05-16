@@ -23,6 +23,8 @@ pretty_urls:
 
 sitemap:
     path: sitemap.xml
+baidusitemap:
+    path: baidusitemap.xml
     
 # Directory
 source_dir: source
